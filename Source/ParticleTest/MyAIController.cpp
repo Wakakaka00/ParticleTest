@@ -61,10 +61,6 @@ void AMyAIController::Tick(float DeltaSeconds)
 			bossActor->isDrinking = true;
 		}*/
 	}	
-	else
-	{
-		StopMovement();
-	}
 	
 	// JumpSlam / Dash
 	if (bossActor->isJumpSlam || bossActor->isDash)
@@ -122,6 +118,12 @@ void AMyAIController::Tick(float DeltaSeconds)
 			bossActor->isDrinking = false;
 			bossActor->isAtk = false;
 		}
+	}
+
+	if (bossActor->isJumpDash1)
+	{
+		JumpDash(DeltaSeconds);
+		UE_LOG(LogTemp, Warning, TEXT("Jump"));
 	}
 }
 
@@ -261,11 +263,9 @@ void AMyAIController::CallBackYari()
 	yari->isBack = true;
 }
 
-void AMyAIController::JumpDash()
+void AMyAIController::JumpDash(float DeltaSeconds)
 {
-	FVector tempLocation = bossActor->GetActorLocation() + bossActor->GetActorUpVector() * 1000.0f;
-	FHitResult hit;
-	bossActor->SetActorLocation(tempLocation, false, &hit);
+	bossActor->SetActorLocation(FMath::VInterpTo(bossActor->GetActorLocation(), bossLastPos + FVector(0.0f,0.0f,1500.0f), DeltaSeconds, 2.0f));
 }
 
 void AMyAIController::SpitBlood()
