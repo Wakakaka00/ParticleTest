@@ -115,8 +115,7 @@ void ATPSCharacter::SwitchLeft_Implementation()
 {
 	if (TargetLocked)
 	{
-		FOutputDeviceNull ar;
-		NearestTarget->CallFunctionByNameWithArguments(TEXT("LockOnFlip"), ar, NULL, true);
+		
 		ClosestTargetRotation = 340.0f;
 		ClosestTargetDistance = MaximumDistance;
 		ClosestTargetDistanceToTargetedEnemy = 900.0f;
@@ -169,6 +168,9 @@ void ATPSCharacter::SwitchLeft_Implementation()
 		}
 		if (FoundNewTarget)
 		{
+
+			FOutputDeviceNull ar;
+			NearestTarget->CallFunctionByNameWithArguments(TEXT("LockOnFlip"), ar, NULL, true);
 			SwitchDone();
 			SetLockOnToTarget();
 		}
@@ -190,8 +192,7 @@ void ATPSCharacter::SwitchUp_Implementation()
 {
 	if (TargetLocked)
 	{
-		FOutputDeviceNull ar;
-		NearestTarget->CallFunctionByNameWithArguments(TEXT("LockOnFlip"), ar, NULL, true);
+		
 		ClosestTargetRotation = 360.0f;
 		ClosestTargetDistance = MaximumDistance;
 		ClosestTargetDistanceToTargetedEnemy = 900.0f;
@@ -258,6 +259,9 @@ void ATPSCharacter::SwitchUp_Implementation()
 		}
 		if (FoundNewTarget)
 		{
+
+			FOutputDeviceNull ar;
+			NearestTarget->CallFunctionByNameWithArguments(TEXT("LockOnFlip"), ar, NULL, true);
 			SwitchDone();
 			SetLockOnToTarget();
 		}
@@ -275,8 +279,7 @@ void ATPSCharacter::SwitchDown_Implementation()
 {
 	if (TargetLocked)
 	{
-		FOutputDeviceNull ar;
-		NearestTarget->CallFunctionByNameWithArguments(TEXT("LockOnFlip"), ar, NULL, true);
+		
 		ClosestTargetRotation = 0.0f;
 		ClosestTargetDistance = MaximumDistance;
 		ClosestTargetDistanceToTargetedEnemy = 900.0f;
@@ -333,6 +336,9 @@ void ATPSCharacter::SwitchDown_Implementation()
 		}
 		if (FoundNewTarget)
 		{
+
+			FOutputDeviceNull ar;
+			NearestTarget->CallFunctionByNameWithArguments(TEXT("LockOnFlip"), ar, NULL, true);
 			SwitchDone();
 			SetLockOnToTarget();
 		}
@@ -375,8 +381,6 @@ void ATPSCharacter::SwitchRight_Implementation()
 	if (TargetLocked)
 	{
 
-		FOutputDeviceNull ar;
-		NearestTarget->CallFunctionByNameWithArguments(TEXT("LockOnFlip"), ar, NULL, true);
 		ClosestTargetRotation = 145.0f;
 		ClosestTargetDistance = MaximumDistance;
 		TArray<AActor*> DecentActors;
@@ -432,6 +436,9 @@ void ATPSCharacter::SwitchRight_Implementation()
 
 		if (FoundNewTarget)
 		{
+
+			FOutputDeviceNull ar;
+			NearestTarget->CallFunctionByNameWithArguments(TEXT("LockOnFlip"), ar, NULL, true);
 			SwitchDone();
 			SetLockOnToTarget();
 		}
