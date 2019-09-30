@@ -278,8 +278,7 @@ void ATPSCharacter::SwitchUp_Implementation()
 void ATPSCharacter::SwitchDown_Implementation()
 {
 	if (TargetLocked)
-	{
-		
+	{		
 		ClosestTargetRotation = 0.0f;
 		ClosestTargetDistance = MaximumDistance;
 		ClosestTargetDistanceToTargetedEnemy = 900.0f;
@@ -442,9 +441,27 @@ void ATPSCharacter::SwitchRight_Implementation()
 			SwitchDone();
 			SetLockOnToTarget();
 		}
-		else
+		else if(!FoundNewTarget)
 		{
+			
 
+			///////////////////////////////////
+			/*
+			FVector playerToEnemy = NearestTarget->sphereLooker->GetForwardVector();
+			float f1 = playerToEnemy.Size();
+			
+			float f2 = UKismetMathLibrary::GetForwardVector(GetControlRotation()).Size();
+			float angle = UKismetMathLibrary::Atan2(f2, f1);
+			if (angle < 0)
+			{
+				angle = angle + 360.f;
+			}
+			
+			
+
+			
+			Test = angle;
+			*/
 		}
 	}
 

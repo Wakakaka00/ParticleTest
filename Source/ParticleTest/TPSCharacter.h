@@ -6,8 +6,10 @@
 #include "GameFramework/Character.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "GameFramework/Controller.h"
 #include "Engine.h"
 #include "Engine/World.h"
+#include "GameFramework/PlayerController.h" 
 #include "Kismet/GameplayStatics.h"
 #include "Enemy.h"
 #include "TPSCharacter.generated.h"
@@ -58,6 +60,10 @@ public:
 		float ClosestTargetRotation;
 	UPROPERTY(BlueprintReadWrite, Category = "Lock On Properties")
 		float MouseMoveAngle;
+	UPROPERTY(BlueprintReadWrite, Category = "Lock On Properties")
+		float Test;
+	UPROPERTY(BlueprintReadWrite, Category = "Lock On Properties")
+		UCameraComponent* camera;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Lock On Properties")
 		FVector StartVector;
