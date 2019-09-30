@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
+#include "Enemy.h"
 #include "Minion.generated.h"
 
 UCLASS()
-class PARTICLETEST_API AMinion : public ACharacter
+class PARTICLETEST_API AMinion : public AEnemy
 {
 	GENERATED_BODY()
 

@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
 #include "Components/CapsuleComponent.h"
 #include "BloodProjectile.h"
 #include "Minion.h"
+#include "Enemy.h"
 #include "BossCharacter.generated.h"
 
 UCLASS()
-class PARTICLETEST_API ABossCharacter : public ACharacter
+class PARTICLETEST_API ABossCharacter : public AEnemy
 {
 	GENERATED_BODY()
 
