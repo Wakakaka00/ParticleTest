@@ -4,6 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Kismet/KismetSystemLibrary.h"
+#include "Kismet/KismetMathLibrary.h"
+#include "Kismet/GameplayStatics.h"
+#include "Engine.h"
+#include "Engine/World.h"
 #include "Enemy.generated.h"
 
 UCLASS()
@@ -40,6 +45,10 @@ public:
 		AEnemy* ClosestTargetToMe;
 	UPROPERTY(BlueprintReadWrite, Category = "Lock On Properties")
 		float PlayerToEnemyDistance;
+	UFUNCTION(BlueprintCallable, Category = "Lock On Properties")
+		void Hi();
+	UFUNCTION(BlueprintCallable, Category = "Lock On Properties")
+		void SphereLookAt();
 	
 	
 

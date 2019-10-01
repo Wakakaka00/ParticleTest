@@ -64,6 +64,8 @@ public:
 		float Test;
 	UPROPERTY(BlueprintReadWrite, Category = "Lock On Properties")
 		UCameraComponent* camera;
+	UPROPERTY(BlueprintReadWrite, Category = "Lock On Properties")
+		USphereComponent* lockCollision;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Lock On Properties")
 		FVector StartVector;

@@ -14,7 +14,7 @@ ATPSCharacter::ATPSCharacter()
 	//Default Number Set Ups
 	
 	///Maximum Distance Which Player Can Target Lock On Enemies
-	MaximumDistance = 900.0f;
+	MaximumDistance = 1500.0f;
 
 	//Maximum Health
 	MaximumHealth = 100.0f;
@@ -102,7 +102,7 @@ void ATPSCharacter::LockOnDone_Implementation()
 void ATPSCharacter::SetLockOnToTarget_Implementation()
 {
 	
-	if (ClosestTargetDistance < 900.0f)
+	if (ClosestTargetDistance < MaximumDistance)
 	{
 		FOutputDeviceNull ar;
 		NearestTarget->CallFunctionByNameWithArguments(TEXT("LockOnFlip"), ar, NULL, true);
@@ -120,7 +120,7 @@ void ATPSCharacter::SwitchLeft_Implementation()
 		bool MaybeSwitchUp = false;
 		ClosestTargetRotation = 340.0f;
 		ClosestTargetDistance = MaximumDistance;
-		ClosestTargetDistanceToTargetedEnemy = 900.0f;
+		ClosestTargetDistanceToTargetedEnemy = MaximumDistance;
 		//Get all enemies in the scene
 		TArray<AActor*> FoundActors;
 		
@@ -206,7 +206,7 @@ void ATPSCharacter::SwitchUp_Implementation()
 		
 		ClosestTargetRotation = 360.0f;
 		ClosestTargetDistance = MaximumDistance;
-		ClosestTargetDistanceToTargetedEnemy = 900.0f;
+		ClosestTargetDistanceToTargetedEnemy = MaximumDistance;
 		//Get all enemies in the scene
 		TArray<AActor*> FoundActors;
 		
@@ -292,7 +292,7 @@ void ATPSCharacter::SwitchDown_Implementation()
 	{		
 		ClosestTargetRotation = 0.0f;
 		ClosestTargetDistance = MaximumDistance;
-		ClosestTargetDistanceToTargetedEnemy = 900.0f;
+		ClosestTargetDistanceToTargetedEnemy = MaximumDistance;
 		TArray<AActor*> FoundActors;
 		FName enemyTag = TEXT("Enemy");
 		UGameplayStatics::GetAllActorsWithTag(GetWorld(), enemyTag, FoundActors);
@@ -395,7 +395,7 @@ void ATPSCharacter::SwitchRight_Implementation()
 		//Get all enemies in the scene
 		TArray<AActor*> FoundActors;
 		FName enemyTag = TEXT("Enemy");
-		ClosestTargetDistanceToTargetedEnemy = 900.0f;
+		ClosestTargetDistanceToTargetedEnemy = MaximumDistance;
 		bool MaybeSwitchDown = false;
 		bool MaybeSwitchUp = false;
 		UGameplayStatics::GetAllActorsWithTag(GetWorld(), enemyTag, FoundActors);

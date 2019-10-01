@@ -25,6 +25,22 @@ void AEnemy::Tick(float DeltaTime)
 
 }
 
+void AEnemy::Hi()
+{
+	TArray<AActor*>AllEnemies;
+	TArray<APawn> pawns;
+	const TArray<TEnumAsByte<EObjectTypeQuery>> Pawn;
+	ACharacter* playerPawn= UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+	//UKismetSystemLibrary::LineTraceSingleForObjects(GetWorld(), GetActorLocation(), playerPawn->GetActorLocation(), Pawn, EDrawDebugTrace::ForDuration,nullptr, nullptr,true, nullptr, nullptr, nullptr,0.1f);
+}
+
+void AEnemy::SphereLookAt()
+{
+	ACharacter* playerPawn = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+	FRotator lookRotationAtPlayer = UKismetMathLibrary::FindLookAtRotation(sphereLooker->K2_GetComponentLocation(), playerPawn->GetActorLocation());
+	sphereLooker->SetWorldRotation(lookRotationAtPlayer);
+}
+
 // Called to bind functionality to input
 void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
