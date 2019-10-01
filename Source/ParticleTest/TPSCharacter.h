@@ -108,6 +108,8 @@ public:
 		void PlayerAttackedLight();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Melee Properties")
 		void ComboAttackSave();
+	UFUNCTION(BlueprintCallable, Category = "Melee Properties")
+		void Dash();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Melee Properties")
 		void ResetCombo();
 	UPROPERTY(BlueprintReadWrite, Category = "Melee Properties")
@@ -115,7 +117,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "Melee Properties")
 		bool inAttackAnimation;
 	UPROPERTY(BlueprintReadWrite, Category = "Melee Properties")
-		float SaveAttack;
+		bool SaveAttack;
+	
+	
+	
 
 
 

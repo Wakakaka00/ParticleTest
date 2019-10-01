@@ -39,6 +39,11 @@ void ATPSCharacter::BeginPlay()
 void ATPSCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if (TargetLocked)
+	{
+		
+	}
+	
 
 }
 
@@ -497,7 +502,8 @@ void ATPSCharacter::DoAttacks()
 {
 	if (AttackCounts == 0)
 	{
-		PlayAnimMontage(montages[0], 1.6f);
+		
+		PlayAnimMontage(montages[0], 1.7f);
 		AttackCounts =1;
 	}
 	else if (AttackCounts == 1)
@@ -525,6 +531,21 @@ void ATPSCharacter::ResetCombo_Implementation()
 	AttackCounts = 0;
 	SaveAttack = false;
 	inAttackAnimation = false;
+}
+void ATPSCharacter::Dash()
+{
+	ResetCombo();
+	if (TargetLocked)
+	{
+		FVector launchDir = (NearestTarget->GetActorLocation() - GetGlobalPlayer()->GetActorLocation()) *20.0f;
+		GetCharacterMovement()->Launch(launchDir);
+		if (FVector::Distance(NearestTarget->GetActorLocation(), GetGlobalPlayer()->GetActorLocation()) < 150.0f)
+		{
+			UKismetSystemLibrary::K2_PauseTimer(this, TEXT("Dash"));
+			PlayerAttackedLight();
+		}
+		
+	}
 }
 
 void ATPSCharacter::PlayerAttackedLight()
