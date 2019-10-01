@@ -14,7 +14,7 @@ ATPSCharacter::ATPSCharacter()
 	//Default Number Set Ups
 	
 	///Maximum Distance Which Player Can Target Lock On Enemies
-	MaximumDistance = 1500.0f;
+	MaximumDistance = 2500.0f;
 
 	//Maximum Health
 	MaximumHealth = 100.0f;
