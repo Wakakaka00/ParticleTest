@@ -115,7 +115,9 @@ void ATPSCharacter::SwitchLeft_Implementation()
 {
 	if (TargetLocked)
 	{
-		
+		FoundNewTarget = false;
+		bool MaybeSwitchDown = false;
+		bool MaybeSwitchUp = false;
 		ClosestTargetRotation = 340.0f;
 		ClosestTargetDistance = MaximumDistance;
 		ClosestTargetDistanceToTargetedEnemy = 900.0f;
@@ -150,7 +152,8 @@ void ATPSCharacter::SwitchLeft_Implementation()
 					///////////////////////	
 					bool isInRange = UKismetMathLibrary::InRange_FloatFloat(selectFloat3, 210.0f, 350.0f);
 
-
+					if (!MaybeSwitchDown)MaybeSwitchDown = UKismetMathLibrary::InRange_FloatFloat(selectFloat3, 180.0f, 210.0f);
+					if (!MaybeSwitchUp)MaybeSwitchUp = UKismetMathLibrary::InRange_FloatFloat(selectFloat3, 350.0f, 360.0f);
 					float distanceBetweenEnemy = (EnemyElement->GetActorLocation() - NearestTarget->GetActorLocation()).Size();
 					if (isInRange)
 					{
@@ -176,7 +179,15 @@ void ATPSCharacter::SwitchLeft_Implementation()
 		}
 		else
 		{
-			
+			if (MaybeSwitchDown)
+			{
+				SwitchDown();
+
+			}
+			else if (MaybeSwitchUp)
+			{
+				SwitchUp();
+			}
 		}
 
 
@@ -293,7 +304,7 @@ void ATPSCharacter::SwitchDown_Implementation()
 				if (enemy->CanBeTargeted)
 				{
 					EnemyElement = enemy;
-
+					
 					FRotator lookAtEnemyRotation = UKismetMathLibrary::FindLookAtRotation(NearestTarget->sphereLooker->GetComponentLocation(), EnemyElement->GetActorLocation());
 					bool selectBool = lookAtEnemyRotation.Yaw < 0.0f;
 					float selectFloat1 = UKismetMathLibrary::SelectFloat(lookAtEnemyRotation.Yaw + 360.0f, lookAtEnemyRotation.Yaw, selectBool);
@@ -313,7 +324,7 @@ void ATPSCharacter::SwitchDown_Implementation()
 					bool isInRange = false;
 
 					float distanceBetweenEnemy = (EnemyElement->GetActorLocation() - NearestTarget->GetActorLocation()).Size();
-
+					
 					if (selectFloat3 > 130.0f && selectFloat3<180.0f || selectFloat3>180.0f && selectFloat3 < 245.0f)
 					{
 						isInRange = true;
@@ -379,14 +390,14 @@ void ATPSCharacter::SwitchRight_Implementation()
 {
 	if (TargetLocked)
 	{
-
-		ClosestTargetRotation = 145.0f;
+		FoundNewTarget = false;
 		ClosestTargetDistance = MaximumDistance;
-		TArray<AActor*> DecentActors;
 		//Get all enemies in the scene
 		TArray<AActor*> FoundActors;
 		FName enemyTag = TEXT("Enemy");
 		ClosestTargetDistanceToTargetedEnemy = 900.0f;
+		bool MaybeSwitchDown = false;
+		bool MaybeSwitchUp = false;
 		UGameplayStatics::GetAllActorsWithTag(GetWorld(), enemyTag, FoundActors);
 		for (int i = 0; i < FoundActors.Num(); i++)
 		{
@@ -416,20 +427,30 @@ void ATPSCharacter::SwitchRight_Implementation()
 					//0.0    180
 					bool isInRange = UKismetMathLibrary::InRange_FloatFloat(selectFloat3, 30.0f, 145.0f);			
 					float distanceBetweenEnemy = (EnemyElement->GetActorLocation() - NearestTarget->GetActorLocation()).Size();
-						
+					if(!MaybeSwitchDown)MaybeSwitchDown = UKismetMathLibrary::InRange_FloatFloat(selectFloat3, 145.0f ,180.0f);
+					if (!MaybeSwitchUp)MaybeSwitchUp = UKismetMathLibrary::InRange_FloatFloat(selectFloat3, 0.0f, 30.0f);
+					FString TheFloatStr = FString::SanitizeFloat(selectFloat3);
+					if (GEngine)
+						GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TheFloatStr);			
+
+					/*if (GEngine)
+					{
+						GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Black, FString::Printf(TEXT("Bool: %s"), MaybeSwitchDown ? TEXT("true") : TEXT("false")));
+					}*/
 						if (isInRange)
 						{
-
 							if (distanceBetweenEnemy < ClosestTargetDistanceToTargetedEnemy)
 							{
 								ClosestTargetDistanceToTargetedEnemy = distanceBetweenEnemy;				
 								FoundNewTarget = true;
 								NewTarget = EnemyElement;
 							}
-						}
+						}			
 					
 				}
 			}
+		
+
 
 		}
 
@@ -441,27 +462,19 @@ void ATPSCharacter::SwitchRight_Implementation()
 			SwitchDone();
 			SetLockOnToTarget();
 		}
-		else if(!FoundNewTarget)
+		else 
 		{
 			
-
-			///////////////////////////////////
-			/*
-			FVector playerToEnemy = NearestTarget->sphereLooker->GetForwardVector();
-			float f1 = playerToEnemy.Size();
-			
-			float f2 = UKismetMathLibrary::GetForwardVector(GetControlRotation()).Size();
-			float angle = UKismetMathLibrary::Atan2(f2, f1);
-			if (angle < 0)
+			if (MaybeSwitchDown)
 			{
-				angle = angle + 360.f;
+				SwitchDown();
+				
 			}
+			else if (MaybeSwitchUp)
+			{
+				SwitchUp();
+			}	
 			
-			
-
-			
-			Test = angle;
-			*/
 		}
 	}
 
