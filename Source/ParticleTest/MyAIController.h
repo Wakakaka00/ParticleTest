@@ -65,9 +65,6 @@ class PARTICLETEST_API AMyAIController : public AAIController
 		UFUNCTION(BlueprintCallable, Category = "Boss Behavior")
 		void CallBackYari();
 
-		UFUNCTION(BlueprintCallable, Category = "Boss Behavior")
-		void JumpDash(float DeltaSeconds);
-
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
 		TArray<AMinion*> MinionList;
 

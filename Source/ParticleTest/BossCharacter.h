@@ -40,6 +40,8 @@ public:
 		void Dash();
 	UFUNCTION(BlueprintImplementableEvent, Category = "Boss Behavior")
 		void ForcePush();
+	UFUNCTION(BlueprintImplementableEvent, Category = "Boss Behavior")
+		void JumpDash(float DeltaSeconds);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attack")
 	bool isAtk = false;
@@ -84,7 +86,7 @@ public:
 	bool isDrinking = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
-	bool isJumpDash1 = false;
+	bool isJumpDash = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
 	bool isSpitting = false;

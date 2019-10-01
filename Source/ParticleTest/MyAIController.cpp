@@ -120,9 +120,9 @@ void AMyAIController::Tick(float DeltaSeconds)
 		}
 	}
 
-	if (bossActor->isJumpDash1)
+	if (bossActor->isJumpDash)
 	{
-		JumpDash(DeltaSeconds);
+		bossActor->JumpDash(DeltaSeconds);
 		UE_LOG(LogTemp, Warning, TEXT("Jump"));
 	}
 }
@@ -261,11 +261,6 @@ void AMyAIController::ThrowYari()
 void AMyAIController::CallBackYari()
 {
 	yari->isBack = true;
-}
-
-void AMyAIController::JumpDash(float DeltaSeconds)
-{
-	bossActor->SetActorLocation(FMath::VInterpTo(bossActor->GetActorLocation(), bossLastPos + FVector(0.0f,0.0f,1500.0f), DeltaSeconds, 2.0f));
 }
 
 void AMyAIController::SpitBlood()
