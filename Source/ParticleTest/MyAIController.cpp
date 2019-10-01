@@ -34,13 +34,13 @@ void AMyAIController::Tick(float DeltaSeconds)
 		playerLocation = playerCharacter->GetActorLocation();		
 		MoveToLocation(playerLocation, 200.0f, false);
 		// Too Far 
-		if (bossActor->distance >= bossActor->farDistance)
+		/*if (bossActor->distance >= bossActor->farDistance)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Far"));
 			bossActor->isAtk = true;
 			OnTooFar();
 		}
-
+*/
 		if (bossActor->damageTaken >= 4)
 		{
 			bossActor->isAtk = true;
@@ -120,10 +120,10 @@ void AMyAIController::Tick(float DeltaSeconds)
 		}
 	}
 
+	// Jump Dash from throne
 	if (bossActor->isJumpDash)
 	{
 		bossActor->JumpDash(DeltaSeconds);
-		UE_LOG(LogTemp, Warning, TEXT("Jump"));
 	}
 }
 
