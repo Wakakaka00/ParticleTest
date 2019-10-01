@@ -21,7 +21,7 @@ void AMyAIController::BeginPlay()
 	playerCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 	bossPawn = GetPawn();
 	bossActor = Cast<ABossCharacter>(bossPawn);
-	maxHealAmount = bossActor->maxHealth * 0.2f;
+	maxHealAmount = bossActor->maxHealth * 0.25f;
 }
 
 void AMyAIController::Tick(float DeltaSeconds)
@@ -49,10 +49,12 @@ void AMyAIController::Tick(float DeltaSeconds)
 			bossActor->isBackJump = true;
 		}
 
-		if (bossActor->currentHealth < bossActor->maxHealth * 0.3f)
+		if (bossActor->currentHealth < bossActor->maxHealth * 0.3f && bossActor->healCount < bossActor->maxHealCount)
 		{
 			bossActor->isAtk = true;
 			bossActor->isHealing = true;
+			bossActor->healCount += 1;
+			UE_LOG(LogTemp, Warning, TEXT("Heal"));
 		}
 
 		/*if (bossActor->bloodPoolList.Num() < 3)
@@ -96,14 +98,15 @@ void AMyAIController::Tick(float DeltaSeconds)
 
 	// Heal Guord
 	if (bossActor->isHealing)
-	{
-		currentHealAmount += 2.0f * DeltaSeconds;
-		bossActor->currentHealth += currentHealAmount;
+	{	
+		StopMovement();
+		currentHealAmount += 3.0f * DeltaSeconds;
+		bossActor->currentHealth += 3.0f * DeltaSeconds;
 
 		if (currentHealAmount >= maxHealAmount)
 		{
 			bossActor->isAtk = false;
-			bossActor->isHealing = true;
+			bossActor->isHealing = false;
 			currentHealAmount = 0.0f;
 		}
 	}
