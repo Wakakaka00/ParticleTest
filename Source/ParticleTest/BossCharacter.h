@@ -83,6 +83,7 @@ public:
 	bool isBackJump = false;
 	bool isNormalPush = false;
 	bool isHealing = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
 	bool isDrinking = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
