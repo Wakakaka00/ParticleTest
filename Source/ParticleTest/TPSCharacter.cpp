@@ -534,7 +534,7 @@ void ATPSCharacter::ResetCombo_Implementation()
 }
 void ATPSCharacter::Dash()
 {
-	ResetCombo();
+
 	if (TargetLocked)
 	{
 		FVector launchDir = (NearestTarget->GetActorLocation() - GetGlobalPlayer()->GetActorLocation()) *20.0f;
