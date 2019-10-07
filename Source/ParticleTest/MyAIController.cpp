@@ -251,7 +251,7 @@ void AMyAIController::ThrowYari()
 	FVector OutLaunchVelocity;
 	FVector targetLocation = playerCharacter->GetActorLocation() - (bossActor->GetActorUpVector() * 20.0f);
 	FVector spawnLocation = bossActor->GetActorLocation() + (bossActor->GetActorForwardVector() * 30.0f) + (bossActor->GetActorUpVector() * 90.0f);
-	if (UGameplayStatics::SuggestProjectileVelocity(this, OutLaunchVelocity, spawnLocation, targetLocation, bossActor->bloodLaunchSpeed, false, 0.0f, 0, ESuggestProjVelocityTraceOption::DoNotTrace))
+	if (UGameplayStatics::SuggestProjectileVelocity(this, OutLaunchVelocity, spawnLocation, targetLocation, bossActor->yariLaunchSpeed * 0.8f, false, 0.0f, 0, ESuggestProjVelocityTraceOption::DoNotTrace))
 	{
 		bossActor->AimDirection = OutLaunchVelocity.GetSafeNormal();
 	}
