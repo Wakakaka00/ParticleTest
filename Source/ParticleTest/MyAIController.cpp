@@ -29,104 +29,124 @@ void AMyAIController::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 	bossActor->distance = FVector::Distance(bossPawn->GetActorLocation(), playerLocation);
 
-	if (!bossActor->isAtk)
-	{	
-		playerLocation = playerCharacter->GetActorLocation();		
-		MoveToLocation(playerLocation, 200.0f, false);
-		// Too Far 
-		/*if (bossActor->distance >= bossActor->farDistance)
+	if (!isStart)
+	{
+		if (!bossActor->isAtk)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Far"));
-			bossActor->isAtk = true;
-			OnTooFar();
+			playerLocation = playerCharacter->GetActorLocation();
+			MoveToLocation(playerLocation, 200.0f, false);
+			// Too Far 
+			/*if (bossActor->distance >= bossActor->farDistance)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Far"));
+				bossActor->isAtk = true;
+				OnTooFar();
+			}
+	*/
+			if (bossActor->damageTaken >= 4)
+			{
+				bossActor->isAtk = true;
+				bossLastPos = bossActor->GetActorLocation();
+				bossLastDistance = bossActor->distance;
+				bossActor->isBackJump = true;
+			}
+
+			if (bossActor->currentHealth < bossActor->maxHealth * 0.3f && bossActor->healCount < bossActor->maxHealCount)
+			{
+				bossActor->isAtk = true;
+				bossActor->isHealing = true;
+				bossActor->healCount += 1;
+				UE_LOG(LogTemp, Warning, TEXT("Heal"));
+			}
+
+			/*if (bossActor->bloodPoolList.Num() < 3)
+			{
+				bossActor->isAtk = true;
+				bossActor->isDrinking = true;
+			}*/
 		}
-*/
-		if (bossActor->damageTaken >= 4)
+
+		// JumpSlam / Dash
+		if (bossActor->isJumpSlam || bossActor->isDash)
 		{
-			bossActor->isAtk = true;
-			bossLastPos = bossActor->GetActorLocation();
-			bossLastDistance = bossActor->distance;
-			bossActor->isBackJump = true;
+			JumpSlamDashLerp(DeltaSeconds);
 		}
 
-		if (bossActor->currentHealth < bossActor->maxHealth * 0.3f && bossActor->healCount < bossActor->maxHealCount)
+		// Back Jump
+		if (bossActor->isBackJump)
 		{
-			bossActor->isAtk = true;
-			bossActor->isHealing = true;
-			bossActor->healCount += 1;
-			UE_LOG(LogTemp, Warning, TEXT("Heal"));
+			BackJump(DeltaSeconds);
 		}
 
-		/*if (bossActor->bloodPoolList.Num() < 3)
+		// Force Push
+		if (bossActor->isForcePush)
 		{
-			bossActor->isAtk = true;
-			bossActor->isDrinking = true;
-		}*/
-	}	
-	
-	// JumpSlam / Dash
-	if (bossActor->isJumpSlam || bossActor->isDash)
-	{
-		JumpSlamDashLerp(DeltaSeconds);
-	}
-	
-	// Back Jump
-	if (bossActor->isBackJump)
-	{
-		BackJump(DeltaSeconds);
-	}
-	
-	// Force Push
-	if (bossActor->isForcePush)
-	{
-		ForcePush(DeltaSeconds);
-	}
+			ForcePush(DeltaSeconds);
+		}
 
-	// Normal Push
-	if (bossActor->isNormalPush)
-	{
-		playerLastPos = bossActor->playerLastPos;
-		NormalPush(DeltaSeconds);
-	}
-
-	// Spit blood
-	if (bossActor->isSpitting)
-	{	
-		bossActor->LookAtPlayer();
-		drinkBloodDuration -= DeltaSeconds;
-	}
-
-	// Heal Guord
-	if (bossActor->isHealing)
-	{	
-		StopMovement();
-		currentHealAmount += 3.0f * DeltaSeconds;
-		bossActor->currentHealth += 3.0f * DeltaSeconds;
-
-		if (currentHealAmount >= maxHealAmount)
+		// Normal Push
+		if (bossActor->isNormalPush)
 		{
-			bossActor->isAtk = false;
-			bossActor->isHealing = false;
-			currentHealAmount = 0.0f;
+			playerLastPos = bossActor->playerLastPos;
+			NormalPush(DeltaSeconds);
+		}
+
+		// Spit blood
+		if (bossActor->isSpitting)
+		{
+			bossActor->LookAtPlayer();
+			drinkBloodDuration -= DeltaSeconds;
+		}
+
+		// Heal Guord
+		if (bossActor->isHealing)
+		{
+			StopMovement();
+			currentHealAmount += 3.0f * DeltaSeconds;
+			bossActor->currentHealth += 3.0f * DeltaSeconds;
+
+			if (currentHealAmount >= maxHealAmount)
+			{
+				bossActor->isAtk = false;
+				bossActor->isHealing = false;
+				currentHealAmount = 0.0f;
+			}
+		}
+
+		// Drink Blood
+		if (bossActor->isDrinking)
+		{
+			if (drinkBloodDuration < 10.0f) drinkBloodDuration += DeltaSeconds;
+			if (drinkBloodDuration >= 10.0f)
+			{
+				drinkBloodDuration = 10.0f;
+				bossActor->isDrinking = false;
+				bossActor->isAtk = false;
+			}
+		}
+
+		// Jump Dash from throne
+		if (bossActor->isJumpDash)
+		{
+			bossActor->JumpDash(DeltaSeconds);
 		}
 	}
-
-	// Drink Blood
-	if (bossActor->isDrinking)
+	else // isStart
 	{
-		if(drinkBloodDuration < 10.0f) drinkBloodDuration += DeltaSeconds;		
-		if (drinkBloodDuration >= 10.0f)
+		yariThrowTimer += DeltaSeconds;
+		if (yariThrowTimer >= startYariThrowDuration)
 		{
-			drinkBloodDuration = 10.0f;
-			bossActor->isDrinking = false;
-			bossActor->isAtk = false;
+			if (!bossActor->isYariThrow)
+			{
+				yariThrowTimer = 0.0f;
+				isStart = false;
+				bossActor->GetCharacterMovement()->GravityScale = 0.0f;
+				StopMovement();
+				bossActor->isAtk = true;
+				bossLastPos = bossActor->GetActorLocation();
+				bossActor->isJumpDash = true;
+			}
 		}
-	}
-
-	// Jump Dash from throne
-	if (bossActor->isJumpDash)
-	{
-		bossActor->JumpDash(DeltaSeconds);
 	}
 }
 
@@ -259,6 +279,7 @@ void AMyAIController::ThrowYari()
 	FRotator AimAsRotator = bossActor->AimDirection.Rotation();
 	
 	yari->ThrowOnGround(bossActor->yariLaunchSpeed, AimAsRotator);
+	bossActor->isYariThrow = true;
 }
 
 void AMyAIController::CallBackYari()

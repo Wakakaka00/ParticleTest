@@ -68,6 +68,7 @@ void AYari::StopYari()
 	//ProjectileMovement->SetVelocityInLocalSpace(FVector::ZeroVector);
 	ProjectileMovement->StopMovementImmediately();
 	isThrowing = false;
+	bossActor->CallBackYari();
 }
 
 
@@ -90,6 +91,7 @@ void AYari::BackToHandSocket(float DeltaSeconds)
 		isBack = false;
 		SetActorRelativeLocation(initLocation, false, nullptr, ETeleportType::None);
 		SetActorRelativeRotation(initRotation, false, nullptr, ETeleportType::None);
+		bossActor->isYariThrow = false;
 	}
 }
 

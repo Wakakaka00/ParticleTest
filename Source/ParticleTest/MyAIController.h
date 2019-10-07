@@ -30,6 +30,8 @@ class PARTICLETEST_API AMyAIController : public AAIController
 		float currentHealAmount = 0.0f;
 		float maxHealAmount;
 		float drinkBloodDuration = 0.0f;
+		float yariThrowTimer = 0.0f;
+		float isStart = true;
 
 	public:
 		AMyAIController();
@@ -49,6 +51,9 @@ class PARTICLETEST_API AMyAIController : public AAIController
 
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Distance")
 		float backJumpDistance = 0.0f;			
+
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
+		float startYariThrowDuration = 20.0f;
 
 		UFUNCTION(BlueprintCallable, Category = "Boss Behavior")
 		void RecoverFromStun();

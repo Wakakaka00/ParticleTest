@@ -42,6 +42,8 @@ public:
 		void ForcePush();
 	UFUNCTION(BlueprintImplementableEvent, Category = "Boss Behavior")
 		void JumpDash(float DeltaSeconds);
+	UFUNCTION(BlueprintImplementableEvent, Category = "Boss Behavior")
+		void CallBackYari();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attack")
 	bool isAtk = false;
@@ -97,6 +99,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite,Category = "Trigger Capsule")
 	class UCapsuleComponent* PushCapsule;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
+	bool isYariThrow = false;
 
 	UFUNCTION()
 	void OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
