@@ -207,6 +207,25 @@ void AMyAIController::RecoverFromStun()
 	playerLastPos = playerLocation;
 }
 
+void AMyAIController::JumpBackThrone()
+{
+	bossActor->isAtk = true;
+	StopMovement();
+	FVector OutLaunchVelocity;
+	FVector targetLocation = bossActor->throne->GetComponentLocation();
+	FVector startLocation = bossActor->GetActorLocation();
+	if (UGameplayStatics::SuggestProjectileVelocity(this, OutLaunchVelocity, startLocation, targetLocation, bossActor->yariLaunchSpeed * 0.8f, false, 0.0f, 0, ESuggestProjVelocityTraceOption::DoNotTrace))
+	{
+		bossActor->AimDirection = OutLaunchVelocity.GetSafeNormal();
+	}
+
+	FRotator AimAsRotator = bossActor->AimDirection.Rotation();
+
+	bossActor->SetActorRotation(AimAsRotator);
+	bossActor->ProjectileMovement->SetVelocityInLocalSpace(OutLaunchVelocity);
+	bossActor->ProjectileMovement->Activate();
+}
+
 void AMyAIController::ForcePush(float DeltaSeconds)
 {
 	if (bossActor->distance <= 700.0f)
