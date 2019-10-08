@@ -29,7 +29,7 @@ public:
 	USceneComponent* skeletalMesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
-	UStaticMeshComponent* throne;
+	AActor* throne;
 
 	UProjectileMovementComponent* ProjectileMovement;
 
@@ -51,6 +51,8 @@ public:
 		void JumpDash(float DeltaSeconds);
 	UFUNCTION(BlueprintImplementableEvent, Category = "Boss Behavior")
 		void CallBackYari();
+	UFUNCTION(BlueprintImplementableEvent, Category = "Boss Behavior")
+		void JumpBackThrone(float DeltaSeconds);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attack")
 	bool isAtk = false;
@@ -97,6 +99,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
 	bool isJumpDash = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
+	bool isJumpThrone = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
 	bool isSpitting = false;

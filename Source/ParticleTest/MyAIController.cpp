@@ -130,6 +130,12 @@ void AMyAIController::Tick(float DeltaSeconds)
 		{
 			bossActor->JumpDash(DeltaSeconds);
 		}
+
+		// Jump to Throne
+		if (bossActor->isJumpThrone)
+		{
+			bossActor->JumpBackThrone(DeltaSeconds);
+		}
 	}
 	else // isStart
 	{
@@ -205,25 +211,6 @@ void AMyAIController::RecoverFromStun()
 	bossActor->isForcePush = true;
 	bossActor->isAtk = true;
 	playerLastPos = playerLocation;
-}
-
-void AMyAIController::JumpBackThrone()
-{
-	bossActor->isAtk = true;
-	StopMovement();
-	FVector OutLaunchVelocity;
-	FVector targetLocation = bossActor->throne->GetComponentLocation();
-	FVector startLocation = bossActor->GetActorLocation();
-	if (UGameplayStatics::SuggestProjectileVelocity(this, OutLaunchVelocity, startLocation, targetLocation, bossActor->yariLaunchSpeed * 0.8f, false, 0.0f, 0, ESuggestProjVelocityTraceOption::DoNotTrace))
-	{
-		bossActor->AimDirection = OutLaunchVelocity.GetSafeNormal();
-	}
-
-	FRotator AimAsRotator = bossActor->AimDirection.Rotation();
-
-	bossActor->SetActorRotation(AimAsRotator);
-	bossActor->ProjectileMovement->SetVelocityInLocalSpace(OutLaunchVelocity);
-	bossActor->ProjectileMovement->Activate();
 }
 
 void AMyAIController::ForcePush(float DeltaSeconds)
