@@ -587,19 +587,25 @@ void ATPSCharacter::Movement(FVector direction,float v)
 //Inputs
 void ATPSCharacter::MoveForward(float value)
 {
-	FRotator playerRotation = GetGlobalPlayer()->GetControlRotation();
+	if (CanMove)
+	{
+		FRotator playerRotation = GetGlobalPlayer()->GetControlRotation();
 		FRotator desiredRotation = FRotator(0.0f, playerRotation.Yaw, 0.0f);
 		FVector desiredDir = FRotationMatrix(desiredRotation).GetScaledAxis(EAxis::X);
 		Movement(desiredDir, value);
+	}
 	
 }
 void ATPSCharacter::MoveRight(float value)
 {
-	
+	if (CanMove)
+	{
 		FRotator playerRotation = GetGlobalPlayer()->GetControlRotation();
 		FRotator desiredRotation = FRotator(0.0f, playerRotation.Yaw, 0.0f);
 		FVector desiredDir = FRotationMatrix(desiredRotation).GetScaledAxis(EAxis::Y);
-		Movement(desiredDir, value);	
+		Movement(desiredDir, value);
+	}
+		
 }
 
 //Get Player Actor

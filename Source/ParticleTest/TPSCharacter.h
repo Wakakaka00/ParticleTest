@@ -36,6 +36,8 @@ public:
 	 void MoveForward(float value);
 	UFUNCTION(BlueprintCallable, Category = "Player Movement")
 	 void MoveRight(float value);
+	UPROPERTY(BlueprintReadWrite ,Category = "Player Movement")
+		bool CanMove = true;
 
 
 	UPROPERTY(BlueprintReadWrite, Category = "Health Properties")
