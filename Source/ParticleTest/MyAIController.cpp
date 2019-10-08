@@ -130,12 +130,6 @@ void AMyAIController::Tick(float DeltaSeconds)
 		{
 			bossActor->JumpDash(DeltaSeconds);
 		}
-
-		// Jump to Throne
-		if (bossActor->isJumpThrone)
-		{
-			bossActor->JumpBackThrone(DeltaSeconds);
-		}
 	}
 	else // isStart
 	{

@@ -51,8 +51,8 @@ public:
 		void JumpDash(float DeltaSeconds);
 	UFUNCTION(BlueprintImplementableEvent, Category = "Boss Behavior")
 		void CallBackYari();
-	UFUNCTION(BlueprintImplementableEvent, Category = "Boss Behavior")
-		void JumpBackThrone(float DeltaSeconds);
+	UFUNCTION(BlueprintImplementableEvent,BlueprintCallable, Category = "Boss Behavior")
+		void JumpBackThrone();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attack")
 	bool isAtk = false;
@@ -99,9 +99,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
 	bool isJumpDash = false;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
-	bool isJumpThrone = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
 	bool isSpitting = false;
