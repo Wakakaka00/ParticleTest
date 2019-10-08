@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AIController.h"
 #include "BossCharacter.h"
+#include "Components/StaticMeshComponent.h"
 #include "Yari.h"
 #include "MyAIController.generated.h"
 
@@ -69,6 +70,9 @@ class PARTICLETEST_API AMyAIController : public AAIController
 
 		UFUNCTION(BlueprintCallable, Category = "Boss Behavior")
 		void CallBackYari();
+
+		UFUNCTION(BlueprintCallable, Category = "Boss Behavior")
+		void JumpBackThrone();
 
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
 		TArray<AMinion*> MinionList;

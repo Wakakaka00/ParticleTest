@@ -4,9 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/StaticMeshComponent.h"
 #include "BloodProjectile.h"
 #include "Minion.h"
 #include "Enemy.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 #include "BossCharacter.generated.h"
 
 UCLASS()
@@ -25,6 +27,11 @@ public:
 	// Sets default values for this character's properties
 	ABossCharacter();
 	USceneComponent* skeletalMesh;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
+	UStaticMeshComponent* throne;
+
+	UProjectileMovementComponent* ProjectileMovement;
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

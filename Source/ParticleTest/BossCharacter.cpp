@@ -22,6 +22,10 @@ ABossCharacter::ABossCharacter()
 	PushCapsule->SetCollisionProfileName(TEXT("Trigger"));
 	PushCapsule->SetupAttachment(RootComponent);
 	PushCapsule->OnComponentBeginOverlap.AddDynamic(this, &ABossCharacter::OnOverlapBegin);
+
+	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile"));
+	ProjectileMovement->bAutoActivate = false;
+
 	maxHealth = 100.0f;
 	currentHealth = maxHealth;
 }
