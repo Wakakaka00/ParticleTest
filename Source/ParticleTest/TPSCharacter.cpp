@@ -563,6 +563,7 @@ void ATPSCharacter::Dash()
 	if (TargetLocked)
 	{
 		FVector launchDir = (NearestTarget->GetActorLocation() - GetGlobalPlayer()->GetActorLocation()) *20.0f;
+		launchDir.Z = 0;
 		GetCharacterMovement()->Launch(launchDir);
 		if (FVector::Distance(NearestTarget->GetActorLocation(), GetGlobalPlayer()->GetActorLocation()) < 150.0f)
 		{
