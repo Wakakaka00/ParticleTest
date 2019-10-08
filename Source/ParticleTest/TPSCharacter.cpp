@@ -496,25 +496,50 @@ void ATPSCharacter::SwitchDone_Implementation()
 }
 
 
+
 //Melee Combat
 
 void ATPSCharacter::DoAttacks()
 {
-	if (AttackCounts == 0)
+	switch (AttackTypeEnum)
 	{
-		
-		PlayAnimMontage(montages[0], 1.7f);
-		AttackCounts =1;
-	}
-	else if (AttackCounts == 1)
-	{
-		PlayAnimMontage(montages[1], 1.6f);
-		AttackCounts = 2;
-	}
-	else if (AttackCounts == 2)
-	{
-		PlayAnimMontage(montages[2], 1.6f);
-		AttackCounts=0;
+		case EAttackModeEnum::EA_Light:
+		{
+			if (AttackCounts == 0)
+			{
+
+				PlayAnimMontage(montages[0], 1.7f);
+				AttackCounts = 1;
+			}
+			else if (AttackCounts == 1)
+			{
+				PlayAnimMontage(montages[1], 1.6f);
+				AttackCounts = 2;
+			}
+			else if (AttackCounts == 2)
+			{
+				PlayAnimMontage(montages[2], 1.6f);
+				AttackCounts = 0;
+			}
+			 break;
+		}
+		case EAttackModeEnum::EA_Heavy:
+		{
+			if (AttackCounts == 0)
+			{
+
+				PlayAnimMontage(montages[0], 1.0f);
+				AttackCounts = 1;
+			}
+			else if (AttackCounts == 1)
+			{
+				PlayAnimMontage(montages[1], 1.0f);
+				AttackCounts = 2;
+			}
+			
+			 break;
+		}
+
 	}
 }
 void ATPSCharacter::ComboAttackSave_Implementation()

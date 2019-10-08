@@ -15,6 +15,14 @@
 #include "TPSCharacter.generated.h"
 
 
+UENUM(BlueprintType)		//"BlueprintType" is essential to include
+enum class EAttackModeEnum : uint8
+{
+	
+	EA_Heavy 	UMETA(DisplayName = "Heavy"),
+	EA_Light	UMETA(DisplayName = "Light")
+};
+
 UCLASS()
 class PARTICLETEST_API ATPSCharacter : public ACharacter
 {
@@ -26,7 +34,8 @@ public:
 	// Sets default values for this character's properties
 	ATPSCharacter();
 	
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Enum)
+		EAttackModeEnum AttackTypeEnum= EAttackModeEnum::EA_Light;
 	
 	
 	//UFUNCTION(BlueprintCallable, Category = "Something")
