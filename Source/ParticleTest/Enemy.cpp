@@ -38,6 +38,8 @@ void AEnemy::SphereLookAt()
 {
 	ACharacter* playerPawn = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 	FRotator lookRotationAtPlayer = UKismetMathLibrary::FindLookAtRotation(sphereLooker->K2_GetComponentLocation(), playerPawn->GetActorLocation());
+	lookRotationAtPlayer.Roll, lookRotationAtPlayer.Pitch = 0;
+	
 	sphereLooker->SetWorldRotation(lookRotationAtPlayer);
 }
 
