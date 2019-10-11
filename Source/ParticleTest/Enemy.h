@@ -50,6 +50,6 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Lock On Properties")
 		void SphereLookAt();
 	
-	
+	ACharacter* playerPawn;
 
 };
