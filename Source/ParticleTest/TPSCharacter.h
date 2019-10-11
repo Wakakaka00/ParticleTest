@@ -47,7 +47,14 @@ public:
 	 void MoveRight(float value);
 	UPROPERTY(BlueprintReadWrite ,Category = "Player Movement")
 		bool CanMove = true;
-
+	UPROPERTY(BlueprintReadWrite, Category = "Player Movement")
+		FVector targetForwardVector;
+	UPROPERTY(BlueprintReadWrite, Category = "Player Movement")
+		int DirectionsHolden;
+	UPROPERTY(BlueprintReadWrite, Category = "Player Movement")
+		bool PlayerHoldingAOrD=false ;
+	UPROPERTY(BlueprintReadWrite, Category = "Player Movement")
+		bool PlayerHoldingW = false;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Health Properties")
 		float MaximumHealth;
