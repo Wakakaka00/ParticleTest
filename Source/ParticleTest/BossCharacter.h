@@ -86,14 +86,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
 	TArray<AActor*> bloodPoolList;
 
-	ACharacter* playerCharacter;
-
 	bool isForcePush = false;
 	bool isJumpSlam = false;
 	bool isDash = false;
 	bool isBackJump = false;
 	bool isNormalPush = false;
 	bool isHealing = false;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
 	bool isDrinking = false;
 
@@ -102,6 +101,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
 	bool isSpitting = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
+	bool isOnThrone = true;
 
 	float spitDelay = 0.3f;
 	FVector AimDirection = FVector(0);

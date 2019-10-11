@@ -129,6 +129,7 @@ void AMyAIController::Tick(float DeltaSeconds)
 		if (bossActor->isJumpDash)
 		{
 			bossActor->JumpDash(DeltaSeconds);
+			bossActor->isOnThrone = false; // Move it not tick
 		}
 	}
 	else // isStart

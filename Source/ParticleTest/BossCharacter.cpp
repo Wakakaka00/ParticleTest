@@ -34,7 +34,6 @@ ABossCharacter::ABossCharacter()
 void ABossCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	playerCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 	skeletalMesh = GetMesh();
 }
 
@@ -57,7 +56,7 @@ void ABossCharacter::OnOverlapBegin(UPrimitiveComponent * OverlappedComp, AActor
 	{
 		isNormalPush = true;
 		isAtk = true;
-		playerLastPos = playerCharacter->GetActorLocation();
+		playerLastPos = playerPawn->GetActorLocation();
 		SetPushCollison(false);
 	}
 }
@@ -70,7 +69,7 @@ void ABossCharacter::SetPushCollison(bool b)
 
 void ABossCharacter::LookAtPlayer()
 {
-	FRotator Rot = FRotationMatrix::MakeFromX(playerCharacter->GetActorLocation() - GetActorLocation()).Rotator();
+	FRotator Rot = FRotationMatrix::MakeFromX(playerPawn->GetActorLocation() - GetActorLocation()).Rotator();
 	SetActorRotation(Rot);
 }
 

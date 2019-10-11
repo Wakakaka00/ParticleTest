@@ -15,7 +15,7 @@ AEnemy::AEnemy()
 void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	playerPawn = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 }
 
 // Called every frame
@@ -30,7 +30,6 @@ void AEnemy::Hi()
 	TArray<AActor*>AllEnemies;
 	TArray<APawn> pawns;
 	const TArray<TEnumAsByte<EObjectTypeQuery>> Pawn;
-	ACharacter* playerPawn= UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 	//UKismetSystemLibrary::LineTraceSingleForObjects(GetWorld(), GetActorLocation(), playerPawn->GetActorLocation(), Pawn, EDrawDebugTrace::ForDuration,nullptr, nullptr,true, nullptr, nullptr, nullptr,0.1f);
 }
 

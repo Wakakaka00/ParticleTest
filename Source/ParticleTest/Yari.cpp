@@ -14,8 +14,8 @@ AYari::AYari()
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile"));
 	ProjectileMovement->bAutoActivate = false;
 
-	SceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("Scene Root"));
-	RootComponent = SceneRoot;
+	//SceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("Scene Root"));
+	//RootComponent = SceneRoot;
 
 	TriggerBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Trigger Box"));
 	TriggerBox->InitBoxExtent(FVector(15.0f, 15.0f, 15.0f));

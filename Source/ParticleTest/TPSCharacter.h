@@ -12,6 +12,7 @@
 #include "GameFramework/PlayerController.h" 
 #include "Kismet/GameplayStatics.h"
 #include "Enemy.h"
+#include "Minion.h"
 #include "TPSCharacter.generated.h"
 
 
@@ -147,7 +148,7 @@ public:
 
 	ACharacter* GetGlobalPlayer();
 	
-	
+	TArray<AMinion*> enemyList;
 
 protected:
 	// Called when the game starts or when spawned
