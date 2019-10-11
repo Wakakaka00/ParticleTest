@@ -51,6 +51,8 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "Player Movement")
 		FVector targetForwardVector;
 	UPROPERTY(BlueprintReadWrite, Category = "Player Movement")
+		FVector targetRightVector;
+	UPROPERTY(BlueprintReadWrite, Category = "Player Movement")
 		FVector desiredDir;
 	UPROPERTY(BlueprintReadWrite, Category = "Player Movement")
 		int DirectionsHolden;

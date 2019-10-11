@@ -628,27 +628,24 @@ void ATPSCharacter::MoveForward(float value)
 			FRotator desiredRotation = FRotator(0.0f, playerRotation.Yaw, 0.0f);
 			FVector desiredDir = FRotationMatrix(desiredRotation).GetScaledAxis(EAxis::X);
 			Movement(desiredDir, value);
-		}
-		
-		
-		
-			
-		
+		}		
 	}
 }
 void ATPSCharacter::MoveRight(float value)
 {
 	if (CanMove)
 	{
-		
+		if (TargetLocked)
+		{
+			Movement(targetRightVector, value);
+		}
+		else
+		{
 			FRotator playerRotation = GetGlobalPlayer()->GetControlRotation();
 			FRotator desiredRotation = FRotator(0.0f, playerRotation.Yaw, 0.0f);
 			desiredDir = FRotationMatrix(desiredRotation).GetScaledAxis(EAxis::Y);
 			Movement(desiredDir, value);
-		
-			
-			
-		
+		}
 	
 	}
 		
