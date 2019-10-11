@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "Engine/StaticMeshActor.h"
 #include "Components/BoxComponent.h"
 #include "BossCharacter.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Yari.generated.h"
 
 UCLASS()
-class PARTICLETEST_API AYari : public AActor
+class PARTICLETEST_API AYari : public AStaticMeshActor
 {
 	GENERATED_BODY()
 	
