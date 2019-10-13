@@ -684,4 +684,9 @@ void ATPSCharacter::BindInputs()
 	
 }
 
+void ATPSCharacter::AddMinion(AMinion* minion)
+{
+	enemyList.Add(minion);
+}
+
 

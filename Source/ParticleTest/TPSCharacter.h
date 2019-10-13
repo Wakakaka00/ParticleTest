@@ -142,7 +142,8 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "Melee Properties")
 		bool SaveAttack;
 	
-	
+	UFUNCTION(BlueprintCallable, Category = "Boss Behavior")
+		void AddMinion(AMinion* minion);
 	
 
 
@@ -152,6 +153,7 @@ public:
 
 	ACharacter* GetGlobalPlayer();
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Test")
 	TArray<AMinion*> enemyList;
 
 protected:
