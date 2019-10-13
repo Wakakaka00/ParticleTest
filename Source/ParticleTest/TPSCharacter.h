@@ -84,7 +84,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "Lock On Properties")
 		float MouseMoveAngle;
 	UPROPERTY(BlueprintReadWrite, Category = "Lock On Properties")
-		float Test;
+		bool ShouldRotateLockOn;
 	UPROPERTY(BlueprintReadWrite, Category = "Lock On Properties")
 		UCameraComponent* camera;
 	UPROPERTY(BlueprintReadWrite, Category = "Lock On Properties")

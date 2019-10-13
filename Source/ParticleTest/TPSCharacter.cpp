@@ -69,12 +69,14 @@ void ATPSCharacter::LockOnFunction_Implementation()
 		
 		UKismetSystemLibrary::K2_SetTimer(this, TEXT("MoveCameraToDefaultPosition"), 0.0001f, true);
 		UKismetSystemLibrary::K2_PauseTimer(this, TEXT("MoveCameraToTargetingPosition"));
+	
 	}
 	else
 	{
 		
 		UKismetSystemLibrary::K2_SetTimer(this, TEXT("MoveCameraToTargetingPosition"), 0.0001f, true);
 		UKismetSystemLibrary::K2_PauseTimer(this, TEXT("MoveCameraToDefaultPosition"));
+	
 		ClosestTargetDistance = MaximumDistance;
 		TArray<AActor*> FoundActors;
 		UGameplayStatics::GetAllActorsWithTag(GetWorld(), enemyTag, FoundActors);
@@ -620,11 +622,18 @@ void ATPSCharacter::MoveForward(float value)
 	
 	if (CanMove)
 	{
-		if (TargetLocked)
+		if (!ShouldRotateLockOn)
+		{
+			FRotator playerRotation = GetGlobalPlayer()->GetControlRotation();
+			FRotator desiredRotation = FRotator(0.0f, playerRotation.Yaw, 0.0f);
+			FVector desiredDir = FRotationMatrix(desiredRotation).GetScaledAxis(EAxis::X);
+			targetForwardVector = desiredDir;
+		}
+		if (TargetLocked )
 		{
 			Movement(targetForwardVector, value);
 		}
-		else
+		else 
 		{
 			FRotator playerRotation = GetGlobalPlayer()->GetControlRotation();
 			FRotator desiredRotation = FRotator(0.0f, playerRotation.Yaw, 0.0f);
@@ -637,11 +646,18 @@ void ATPSCharacter::MoveRight(float value)
 {
 	if (CanMove)
 	{
+		if (!ShouldRotateLockOn)
+		{
+			FRotator playerRotation = GetGlobalPlayer()->GetControlRotation();
+			FRotator desiredRotation = FRotator(0.0f, playerRotation.Yaw, 0.0f);
+			FVector desiredDir = FRotationMatrix(desiredRotation).GetScaledAxis(EAxis::Y);
+			targetRightVector = desiredDir;
+		}
 		if (TargetLocked)
 		{
 			Movement(targetRightVector, value);
 		}
-		else
+		else 
 		{
 			FRotator playerRotation = GetGlobalPlayer()->GetControlRotation();
 			FRotator desiredRotation = FRotator(0.0f, playerRotation.Yaw, 0.0f);
