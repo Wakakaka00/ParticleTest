@@ -248,6 +248,11 @@ void AMyAIController::NormalPush(float DeltaSeconds)
 	}
 }
 
+void AMyAIController::AddMinion(AMinion* minion)
+{
+	MinionList.Add(minion);
+}
+
 void AMyAIController::SummonMinion()
 {
 	for (int i = 0; i < bossActor->bloodPoolList.Num(); i++)
@@ -261,7 +266,7 @@ void AMyAIController::SummonMinion()
 				float y = bloodPoolRadius * sin(FMath::RandRange(0.0f, 360.0f));
 				FVector spawnLocation = bossActor->bloodPoolList[i]->GetActorLocation() + FVector(x, y, 100.0f);
 				auto Minion = GetWorld()->SpawnActor<AMinion>(bossActor->MinionBlueprint->GetOwnerClass(), spawnLocation, FRotator::ZeroRotator);
-				MinionList.Add(Minion);
+				AddMinion(Minion);
 			}
 		}
 	}

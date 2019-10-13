@@ -74,6 +74,9 @@ class PARTICLETEST_API AMyAIController : public AAIController
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
 		TArray<AMinion*> MinionList;
 
+		UFUNCTION(BlueprintCallable, Category = "Boss Behavior")
+		void AddMinion(AMinion * minion);
+
 		FTimerHandle SpitTimer;
 
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
