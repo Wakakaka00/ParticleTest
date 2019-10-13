@@ -21,11 +21,13 @@ class PARTICLETEST_API AMyAIController : public AAIController
 		float bossLastDistance;
 		FVector backJumpLocation;
 		FVector playerForcePushLocation;
+		
 
 		void JumpSlamDashLerp(float DeltaSeconds);
 		void BackJump(float DeltaSeconds);
 		void ForcePush(float DeltaSeconds);
 		void NormalPush(float DeltaSeconds);	
+		TArray<AMinion*> nearestMinionList;
 
 		float bloodPoolRadius = 20.0f;
 		float currentHealAmount = 0.0f;
@@ -33,6 +35,9 @@ class PARTICLETEST_API AMyAIController : public AAIController
 		float drinkBloodDuration = 0.0f;
 		float yariThrowTimer = 0.0f;
 		float isStart = true;
+		float minionMaxDistance = 500.0f;
+
+		void CheckNearestEnemy();
 
 	public:
 		AMyAIController();

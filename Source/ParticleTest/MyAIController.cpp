@@ -28,7 +28,7 @@ void AMyAIController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 	bossActor->distance = FVector::Distance(bossPawn->GetActorLocation(), playerLocation);
-
+	CheckNearestEnemy();
 	if (!isStart)
 	{
 		if (!bossActor->isAtk)
@@ -322,6 +322,30 @@ void AMyAIController::SpitBlood()
 		drinkBloodDuration = 0.0f;
 		bossActor->isAtk = false;
 		bossActor->isSpitting = false;
+	}
+}
+
+void AMyAIController::CheckNearestEnemy()
+{
+	for (int i = 0; i < MinionList.Num(); i++)
+	{	
+		if (nearestMinionList.Num() < 3 && !nearestMinionList.Contains(MinionList[i]))
+		{
+			float distance = FVector::Distance(MinionList[i]->GetActorLocation(), playerCharacter->GetActorLocation());
+			if (distance <= minionMaxDistance)
+			{
+				nearestMinionList.Add(MinionList[i]);
+			}
+		}	
+	}
+
+	for (int i = 0; i < nearestMinionList.Num(); i++)
+	{
+		float distance = FVector::Distance(nearestMinionList[i]->GetActorLocation(), playerCharacter->GetActorLocation());
+		if (distance > minionMaxDistance)
+		{
+			nearestMinionList.RemoveAt(i);
+		}
 	}
 }
 
