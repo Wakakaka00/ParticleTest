@@ -28,7 +28,7 @@ void AMyAIController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 	bossActor->distance = FVector::Distance(bossPawn->GetActorLocation(), playerLocation);
-
+	CheckNearestEnemy();
 	if (!isStart)
 	{
 		if (!bossActor->isAtk)
@@ -248,6 +248,11 @@ void AMyAIController::NormalPush(float DeltaSeconds)
 	}
 }
 
+void AMyAIController::AddMinion(AMinion* minion)
+{
+	MinionList.Add(minion);
+}
+
 void AMyAIController::SummonMinion()
 {
 	for (int i = 0; i < bossActor->bloodPoolList.Num(); i++)
@@ -261,7 +266,7 @@ void AMyAIController::SummonMinion()
 				float y = bloodPoolRadius * sin(FMath::RandRange(0.0f, 360.0f));
 				FVector spawnLocation = bossActor->bloodPoolList[i]->GetActorLocation() + FVector(x, y, 100.0f);
 				auto Minion = GetWorld()->SpawnActor<AMinion>(bossActor->MinionBlueprint->GetOwnerClass(), spawnLocation, FRotator::ZeroRotator);
-				MinionList.Add(Minion);
+				AddMinion(Minion);
 			}
 		}
 	}
@@ -317,6 +322,30 @@ void AMyAIController::SpitBlood()
 		drinkBloodDuration = 0.0f;
 		bossActor->isAtk = false;
 		bossActor->isSpitting = false;
+	}
+}
+
+void AMyAIController::CheckNearestEnemy()
+{
+	for (int i = 0; i < MinionList.Num(); i++)
+	{	
+		if (nearestMinionList.Num() < 3 && !nearestMinionList.Contains(MinionList[i]))
+		{
+			float distance = FVector::Distance(MinionList[i]->GetActorLocation(), playerCharacter->GetActorLocation());
+			if (distance <= minionMaxDistance)
+			{
+				nearestMinionList.Add(MinionList[i]);
+			}
+		}	
+	}
+
+	for (int i = 0; i < nearestMinionList.Num(); i++)
+	{
+		float distance = FVector::Distance(nearestMinionList[i]->GetActorLocation(), playerCharacter->GetActorLocation());
+		if (distance > minionMaxDistance)
+		{
+			nearestMinionList.RemoveAt(i);
+		}
 	}
 }
 
