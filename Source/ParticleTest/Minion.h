@@ -32,4 +32,6 @@ public:
 	void LookAtPlayer();
 	bool inAtkRadius = false;
 	FVector directionToPlayer;
+
+	TArray<AEnemy*> neibourList;
 };

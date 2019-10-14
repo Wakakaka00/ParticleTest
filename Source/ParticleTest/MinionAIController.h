@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AIController.h"
 #include "Minion.h"
+#include "MyAIController.h"
 #include "MinionAIController.generated.h"
 
 UCLASS()
@@ -20,6 +21,10 @@ private:
 	float maxMagnitude = 2.0f;
 	float distanceToPlayer;
 	void MoveToPlayer();
+
+	void CheckNeighbours();
+
+	AMyAIController* bossController;
 
 public:
 	AMinionAIController();

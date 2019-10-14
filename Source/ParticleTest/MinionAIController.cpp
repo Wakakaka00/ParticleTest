@@ -54,6 +54,8 @@ void AMinionAIController::MoveToPlayer()
 	acceleration = minionActor->directionToPlayer * accelerationForce;
 	acceleration.Z = 0.0f;
 
+	CheckNeighbours();
+
 	currentVelocity += acceleration;
 	if (currentVelocity.SizeSquared() > maxMagnitude * maxMagnitude)
 	{
@@ -67,6 +69,50 @@ void AMinionAIController::MoveToPlayer()
 	minionActor->SetActorLocation(minionActor->GetActorLocation() + currentVelocity, false, &HitResult);
 
 	minionActor->LookAtPlayer();
+}
+
+void AMinionAIController::CheckNeighbours()
+{
+	/*
+	// Add
+	for (int i = 0; i < GameManager.instance.boidList.Count; i++)
+	{
+		if (!neighBoursList.Contains(GameManager.instance.boidList[i]))
+		{
+			if (GameManager.instance.boidList[i] != this.gameObject)
+			{
+				if (Vector3.Distance(GameManager.instance.boidList[i].transform.position, transform.position) <= boidRadius)
+				{
+					neighBoursList.Add(GameManager.instance.boidList[i]);
+				}
+			}
+		}
+	}
+
+	for (int i = 0; i < neighBoursList.Count; i++)
+	{
+		// Separation
+		float distanceWithNeighbour = Vector3.Distance(neighBoursList[i].transform.position, transform.position);
+		if (distanceWithNeighbour < crowdDistance)
+		{
+			acceleration += ((transform.position - neighBoursList[i].transform.position).normalized /
+				distanceWithNeighbour * boidRadius * repelForce) * currentVelocity.magnitude;
+		}
+
+		// Remove
+		if (Vector3.Distance(neighBoursList[i].transform.position, transform.position) > boidRadius)
+		{
+			neighBoursList.Remove(neighBoursList[i]);
+		}
+	}
+
+	if (neighBoursList.Count > 0)
+	{
+		allignmentVector = allignmentVector / neighBoursList.Count;
+		allignmentVector.z = 0f;
+		acceleration += allignmentVector * accelerationForce;
+	}
+	*/
 }
 
 
