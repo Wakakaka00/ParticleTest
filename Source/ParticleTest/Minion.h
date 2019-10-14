@@ -21,11 +21,6 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	FVector currentVelocity;
-	FVector acceleration;
-	float accelerationForce = 0.5f;
-	FVector directionToPlayer;
-	float maxMagnitude = 2.0f;
 
 public:	
 	// Called every frame
@@ -35,5 +30,6 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	void LookAtPlayer();
-
+	bool inAtkRadius = false;
+	FVector directionToPlayer;
 };

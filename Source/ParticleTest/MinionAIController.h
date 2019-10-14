@@ -14,8 +14,12 @@ class PARTICLETEST_API AMinionAIController : public AAIController
 	
 private:
 	
-	
+	FVector currentVelocity;
+	FVector acceleration;
+	float accelerationForce = 0.5f;
+	float maxMagnitude = 2.0f;
 	float distanceToPlayer;
+	void MoveToPlayer();
 
 public:
 	AMinionAIController();

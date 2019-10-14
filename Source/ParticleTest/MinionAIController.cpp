@@ -30,32 +30,43 @@ void AMinionAIController::Tick(float DeltaTime)
 	if (playerCharacter && minionActor)
 	{
 		distanceToPlayer = FVector::Distance(minionActor->GetActorLocation(), playerCharacter->GetActorLocation());
-	}
-	MoveToLocation(playerCharacter->GetActorLocation(), 100.0f, false);
-	/*
-	if (distanceToPlayer >= 100.0f)
-	{
-		
-		
-		directionToPlayer = UKismetMathLibrary::GetDirectionUnitVector(GetActorLocation(), playerCharacter->GetActorLocation());
-		directionToPlayer.Z = 0.0f;
-		acceleration = directionToPlayer * accelerationForce;
-		acceleration.Z = 0.0f;
-
-		currentVelocity += acceleration;
-		if (currentVelocity.SizeSquared() > maxMagnitude * maxMagnitude)
+		if (distanceToPlayer <= 150.0f)
 		{
-			FVector temp = currentVelocity;
-			temp.GetSafeNormal(1.0f);
-			temp.Normalize(1.0f);
-			currentVelocity = temp * maxMagnitude;
+			minionActor->inAtkRadius = true;
 		}
-
-		FHitResult HitResult;
-		SetActorLocation(GetActorLocation() + currentVelocity, false, &HitResult);
-		
-		minionActor->LookAtPlayer();
+		else
+		{
+			if(minionActor->inAtkRadius == true)  minionActor->inAtkRadius = false;
+		}
 	}
-	*/
+
+	if (!minionActor->inAtkRadius)
+	{
+		MoveToPlayer();
+	}
 }
+
+void AMinionAIController::MoveToPlayer()
+{
+	//MoveToLocation(playerCharacter->GetActorLocation(), 100.0f, false);
+	minionActor->directionToPlayer = UKismetMathLibrary::GetDirectionUnitVector(minionActor->GetActorLocation(), playerCharacter->GetActorLocation());
+	minionActor->directionToPlayer.Z = 0.0f;
+	acceleration = minionActor->directionToPlayer * accelerationForce;
+	acceleration.Z = 0.0f;
+
+	currentVelocity += acceleration;
+	if (currentVelocity.SizeSquared() > maxMagnitude * maxMagnitude)
+	{
+		FVector temp = currentVelocity;
+		temp.GetSafeNormal(1.0f);
+		temp.Normalize(1.0f);
+		currentVelocity = temp * maxMagnitude;
+	}
+
+	FHitResult HitResult;
+	minionActor->SetActorLocation(minionActor->GetActorLocation() + currentVelocity, false, &HitResult);
+
+	minionActor->LookAtPlayer();
+}
+
 
