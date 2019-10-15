@@ -101,7 +101,7 @@ public:
 	
 	
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable, Category = "Lock On Properties")
-		void LockOnFunction();
+		void LockOnFunction(bool OnlyBoss);
 	UFUNCTION(BlueprintNativeEvent, Category = "Lock On Properties")
 		void LockOnDone();
 	UFUNCTION(BlueprintNativeEvent, Category = "Lock On Properties")
@@ -114,6 +114,8 @@ public:
 		void SwitchUp();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Lock On Properties")
 		void SwitchDown();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Lock On Properties")
+		void SwitchToBoss();
 	
 	
 		float AngleDir(FVector fwd, FVector targetDir, FVector up);
@@ -160,5 +162,7 @@ public:
 	void BindInputs();
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	
 
 };

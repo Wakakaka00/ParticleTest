@@ -58,7 +58,61 @@ void ATPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 //Lock on functions
 
-void ATPSCharacter::LockOnFunction_Implementation()
+
+void ATPSCharacter::SwitchToBoss_Implementation()
+{
+	if (TargetLocked)
+	{
+		FoundNewTarget = false;	
+		ClosestTargetDistance = MaximumDistance;
+		
+		//Get all enemies in the scene
+		TArray<AActor*> FoundActors;
+
+		UGameplayStatics::GetAllActorsWithTag(GetWorld(), TEXT("Boss"), FoundActors);
+		for (int i = 0; i < FoundActors.Num(); i++)
+		{
+			if (FoundActors[i] != NearestTarget)
+			{
+				AEnemy* enemy = Cast<AEnemy>(FoundActors[i]);
+				if (enemy->CanBeTargeted)
+				{
+					EnemyElement = enemy;
+
+						float distanceToPlayer= EnemyElement->PlayerToEnemyDistance;
+						if (distanceToPlayer < ClosestTargetDistance)
+						{			
+								FoundNewTarget = true;
+								ClosestTargetDistance = EnemyElement->PlayerToEnemyDistance;
+								NewTarget = EnemyElement;
+						}
+						
+						
+
+				}
+			}
+
+		}
+		if (FoundNewTarget)
+		{
+
+			FOutputDeviceNull ar;
+			NearestTarget->CallFunctionByNameWithArguments(TEXT("LockOnFlip"), ar, NULL, true);
+			SwitchDone();
+			SetLockOnToTarget();
+			
+		}
+		else
+		{
+			
+		}
+
+
+
+	}
+}
+
+void ATPSCharacter::LockOnFunction_Implementation(bool OnlyBoss)
 {
 	if (TargetLocked)
 	{
@@ -79,13 +133,16 @@ void ATPSCharacter::LockOnFunction_Implementation()
 	
 		ClosestTargetDistance = MaximumDistance;
 		TArray<AActor*> FoundActors;
-		UGameplayStatics::GetAllActorsWithTag(GetWorld(), enemyTag, FoundActors);
+		
+		if (OnlyBoss)UGameplayStatics::GetAllActorsWithTag(GetWorld(), TEXT("Boss"), FoundActors);
+		else if (!OnlyBoss)UGameplayStatics::GetAllActorsWithTag(GetWorld(), enemyTag, FoundActors);
+	
 		for (int i = 0; i < FoundActors.Num(); i++)
 		{
 			if (FoundActors[i]->IsA(AEnemy::StaticClass()))
 			{
 				AEnemy* enemy = Cast<AEnemy>(FoundActors[i]);
-				if (enemy->CanBeTargeted)
+				if (enemy->CanBeTargeted )
 				{
 					EnemyElement = enemy;
 					float distanceToPlayer = EnemyElement->PlayerToEnemyDistance;
@@ -534,13 +591,18 @@ void ATPSCharacter::DoAttacks()
 			if (AttackCounts == 0)
 			{
 
-				PlayAnimMontage(montages[0], 1.0f);
+				PlayAnimMontage(montages[0], 0.7f);
 				AttackCounts = 1;
 			}
 			else if (AttackCounts == 1)
 			{
-				PlayAnimMontage(montages[1], 1.0f);
+				PlayAnimMontage(montages[1], 0.7f);
 				AttackCounts = 2;
+			}
+			else if (AttackCounts == 2)
+			{
+				PlayAnimMontage(montages[2], 0.7f);
+				AttackCounts = 0;
 			}
 			
 			 break;
