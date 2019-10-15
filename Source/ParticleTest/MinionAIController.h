@@ -27,12 +27,15 @@ private:
 
 	AMyAIController* bossController;
 	TArray<ABossCharacter*> bossCharacterList;
+
 	void FindBossActor(UWorld* World, TArray<ABossCharacter*>& Out);
+	void RandomizeAroundRadius();
 
 	APawn* minionPawn;
 	class AMinion* minionActor;
 	ACharacter* playerCharacter;
-	
+	FVector directionToTarget;
+	FVector targetPos;
 
 public:
 	AMinionAIController();

@@ -33,4 +33,7 @@ public:
 	bool inAtkRadius = false;
 	bool isMelee = false;
 	FVector directionToPlayer;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Minion Behavior")
+	float minRadius;
 };
