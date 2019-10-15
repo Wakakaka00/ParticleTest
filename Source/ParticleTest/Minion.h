@@ -31,7 +31,9 @@ public:
 
 	void LookAtPlayer();
 	bool inAtkRadius = false;
+	bool isMelee = false;
 	FVector directionToPlayer;
 
-	TArray<AEnemy*> neibourList;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Minion Behavior")
+	float minRadius;
 };

@@ -16,6 +16,8 @@ void AMinionAIController::BeginPlay()
 {
 	Super::BeginPlay();
 	playerCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+	FindBossActor(GetWorld(), bossCharacterList);
+	bossController = Cast<AMyAIController>(bossCharacterList[0]->GetController());
 }
 
 void AMinionAIController::Tick(float DeltaTime)
@@ -25,6 +27,7 @@ void AMinionAIController::Tick(float DeltaTime)
 	{
 		minionPawn = GetPawn();
 		minionActor = Cast<AMinion>(minionPawn);
+		RandomizeAroundRadius();
 	}
 	
 	if (playerCharacter && minionActor)
@@ -40,23 +43,56 @@ void AMinionAIController::Tick(float DeltaTime)
 		}
 	}
 
-	if (!minionActor->inAtkRadius)
-	{
-		MoveToPlayer();
-	}
+	MoveToPlayer();	
 }
 
 void AMinionAIController::MoveToPlayer()
 {
-	//MoveToLocation(playerCharacter->GetActorLocation(), 100.0f, false);
-	minionActor->directionToPlayer = UKismetMathLibrary::GetDirectionUnitVector(minionActor->GetActorLocation(), playerCharacter->GetActorLocation());
-	minionActor->directionToPlayer.Z = 0.0f;
-	acceleration = minionActor->directionToPlayer * accelerationForce;
-	acceleration.Z = 0.0f;
+	if (bossController->nearestMinionList.Contains(minionActor))
+	{
+		if (!minionActor->inAtkRadius)
+		{
+			//MoveToLocation(playerCharacter->GetActorLocation(), 100.0f, false);
+			minionActor->directionToPlayer = UKismetMathLibrary::GetDirectionUnitVector(minionActor->GetActorLocation(), playerCharacter->GetActorLocation());
+			minionActor->directionToPlayer.Z = 0.0f;
+			acceleration = minionActor->directionToPlayer * accelerationForce;
+			acceleration.Z = 0.0f;
+		}
+		else
+		{
+			currentVelocity = FVector::ZeroVector;
+			acceleration = FVector::ZeroVector;
+		}
+	}
+	else if(bossController->nearestMinionList.Num() < 3)
+	{
+		minionActor->directionToPlayer = UKismetMathLibrary::GetDirectionUnitVector(minionActor->GetActorLocation(), playerCharacter->GetActorLocation());
+		minionActor->directionToPlayer.Z = 0.0f;
+		acceleration = minionActor->directionToPlayer * accelerationForce;
+		acceleration.Z = 0.0f;
+	}
+	else if (minionActor->isMelee == false)
+	{ 
+		if (FVector::Distance(minionActor->GetActorLocation(),playerCharacter->GetActorLocation()) >= 720.0f)
+		{
+			if (currentVelocity != FVector::ZeroVector)
+			{
+				currentVelocity = FVector::ZeroVector;
+				acceleration = FVector::ZeroVector;
+				RandomizeAroundRadius();
+			}	
+		}
+		else
+		{
+			acceleration = directionToTarget * accelerationForce;
+			acceleration.Z = 0.0f;
+		}
+	}
 
 	CheckNeighbours();
 
 	currentVelocity += acceleration;
+	currentVelocity = currentVelocity * 0.99f;
 	if (currentVelocity.SizeSquared() > maxMagnitude * maxMagnitude)
 	{
 		FVector temp = currentVelocity;
@@ -73,46 +109,88 @@ void AMinionAIController::MoveToPlayer()
 
 void AMinionAIController::CheckNeighbours()
 {
-	/*
-	// Add
-	for (int i = 0; i < GameManager.instance.boidList.Count; i++)
+	for (int i = 0; i < bossController->MinionList.Num(); i++)
 	{
-		if (!neighBoursList.Contains(GameManager.instance.boidList[i]))
-		{
-			if (GameManager.instance.boidList[i] != this.gameObject)
+		// Separation between minions
+		if (bossController->MinionList[i] != minionActor)
+		{			 
+			float distanceWithNeighbour = FVector::Distance(bossController->MinionList[i]->GetActorLocation(), minionActor->GetActorLocation());
+			if (distanceWithNeighbour < 120.0f)
 			{
-				if (Vector3.Distance(GameManager.instance.boidList[i].transform.position, transform.position) <= boidRadius)
+				FVector direction = minionActor->GetActorLocation() - bossController->MinionList[i]->GetActorLocation();
+				direction.GetSafeNormal(1.0f);
+				direction.Normalize(1.0f);
+				if (!minionActor->inAtkRadius)
 				{
-					neighBoursList.Add(GameManager.instance.boidList[i]);
+					acceleration += (direction /
+						distanceWithNeighbour * boidRadius * repelForce) * currentVelocity.Size();
+				}
+				else
+				{
+					acceleration += ((direction - minionActor->GetActorForwardVector())/
+						distanceWithNeighbour * boidRadius * (repelForce + 0.1f));
 				}
 			}
 		}
-	}
 
-	for (int i = 0; i < neighBoursList.Count; i++)
-	{
-		// Separation
-		float distanceWithNeighbour = Vector3.Distance(neighBoursList[i].transform.position, transform.position);
-		if (distanceWithNeighbour < crowdDistance)
+		// Separation between boss
+		float distanceToBoss = FVector::Distance(bossController->bossActor->GetActorLocation(), minionActor->GetActorLocation());
+		if(distanceToBoss <= 180.0f)
 		{
-			acceleration += ((transform.position - neighBoursList[i].transform.position).normalized /
-				distanceWithNeighbour * boidRadius * repelForce) * currentVelocity.magnitude;
+			FVector direction = minionActor->GetActorLocation() - bossController->bossActor->GetActorLocation();
+			direction.GetSafeNormal(1.0f);
+			direction.Normalize(1.0f);
+			if (!minionActor->inAtkRadius)
+			{
+				acceleration += (direction /
+					distanceToBoss * boidRadius * repelForce) * currentVelocity.Size();
+			}
+			else
+			{
+
+				acceleration += ((direction - minionActor->GetActorForwardVector()) /
+					distanceToBoss * boidRadius * (repelForce + 0.1f));
+			}
 		}
 
-		// Remove
-		if (Vector3.Distance(neighBoursList[i].transform.position, transform.position) > boidRadius)
+		// Separtion between Player
+		if (distanceToPlayer <= 120.0f)
 		{
-			neighBoursList.Remove(neighBoursList[i]);
+			FVector direction = minionActor->GetActorLocation() - playerCharacter->GetActorLocation();
+			direction.GetSafeNormal(1.0f);
+			direction.Normalize(1.0f);
+	
+			if (!minionActor->inAtkRadius)
+			{
+				acceleration += (direction /
+					distanceToPlayer * boidRadius * repelForce) * currentVelocity.Size();
+			}
+			else
+			{
+				acceleration += (direction  /
+					distanceToPlayer * boidRadius * (repelForce + 0.1f));
+			}
 		}
 	}
+}
 
-	if (neighBoursList.Count > 0)
+void AMinionAIController::RandomizeAroundRadius()
+{
+	float randomXPos = minionActor->minRadius * cos(FMath::RandRange(0.0f, 360.0f));
+	float randomYPos = minionActor->minRadius * sin(FMath::RandRange(0.0f, 360.0f));
+	targetPos = playerCharacter->GetActorLocation() + FVector(randomXPos, randomYPos, 0.0f);
+	targetPos.Z = minionActor->GetActorLocation().Z;
+	directionToTarget = targetPos - minionActor->GetActorLocation();
+	directionToTarget.GetSafeNormal(1.0f);
+	directionToTarget.Normalize(1.0f);
+}
+
+void AMinionAIController::FindBossActor(UWorld* World, TArray<ABossCharacter*>& Out)
+{
+	for (TActorIterator<ABossCharacter> It(World); It; ++It)
 	{
-		allignmentVector = allignmentVector / neighBoursList.Count;
-		allignmentVector.z = 0f;
-		acceleration += allignmentVector * accelerationForce;
+		Out.Add(*It);
 	}
-	*/
 }
 
 

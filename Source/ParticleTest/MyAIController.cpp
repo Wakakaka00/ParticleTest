@@ -335,6 +335,7 @@ void AMyAIController::CheckNearestEnemy()
 			if (distance <= minionMaxDistance)
 			{
 				nearestMinionList.Add(MinionList[i]);
+				MinionList[i]->isMelee = true;
 			}
 		}	
 	}
@@ -344,6 +345,7 @@ void AMyAIController::CheckNearestEnemy()
 		float distance = FVector::Distance(nearestMinionList[i]->GetActorLocation(), playerCharacter->GetActorLocation());
 		if (distance > minionMaxDistance)
 		{
+			nearestMinionList[i]->isMelee = false;
 			nearestMinionList.RemoveAt(i);
 		}
 	}

@@ -6,6 +6,8 @@
 #include "AIController.h"
 #include "Minion.h"
 #include "MyAIController.h"
+#include "BossCharacter.h"
+#include "EngineUtils.h"
 #include "MinionAIController.generated.h"
 
 UCLASS()
@@ -17,27 +19,39 @@ private:
 	
 	FVector currentVelocity;
 	FVector acceleration;
-	float accelerationForce = 0.5f;
-	float maxMagnitude = 2.0f;
+	
 	float distanceToPlayer;
 	void MoveToPlayer();
 
 	void CheckNeighbours();
 
 	AMyAIController* bossController;
+	TArray<ABossCharacter*> bossCharacterList;
+
+	void FindBossActor(UWorld* World, TArray<ABossCharacter*>& Out);
+	void RandomizeAroundRadius();
+
+	APawn* minionPawn;
+	class AMinion* minionActor;
+	ACharacter* playerCharacter;
+	FVector directionToTarget;
+	FVector targetPos;
 
 public:
 	AMinionAIController();
 	virtual void BeginPlay() override;
 
 	virtual void Tick(float DeltaSeconds) override;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	float boidRadius;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Test")
-	APawn* minionPawn;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	float accelerationForce = 0.5f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Test")
-	ACharacter* playerCharacter;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	float maxMagnitude = 2.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Test")
-	class AMinion* minionActor;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	float repelForce;
 };
