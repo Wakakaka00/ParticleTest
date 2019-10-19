@@ -40,7 +40,7 @@ void AYari::BeginPlay()
 void AYari::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (isThrowing)
+	if (isThrowing && !bossActor->isOnThrone)
 	{
 		FRotator rot = FRotationMatrix::MakeFromX(GetVelocity()).Rotator();
 		SetActorRotation(rot);
@@ -80,7 +80,6 @@ void AYari::OnOverlapBegin(UPrimitiveComponent * OverlappedComp, AActor * OtherA
 	{	
 		//GetWorld()->GetTimerManager().SetTimer(StopTimer, this, &AYari::StopYari, 0.03f);
 		StopYari();
-		UE_LOG(LogTemp, Warning, TEXT("Stop"));
 	}
 }
 
