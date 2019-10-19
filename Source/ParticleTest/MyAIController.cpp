@@ -284,7 +284,15 @@ void AMyAIController::ThrowYari()
 
 	FRotator AimAsRotator = bossActor->AimDirection.Rotation();
 	
-	yari->ThrowOnGround(bossActor->yariLaunchSpeed, AimAsRotator);
+	if (bossActor->isOnThrone)
+	{
+		yari->ThrowOnThrone();
+	}
+	else
+	{
+		yari->ThrowOnGround(bossActor->yariLaunchSpeed, AimAsRotator);
+	}
+	
 	bossActor->isYariThrow = true;
 }
 
