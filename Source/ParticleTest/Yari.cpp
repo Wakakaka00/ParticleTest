@@ -54,6 +54,7 @@ void AYari::Tick(float DeltaTime)
 
 void AYari::ThrowOnGround(float speed,FRotator angle)
 {
+	//GetStaticMeshComponent()->SetSimulatePhysics(true);
 	isThrowing = true;
 	DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 	SetActorRotation(angle);	
@@ -67,6 +68,7 @@ void AYari::StopYari()
 	ProjectileMovement->ProjectileGravityScale = 0.0f;
 	//ProjectileMovement->SetVelocityInLocalSpace(FVector::ZeroVector);
 	ProjectileMovement->StopMovementImmediately();
+	GetStaticMeshComponent()->SetSimulatePhysics(false);
 	isThrowing = false;
 	bossActor->CallBackYari();
 }
@@ -76,7 +78,9 @@ void AYari::OnOverlapBegin(UPrimitiveComponent * OverlappedComp, AActor * OtherA
 {
 	if (OtherActor->ActorHasTag("Floor"))
 	{	
-		GetWorld()->GetTimerManager().SetTimer(StopTimer, this, &AYari::StopYari, 0.03f);
+		//GetWorld()->GetTimerManager().SetTimer(StopTimer, this, &AYari::StopYari, 0.03f);
+		StopYari();
+		UE_LOG(LogTemp, Warning, TEXT("Stop"));
 	}
 }
 

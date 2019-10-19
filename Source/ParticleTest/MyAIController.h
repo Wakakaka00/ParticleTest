@@ -33,8 +33,9 @@ class PARTICLETEST_API AMyAIController : public AAIController
 		float maxHealAmount;
 		float drinkBloodDuration = 0.0f;
 		float yariThrowTimer = 0.0f;
-		float isStart = true;
 		float minionMaxDistance = 500.0f;
+
+		bool isStart = true;
 
 		void CheckNearestEnemy();
 
