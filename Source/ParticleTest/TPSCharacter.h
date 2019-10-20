@@ -30,7 +30,11 @@ class PARTICLETEST_API ATPSCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
-
+private:
+		bool isPushingBack = false;
+		float pushBackDistance = 0.0f;
+		FVector pusherLocation;
+		FVector lastPos;
 
 public:
 	// Sets default values for this character's properties
@@ -147,10 +151,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "Melee Properties")
 		bool SaveAttack;
 	
-
-
-
-
+	void PushBack(float distance, FVector pushLocation);
 
 	ACharacter* GetGlobalPlayer();
 

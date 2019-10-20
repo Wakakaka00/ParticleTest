@@ -31,6 +31,8 @@ void AYari::BeginPlay()
 {
 	Super::BeginPlay();
 	bossActor = Cast<ABossCharacter>(GetParentActor());
+	playerCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+	playerActor = Cast<ATPSCharacter>(playerCharacter);
 	gravityScale = 1.5f;
 	initLocation = FVector(-3.89f, -10.28f, 24.6f);
 	initRotation = FRotator(49.0f, -74.7f, -168.3f);
@@ -80,6 +82,8 @@ void AYari::OnOverlapBegin(UPrimitiveComponent * OverlappedComp, AActor * OtherA
 	{	
 		//GetWorld()->GetTimerManager().SetTimer(StopTimer, this, &AYari::StopYari, 0.03f);
 		StopYari();
+		if (FVector::Distance(TriggerBox->GetComponentLocation(), playerCharacter->GetActorLocation()) <= 1000.0f)
+			playerActor->PushBack(400.0f, TriggerBox->GetComponentLocation());
 	}
 }
 

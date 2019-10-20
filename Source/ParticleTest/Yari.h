@@ -6,6 +6,7 @@
 #include "Engine/StaticMeshActor.h"
 #include "Components/BoxComponent.h"
 #include "BossCharacter.h"
+#include "TPSCharacter.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Yari.generated.h"
 
@@ -21,6 +22,8 @@ private:
 	float gravityScale;
 	FVector initLocation;
 	FRotator initRotation;
+	ACharacter* playerCharacter;
+	ATPSCharacter* playerActor;
 
 protected:
 	// Called when the game starts or when spawned
