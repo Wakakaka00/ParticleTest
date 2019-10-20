@@ -188,7 +188,7 @@ void ATPSCharacter::SetLockOnToTarget_Implementation()
 	{
 		FOutputDeviceNull ar;
 		NearestTarget->CallFunctionByNameWithArguments(TEXT("LockOnFlip"), ar, NULL, true);
-		UKismetSystemLibrary::K2_SetTimer(this, TEXT("ToggleLockOn"), 0.001f, true);
+		UKismetSystemLibrary::K2_SetTimer(this, TEXT("ToggleLockOn"), GetWorld()->GetDeltaSeconds(), true);
 		TargetLocked = true;
 	}
 }
