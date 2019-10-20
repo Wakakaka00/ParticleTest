@@ -13,6 +13,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Enemy.h"
 #include "Minion.h"
+#include "BossCharacter.h"
 #include "TPSCharacter.generated.h"
 
 
@@ -98,6 +99,8 @@ public:
 		AEnemy* EnemyElement;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lock On Properties")
 		AEnemy* NewTarget;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss")
+		ABossCharacter* bossActor;
 	
 	
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable, Category = "Lock On Properties")
