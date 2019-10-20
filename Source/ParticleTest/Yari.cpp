@@ -23,6 +23,13 @@ AYari::AYari()
 	TriggerBox->AttachTo(RootComponent);
 	TriggerBox->SetRelativeLocation(FVector(0.0f, 0.0f, 10.0f));
 	TriggerBox->OnComponentBeginOverlap.AddDynamic(this, &AYari::OnOverlapBegin);
+
+	TriggerCapsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Trigger Capsule"));
+	TriggerCapsule->InitCapsuleSize(5.0f, 10.0f);
+	TriggerCapsule->SetCollisionProfileName(TEXT("NoCollision"));
+	TriggerCapsule->AttachTo(RootComponent);
+	TriggerCapsule->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
+	TriggerCapsule->OnComponentBeginOverlap.AddDynamic(this, &AYari::OnOverlapPlayer);
 }
 
 
@@ -73,6 +80,7 @@ void AYari::StopYari()
 	GetStaticMeshComponent()->SetSimulatePhysics(false);
 	isThrowing = false;
 	bossActor->CallBackYari();
+	TriggerCapsule->SetCollisionProfileName("NoCollision");
 }
 
 
@@ -82,17 +90,29 @@ void AYari::OnOverlapBegin(UPrimitiveComponent * OverlappedComp, AActor * OtherA
 	{	
 		//GetWorld()->GetTimerManager().SetTimer(StopTimer, this, &AYari::StopYari, 0.03f);
 		StopYari();
-		if (FVector::Distance(TriggerBox->GetComponentLocation(), playerCharacter->GetActorLocation()) <= 1000.0f)
-			playerActor->PushBack(400.0f, TriggerBox->GetComponentLocation());
+		if (FVector::Distance(TriggerBox->GetComponentLocation(), playerCharacter->GetActorLocation()) <= 800.0f)
+		{
+			if(!playerActor->isPushingBack) playerActor->PushBack(600.0f, TriggerBox->GetComponentLocation());		
+		}	
+	}
+}
+
+void AYari::OnOverlapPlayer(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
+{
+	if (OtherComp->ComponentHasTag("Player"))
+	{
+		playerActor->PushBack(600.0f, GetActorLocation());
 	}
 }
 
 void AYari::BackToHandSocket(float DeltaSeconds)
 {
+	TriggerCapsule->SetCollisionProfileName("Trigger");
 	SetActorLocation(FMath::VInterpTo(GetActorLocation(), bossActor->handSocketLocation, DeltaSeconds, 3.0f));
 	float distance = FVector::Distance(GetActorLocation(), bossActor->handSocketLocation);
 	if (distance <= 30.0f)
 	{
+		TriggerCapsule->SetCollisionProfileName("NoCollision");
 		FName handSocketName = TEXT("hand_r");
 		K2_AttachRootComponentTo(bossActor->skeletalMesh, handSocketName, EAttachLocation::SnapToTarget,true);
 		isBack = false;

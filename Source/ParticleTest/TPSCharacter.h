@@ -31,7 +31,6 @@ class PARTICLETEST_API ATPSCharacter : public ACharacter
 	GENERATED_BODY()
 
 private:
-		bool isPushingBack = false;
 		float pushBackDistance = 0.0f;
 		FVector pusherLocation;
 		FVector lastPos;
@@ -151,9 +150,12 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "Melee Properties")
 		bool SaveAttack;
 	
+	UFUNCTION(BlueprintCallable, Category = "Boss Behavior")
 	void PushBack(float distance, FVector pushLocation);
 
 	ACharacter* GetGlobalPlayer();
+
+	bool isPushingBack = false;
 
 protected:
 	// Called when the game starts or when spawned

@@ -49,7 +49,7 @@ void ATPSCharacter::Tick(float DeltaTime)
 		FVector direction = UKismetMathLibrary::GetDirectionUnitVector(GetActorLocation(), pusherLocation);
 		direction.Z = 0.0f;
 		FVector playerForcePushLocation = lastPos + (-direction * pushBackDistance);
-		FVector tempLocation = FMath::Lerp(GetActorLocation(), playerForcePushLocation, DeltaTime * 4.0f);
+		FVector tempLocation = FMath::Lerp(GetActorLocation(), playerForcePushLocation, DeltaTime * 3.0f);
 
 		FHitResult HitResult;
 		SetActorLocation(tempLocation, false, &HitResult);
