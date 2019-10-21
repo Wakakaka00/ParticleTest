@@ -105,6 +105,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
 	bool isOnThrone = true;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
+	float pushBackForce = 0.0f;
+
 	float spitDelay = 0.3f;
 	FVector AimDirection = FVector(0);
 

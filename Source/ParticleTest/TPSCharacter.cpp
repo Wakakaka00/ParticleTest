@@ -46,17 +46,11 @@ void ATPSCharacter::Tick(float DeltaTime)
 	
 	if (isPushingBack)
 	{
-		FVector direction = UKismetMathLibrary::GetDirectionUnitVector(GetActorLocation(), pusherLocation);
-		direction.Z = 0.0f;
-		FVector playerForcePushLocation = lastPos + (-direction * pushBackDistance);
-		FVector tempLocation = FMath::Lerp(GetActorLocation(), playerForcePushLocation, DeltaTime * 3.0f);
-
-		FHitResult HitResult;
-		SetActorLocation(tempLocation, false, &HitResult);
-
-		if (FVector::Distance(GetActorLocation(), playerForcePushLocation) <= 45.0f) // or if hit wall or minion
+		pushBackTimer += DeltaTime;
+		if (pushBackTimer >= 1.5f)
 		{
 			isPushingBack = false;
+			pushBackTimer = 0.0f;
 		}
 	}
 }
@@ -671,12 +665,13 @@ void ATPSCharacter::PlayerAttackedLight()
 
 }
 
-void ATPSCharacter::PushBack(float distance, FVector pushLocation)
+void ATPSCharacter::PushBack(float force, FVector pushLocation)
 {
 	isPushingBack = true;
-	pushBackDistance = distance;
-	lastPos = GetActorLocation();
-	pusherLocation = pushLocation;
+	FVector direction = UKismetMathLibrary::GetDirectionUnitVector(GetActorLocation(), pushLocation);
+	direction.Z = 0.0f;
+	//FVector playerForcePushLocation = lastPos + (-direction * pushBackDistance);
+	LaunchCharacter(-direction * force, true, true);
 }
 
 ACharacter * ATPSCharacter::GetGlobalPlayer()

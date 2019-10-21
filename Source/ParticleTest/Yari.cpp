@@ -90,9 +90,10 @@ void AYari::OnOverlapBegin(UPrimitiveComponent * OverlappedComp, AActor * OtherA
 	{	
 		//GetWorld()->GetTimerManager().SetTimer(StopTimer, this, &AYari::StopYari, 0.03f);
 		StopYari();
-		if (FVector::Distance(TriggerBox->GetComponentLocation(), playerCharacter->GetActorLocation()) <= 800.0f)
+		UE_LOG(LogTemp, Warning, TEXT("Distance %f"), FVector::Distance(TriggerBox->GetComponentLocation(), playerCharacter->GetActorLocation()));
+		if (FVector::Distance(TriggerBox->GetComponentLocation(), playerCharacter->GetActorLocation()) <= 700.0f)
 		{
-			if(!playerActor->isPushingBack) playerActor->PushBack(600.0f, TriggerBox->GetComponentLocation());		
+			if(!playerActor->isPushingBack) playerActor->PushBack(bossActor->pushBackForce, TriggerBox->GetComponentLocation());
 		}	
 	}
 }
@@ -101,7 +102,7 @@ void AYari::OnOverlapPlayer(UPrimitiveComponent * OverlappedComp, AActor * Other
 {
 	if (OtherComp->ComponentHasTag("Player"))
 	{
-		playerActor->PushBack(600.0f, GetActorLocation());
+		playerActor->PushBack(bossActor->pushBackForce, GetActorLocation());
 	}
 }
 

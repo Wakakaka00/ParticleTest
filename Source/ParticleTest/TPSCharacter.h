@@ -31,9 +31,7 @@ class PARTICLETEST_API ATPSCharacter : public ACharacter
 	GENERATED_BODY()
 
 private:
-		float pushBackDistance = 0.0f;
-		FVector pusherLocation;
-		FVector lastPos;
+	float pushBackTimer = 0.0f;
 
 public:
 	// Sets default values for this character's properties
@@ -151,7 +149,7 @@ public:
 		bool SaveAttack;
 	
 	UFUNCTION(BlueprintCallable, Category = "Boss Behavior")
-	void PushBack(float distance, FVector pushLocation);
+	void PushBack(float force, FVector pushLocation);
 
 	ACharacter* GetGlobalPlayer();
 
