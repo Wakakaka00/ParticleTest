@@ -154,6 +154,7 @@ void AMinionAIController::CheckNeighbours()
 		}
 
 		// Separtion between Player
+		
 		if (distanceToPlayer <= 120.0f)
 		{
 			FVector direction = minionActor->GetActorLocation() - playerCharacter->GetActorLocation();
