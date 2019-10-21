@@ -62,6 +62,6 @@ public:
 	bool isThrowing = false;
 
 	bool isBack = false;
-
+	bool isFire = false;
 	
 };

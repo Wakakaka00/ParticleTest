@@ -86,8 +86,16 @@ void AYari::StopYari()
 
 void AYari::OnOverlapBegin(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
+	// Box Collider
 	if (OtherActor->ActorHasTag("Floor"))
 	{	
+		for (int i = 0; i < bossActor->bloodPoolList.Num(); i++)
+		{
+			if (FVector::Distance(TriggerBox->GetComponentLocation(), bossActor->bloodPoolList[i]->GetActorLocation()) <= 700.0f)
+			{
+				
+			}
+		}
 		//GetWorld()->GetTimerManager().SetTimer(StopTimer, this, &AYari::StopYari, 0.03f);
 		StopYari();
 		UE_LOG(LogTemp, Warning, TEXT("Distance %f"), FVector::Distance(TriggerBox->GetComponentLocation(), playerCharacter->GetActorLocation()));
@@ -100,6 +108,7 @@ void AYari::OnOverlapBegin(UPrimitiveComponent * OverlappedComp, AActor * OtherA
 
 void AYari::OnOverlapPlayer(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
+	// Capsule collider
 	if (OtherComp->ComponentHasTag("Player"))
 	{
 		playerActor->PushBack(bossActor->pushBackForce, GetActorLocation());
