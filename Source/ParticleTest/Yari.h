@@ -25,7 +25,7 @@ private:
 	FRotator initRotation;
 	ACharacter* playerCharacter;
 	ATPSCharacter* playerActor;
-	
+	class AMyAIController* bossAI;
 
 protected:
 	// Called when the game starts or when spawned
@@ -62,6 +62,6 @@ public:
 	bool isThrowing = false;
 
 	bool isBack = false;
-	bool isFire = false;
+	bool isFire = true;
 	
 };

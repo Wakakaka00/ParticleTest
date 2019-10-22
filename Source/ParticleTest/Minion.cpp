@@ -3,6 +3,7 @@
 
 #include "Minion.h"
 #include "Engine/World.h"
+#include "MinionAIController.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Runtime/Engine/Classes/Kismet/KismetMathLibrary.h"
 
@@ -19,6 +20,7 @@ AMinion::AMinion()
 void AMinion::BeginPlay()
 {
 	Super::BeginPlay();
+	minionAI = Cast<AMinionAIController>(GetController());
 }
 
 // Called every frame
@@ -33,6 +35,16 @@ void AMinion::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+void AMinion::Initialize(bool f)
+{
+	isFire = f;
+	if (f)
+	{
+		minionAI->accelerationForce = 2.0f;
+		minionAI->maxMagnitude = 10.0f;
+	}
 }
 
 void AMinion::LookAtPlayer()
