@@ -14,6 +14,9 @@ AMinion::AMinion()
 	PrimaryActorTick.bCanEverTick = true;
 
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 600.0f, 0.0f);
+
+	maxHealth = 100.0f;
+	currentHealth = maxHealth;
 }
 
 // Called when the game starts or when spawned
@@ -28,6 +31,15 @@ void AMinion::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);	
 	LookAtPlayer();
+	if (isFire)
+	{
+		currentHealth -= DeltaTime * (maxHealth / 18.0f);
+		if (currentHealth <= 0.0f)
+		{
+			minionAI->bossController->FireMinionList.Remove(this);
+			Destroy();
+		}
+	}
 }
 
 // Called to bind functionality to input
@@ -43,7 +55,7 @@ void AMinion::Initialize(bool f)
 	if (f)
 	{
 		minionAI->accelerationForce = 0.7f;
-		minionAI->maxMagnitude = 5.0f;
+		minionAI->maxMagnitude = FMath::RandRange(5.8f,7.0f);
 	}
 }
 

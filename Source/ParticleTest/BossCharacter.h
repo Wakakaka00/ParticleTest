@@ -108,7 +108,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
 	float pushBackForce = 0.0f;
 
-	float spitDelay = 0.3f;
+	float spitDelay = 0.5f;
 	FVector AimDirection = FVector(0);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite,Category = "Trigger Capsule")
@@ -127,10 +127,6 @@ public:
 
 	FVector handSocketLocation;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
-	float currentHealth;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
-	float maxHealth;
 	int healCount = 0;
 	int maxHealCount = 2;
 };

@@ -22,11 +22,9 @@ private:
 	
 	float distanceToPlayer;
 	void MoveToPlayer();
-	void RushToPlayer();
 
 	void CheckNeighbours();
 
-	AMyAIController* bossController;
 	TArray<ABossCharacter*> bossCharacterList;
 
 	void FindBossActor(UWorld* World, TArray<ABossCharacter*>& Out);
@@ -37,6 +35,7 @@ private:
 	ACharacter* playerCharacter;
 	FVector directionToTarget;
 	FVector targetPos;
+	float decreaseFactor = 0.08f;
 
 public:
 	AMinionAIController();
@@ -48,11 +47,13 @@ public:
 	float boidRadius = 120.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-	float accelerationForce = 0.5f;
+	float accelerationForce = 0.7f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	float maxMagnitude = 2.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	float repelForce = 0.1f;
+
+	AMyAIController* bossController;
 };

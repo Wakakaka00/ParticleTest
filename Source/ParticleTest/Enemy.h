@@ -21,6 +21,11 @@ public:
 	// Sets default values for this character's properties
 	AEnemy();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
+	float maxHealth;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
+	float currentHealth;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

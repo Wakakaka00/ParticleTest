@@ -29,9 +29,12 @@ class PARTICLETEST_API AMyAIController : public AAIController
 		void NormalPush(float DeltaSeconds);	
 
 		float bloodPoolRadius = 20.0f;
-		float currentHealAmount = 0.0f;
-		float maxHealAmount;
+		int currentHealAmount = 0;
+		float healTimer = 0.0f;
+		int maxHealAmount = 3;
 		float drinkBloodDuration = 0.0f;
+		float drinkBloodTimer = 0.0f;
+		float spitTimer = 0.0f;
 		float yariThrowTimer = 0.0f;
 		float minionMaxDistance = 500.0f;
 
