@@ -578,17 +578,17 @@ void ATPSCharacter::DoAttacks()
 			if (AttackCounts == 0)
 			{
 
-				PlayAnimMontage(montages[0], 1.7f);
+				PlayAnimMontage(montages[0], 2.1f);
 				AttackCounts = 1;
 			}
 			else if (AttackCounts == 1)
 			{
-				PlayAnimMontage(montages[1], 1.6f);
+				PlayAnimMontage(montages[1], 2.1f);
 				AttackCounts = 2;
 			}
 			else if (AttackCounts == 2)
 			{
-				PlayAnimMontage(montages[2], 1.6f);
+				PlayAnimMontage(montages[2], 2.1f);
 				AttackCounts = 0;
 			}
 			 break;
