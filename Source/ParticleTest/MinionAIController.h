@@ -37,6 +37,7 @@ private:
 	ACharacter* playerCharacter;
 	FVector directionToTarget;
 	FVector targetPos;
+	float decreaseFactor = 0.05f;
 
 public:
 	AMinionAIController();

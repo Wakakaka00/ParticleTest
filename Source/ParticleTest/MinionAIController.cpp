@@ -141,12 +141,12 @@ void AMinionAIController::CheckNeighbours()
 				if (!minionActor->inAtkRadius)
 				{
 					acceleration += (direction /
-						distanceWithNeighbour * boidRadius * repelForce * 0.2f) * currentVelocity.Size();
+						distanceWithNeighbour * boidRadius * repelForce * decreaseFactor) * currentVelocity.Size();
 				}
 				else
 				{
 					acceleration += ((direction - minionActor->GetActorForwardVector()) /
-						distanceWithNeighbour * boidRadius *(repelForce + 0.1f)* 0.2f);
+						distanceWithNeighbour * boidRadius *(repelForce + 0.1f)* decreaseFactor);
 				}
 			}
 		}
@@ -165,12 +165,12 @@ void AMinionAIController::CheckNeighbours()
 				if (!minionActor->inAtkRadius)
 				{
 					acceleration += (direction /
-						distanceWithNeighbour * boidRadius * repelForce * 0.2f) * currentVelocity.Size();
+						distanceWithNeighbour * boidRadius * repelForce * decreaseFactor) * currentVelocity.Size();
 				}
 				else
 				{
 					acceleration += ((direction - minionActor->GetActorForwardVector()) /
-						distanceWithNeighbour * boidRadius * (repelForce + 0.1f)* 0.2f);
+						distanceWithNeighbour * boidRadius * (repelForce + 0.1f)* decreaseFactor);
 				}
 			}
 		}
@@ -186,12 +186,12 @@ void AMinionAIController::CheckNeighbours()
 		if (!minionActor->inAtkRadius)
 		{
 			acceleration += (direction /
-				distanceToBoss * boidRadius * repelForce * 0.2f) * currentVelocity.Size();
+				distanceToBoss * boidRadius * repelForce * decreaseFactor) * currentVelocity.Size();
 		}
 		else
 		{
 			acceleration += ((direction - minionActor->GetActorForwardVector()) /
-			distanceToBoss * boidRadius * (repelForce + 0.1f) * 0.2f);
+			distanceToBoss * boidRadius * (repelForce + 0.1f) * decreaseFactor);
 		}
 	}
 
@@ -205,12 +205,12 @@ void AMinionAIController::CheckNeighbours()
 		if (!minionActor->inAtkRadius)
 		{
 			acceleration += (direction /
-			distanceToPlayer * boidRadius * repelForce * 0.2f) * currentVelocity.Size();
+			distanceToPlayer * boidRadius * repelForce * decreaseFactor) * currentVelocity.Size();
 		}
 		else
 		{
 			acceleration += (direction  /
-			distanceToPlayer * boidRadius * (repelForce + 0.1f) * 0.2f);
+			distanceToPlayer * boidRadius * (repelForce + 0.1f) * decreaseFactor);
 		}
 	}
 }
