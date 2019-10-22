@@ -12,7 +12,7 @@ class PARTICLETEST_API AMinion : public AEnemy
 	GENERATED_BODY()
 
 private:
-	
+	class AMinionAIController* minionAI;
 
 public:
 	// Sets default values for this character's properties
@@ -30,8 +30,13 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	void LookAtPlayer();
+	void Initialize(bool f);
+
 	bool inAtkRadius = false;
 	bool isMelee = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Minion Behavior")
+	bool isFire = false;
 	FVector directionToPlayer;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Minion Behavior")

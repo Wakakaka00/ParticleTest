@@ -22,6 +22,7 @@ private:
 	
 	float distanceToPlayer;
 	void MoveToPlayer();
+	void RushToPlayer();
 
 	void CheckNeighbours();
 

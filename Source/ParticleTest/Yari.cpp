@@ -3,6 +3,7 @@
 
 #include "Yari.h"
 #include "Engine/World.h"
+#include "MyAIController.h"
 #include "Runtime/Engine/Classes/Kismet/KismetMathLibrary.h"
 #include "TimerManager.h"
 
@@ -38,6 +39,7 @@ void AYari::BeginPlay()
 {
 	Super::BeginPlay();
 	bossActor = Cast<ABossCharacter>(GetParentActor());
+	bossAI = Cast<AMyAIController>(bossActor->GetController());
 	playerCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 	playerActor = Cast<ATPSCharacter>(playerCharacter);
 	gravityScale = 1.5f;
@@ -89,16 +91,20 @@ void AYari::OnOverlapBegin(UPrimitiveComponent * OverlappedComp, AActor * OtherA
 	// Box Collider
 	if (OtherActor->ActorHasTag("Floor"))
 	{	
-		for (int i = 0; i < bossActor->bloodPoolList.Num(); i++)
+		if (isFire)
 		{
-			if (FVector::Distance(TriggerBox->GetComponentLocation(), bossActor->bloodPoolList[i]->GetActorLocation()) <= 700.0f)
+			for (int i = 0; i < bossActor->bloodPoolList.Num(); i++)
 			{
-				
+				if (FVector::Distance(TriggerBox->GetComponentLocation(), bossActor->bloodPoolList[i]->GetActorLocation()) <= 700.0f)
+				{
+					auto Minion = GetWorld()->SpawnActor<AMinion>(bossActor->MinionBlueprint->GetOwnerClass(), bossActor->bloodPoolList[i]->GetActorLocation(), FRotator::ZeroRotator);
+					Minion->Initialize(isFire);
+					bossAI->AddFireMinion(Minion);
+				}
 			}
-		}
+		}		
 		//GetWorld()->GetTimerManager().SetTimer(StopTimer, this, &AYari::StopYari, 0.03f);
 		StopYari();
-		UE_LOG(LogTemp, Warning, TEXT("Distance %f"), FVector::Distance(TriggerBox->GetComponentLocation(), playerCharacter->GetActorLocation()));
 		if (FVector::Distance(TriggerBox->GetComponentLocation(), playerCharacter->GetActorLocation()) <= 700.0f)
 		{
 			if(!playerActor->isPushingBack) playerActor->PushBack(bossActor->pushBackForce, TriggerBox->GetComponentLocation());

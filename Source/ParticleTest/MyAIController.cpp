@@ -253,6 +253,11 @@ void AMyAIController::AddMinion(AMinion* minion)
 	MinionList.Add(minion);
 }
 
+void AMyAIController::AddFireMinion(AMinion* minion)
+{
+	FireMinionList.Add(minion);
+}
+
 void AMyAIController::SummonMinion()
 {
 	for (int i = 0; i < bossActor->bloodPoolList.Num(); i++)
