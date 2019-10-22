@@ -68,4 +68,12 @@ void AMinion::LookAtPlayer()
 	SetActorRotation(Rot);
 }
 
+void AMinion::Kill()
+{
+	if(isFire) minionAI->bossController->FireMinionList.Remove(this);
+	else minionAI->bossController->MinionList.Remove(this);
+
+	Destroy();
+}
+
 

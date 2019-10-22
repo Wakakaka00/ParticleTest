@@ -43,4 +43,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Minion Behavior")
 	float minRadius;
+
+	UFUNCTION(BlueprintCallable, Category = "Minion Behavior")
+	void Kill();
 };
