@@ -128,16 +128,15 @@ void ATPSCharacter::LockOnFunction_Implementation(bool OnlyBoss)
 		FOutputDeviceNull ar;
 		NearestTarget->CallFunctionByNameWithArguments(TEXT("LockOnFlip"),ar,NULL,true);
 		UKismetSystemLibrary::K2_PauseTimer(this, TEXT("ToggleLockOn"));
+		NearestTarget = NULL;
 		
-		//UKismetSystemLibrary::K2_SetTimer(this, TEXT("MoveCameraToDefaultPosition"), 0.0001f, true);
-		//UKismetSystemLibrary::K2_PauseTimer(this, TEXT("MoveCameraToTargetingPosition"));
+		
 	
 	}
 	else
 	{
 		
-		//UKismetSystemLibrary::K2_SetTimer(this, TEXT("MoveCameraToTargetingPosition"), 0.0001f, true);
-		//UKismetSystemLibrary::K2_PauseTimer(this, TEXT("MoveCameraToDefaultPosition"));
+		
 	
 		ClosestTargetDistance = MaximumDistance;
 		TArray<AActor*> FoundActors;
