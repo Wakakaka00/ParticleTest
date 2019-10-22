@@ -14,6 +14,9 @@ AMinion::AMinion()
 	PrimaryActorTick.bCanEverTick = true;
 
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 600.0f, 0.0f);
+
+	maxHealth = 100.0f;
+	currentHealth = maxHealth;
 }
 
 // Called when the game starts or when spawned
@@ -28,6 +31,14 @@ void AMinion::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);	
 	LookAtPlayer();
+	if (isFire)
+	{
+		currentHealth -= DeltaTime * 20.0f;
+		if (currentHealth <= 0.0f)
+		{
+
+		}
+	}
 }
 
 // Called to bind functionality to input

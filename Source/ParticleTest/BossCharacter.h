@@ -127,10 +127,6 @@ public:
 
 	FVector handSocketLocation;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
-	float currentHealth;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
-	float maxHealth;
 	int healCount = 0;
 	int maxHealCount = 2;
 };

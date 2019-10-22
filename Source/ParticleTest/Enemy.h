@@ -20,6 +20,8 @@ class PARTICLETEST_API AEnemy : public ACharacter
 public:
 	// Sets default values for this character's properties
 	AEnemy();
+	float maxHealth;
+	float currentHealth;
 
 protected:
 	// Called when the game starts or when spawned
