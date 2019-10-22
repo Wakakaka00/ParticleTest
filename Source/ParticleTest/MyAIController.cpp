@@ -21,7 +21,6 @@ void AMyAIController::BeginPlay()
 	playerCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 	bossPawn = GetPawn();
 	bossActor = Cast<ABossCharacter>(bossPawn);
-	maxHealAmount = bossActor->maxHealth * 0.25f;
 }
 
 void AMyAIController::Tick(float DeltaSeconds)
@@ -95,31 +94,41 @@ void AMyAIController::Tick(float DeltaSeconds)
 		if (bossActor->isSpitting)
 		{
 			bossActor->LookAtPlayer();
-			drinkBloodDuration -= DeltaSeconds;
 		}
 
 		// Heal Guord
 		if (bossActor->isHealing)
 		{
 			StopMovement();
-			currentHealAmount += 3.0f * DeltaSeconds;
-			bossActor->currentHealth += 3.0f * DeltaSeconds;
-
+			//currentHealAmount += 3.0f * DeltaSeconds;
+			//bossActor->currentHealth += 3.0f * DeltaSeconds;
+			healTimer += DeltaSeconds;
+			if (healTimer >= 2.0f)
+			{
+				currentHealAmount += 1;
+				bossActor->currentHealth += (bossActor->maxHealth * 0.1f);
+				healTimer = 0.0f;
+			}
 			if (currentHealAmount >= maxHealAmount)
 			{
 				bossActor->isAtk = false;
 				bossActor->isHealing = false;
 				currentHealAmount = 0.0f;
+				healTimer = 0.0f;
 			}
 		}
 
 		// Drink Blood
 		if (bossActor->isDrinking)
 		{
-			if (drinkBloodDuration < 10.0f) drinkBloodDuration += DeltaSeconds;
-			if (drinkBloodDuration >= 10.0f)
+			drinkBloodTimer += DeltaSeconds;
+			if (drinkBloodTimer >= 1.0f)
 			{
-				drinkBloodDuration = 10.0f;
+				drinkBloodDuration += 1.0f;
+				drinkBloodTimer = 0.0f;
+			}
+			if (drinkBloodDuration >= 3.0f)
+			{
 				bossActor->isDrinking = false;
 				bossActor->isAtk = false;
 			}
@@ -326,15 +335,16 @@ void AMyAIController::SpitBlood()
 
 	Projectile->LaunchProjectile(bossActor->bloodLaunchSpeed);
 
-	if (drinkBloodDuration > 0.0f)
-	{
-		GetWorld()->GetTimerManager().SetTimer(SpitTimer, this, &AMyAIController::SpitBlood, bossActor->spitDelay);
-	}
-	else
-	{
-		drinkBloodDuration = 0.0f;
-		bossActor->isAtk = false;
-		bossActor->isSpitting = false;
+	if (drinkBloodDuration > 0)
+	{	
+		drinkBloodDuration -= 0.5f;
+		if(drinkBloodDuration >0) GetWorld()->GetTimerManager().SetTimer(SpitTimer, this, &AMyAIController::SpitBlood, bossActor->spitDelay);		
+		else
+		{
+			drinkBloodDuration = 0.0f;
+			bossActor->isAtk = false;
+			bossActor->isSpitting = false;
+		}
 	}
 }
 

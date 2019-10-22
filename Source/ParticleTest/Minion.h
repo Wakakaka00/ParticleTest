@@ -33,6 +33,8 @@ public:
 	void Initialize(bool f);
 
 	bool inAtkRadius = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Minion Behavior")
 	bool isMelee = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Minion Behavior")

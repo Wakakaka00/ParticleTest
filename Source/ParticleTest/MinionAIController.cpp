@@ -215,53 +215,6 @@ void AMinionAIController::CheckNeighbours()
 	}
 }
 
-void AMinionAIController::RushToPlayer()
-{
-	minionActor->directionToPlayer = UKismetMathLibrary::GetDirectionUnitVector(minionActor->GetActorLocation(), playerCharacter->GetActorLocation());
-	minionActor->directionToPlayer.Z = 0.0f;
-	acceleration = minionActor->directionToPlayer * accelerationForce;
-	acceleration.Z = 0.0f;
-
-	for (int i = 0; i < bossController->FireMinionList.Num(); i++)
-	{
-		if (bossController->FireMinionList[i] != minionActor)
-		{
-			float distanceWithNeighbour = FVector::Distance(bossController->FireMinionList[i]->GetActorLocation(), minionActor->GetActorLocation());
-			if (distanceWithNeighbour < 120.0f)
-			{
-				FVector direction = minionActor->GetActorLocation() - bossController->FireMinionList[i]->GetActorLocation();
-				direction.GetSafeNormal(1.0f);
-				direction.Normalize(1.0f);
-				if (!minionActor->inAtkRadius)
-				{
-					acceleration += (direction /
-						distanceWithNeighbour * boidRadius * repelForce) * currentVelocity.Size();
-				}
-				else
-				{
-					acceleration += ((direction - minionActor->GetActorForwardVector()) /
-						distanceWithNeighbour * boidRadius * (repelForce + 0.1f));
-				}
-			}
-		}		
-	}
-
-	currentVelocity += acceleration;
-	currentVelocity = currentVelocity * 0.99f;
-	if (currentVelocity.SizeSquared() > maxMagnitude * maxMagnitude)
-	{
-		FVector temp = currentVelocity;
-		temp.GetSafeNormal(1.0f);
-		temp.Normalize(1.0f);
-		currentVelocity = temp * maxMagnitude;
-	}
-
-	FHitResult HitResult;
-	minionActor->SetActorLocation(minionActor->GetActorLocation() + currentVelocity, false, &HitResult);
-
-	minionActor->LookAtPlayer();
-}
-
 void AMinionAIController::RandomizeAroundRadius()
 {
 	float randomXPos = minionActor->minRadius * cos(FMath::RandRange(0.0f, 360.0f));

@@ -33,10 +33,11 @@ void AMinion::Tick(float DeltaTime)
 	LookAtPlayer();
 	if (isFire)
 	{
-		currentHealth -= DeltaTime * 20.0f;
+		currentHealth -= DeltaTime * (maxHealth / 18.0f);
 		if (currentHealth <= 0.0f)
 		{
-
+			minionAI->bossController->FireMinionList.Remove(this);
+			Destroy();
 		}
 	}
 }
@@ -54,7 +55,7 @@ void AMinion::Initialize(bool f)
 	if (f)
 	{
 		minionAI->accelerationForce = 0.7f;
-		minionAI->maxMagnitude = 5.0f;
+		minionAI->maxMagnitude = FMath::RandRange(5.8f,7.0f);
 	}
 }
 
