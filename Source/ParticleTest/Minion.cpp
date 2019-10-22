@@ -42,8 +42,8 @@ void AMinion::Initialize(bool f)
 	isFire = f;
 	if (f)
 	{
-		minionAI->accelerationForce = 0.5f;
-		minionAI->maxMagnitude = 6.0f;
+		minionAI->accelerationForce = 0.7f;
+		minionAI->maxMagnitude = 5.0f;
 	}
 }
 

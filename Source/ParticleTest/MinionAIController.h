@@ -45,7 +45,7 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-	float boidRadius;
+	float boidRadius = 120.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	float accelerationForce = 0.5f;
@@ -54,5 +54,5 @@ public:
 	float maxMagnitude = 2.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-	float repelForce;
+	float repelForce = 0.1f;
 };

@@ -74,7 +74,7 @@ void AMinionAIController::MoveToPlayer()
 		}
 		else if (minionActor->isMelee == false)
 		{
-			if (FVector::Distance(minionActor->GetActorLocation(), playerCharacter->GetActorLocation()) >= 720.0f)
+			if (FVector::Distance(minionActor->GetActorLocation(), playerCharacter->GetActorLocation()) >= 1300.0f)
 			{
 				if (currentVelocity != FVector::ZeroVector)
 				{
@@ -133,7 +133,7 @@ void AMinionAIController::CheckNeighbours()
 		if (bossController->MinionList[i] != minionActor)
 		{
 			float distanceWithNeighbour = FVector::Distance(bossController->MinionList[i]->GetActorLocation(), minionActor->GetActorLocation());
-			if (distanceWithNeighbour < 120.0f)
+			if (distanceWithNeighbour < boidRadius)
 			{
 				FVector direction = minionActor->GetActorLocation() - bossController->MinionList[i]->GetActorLocation();
 				direction.GetSafeNormal(1.0f);
@@ -141,12 +141,12 @@ void AMinionAIController::CheckNeighbours()
 				if (!minionActor->inAtkRadius)
 				{
 					acceleration += (direction /
-						distanceWithNeighbour * boidRadius * repelForce) * currentVelocity.Size();
+						distanceWithNeighbour * boidRadius * repelForce * 0.2f) * currentVelocity.Size();
 				}
 				else
 				{
 					acceleration += ((direction - minionActor->GetActorForwardVector()) /
-						distanceWithNeighbour * boidRadius * (repelForce + 0.1f));
+						distanceWithNeighbour * boidRadius *(repelForce + 0.1f)* 0.2f);
 				}
 			}
 		}
@@ -157,7 +157,7 @@ void AMinionAIController::CheckNeighbours()
 		if (bossController->FireMinionList[i] != minionActor)
 		{
 			float distanceWithNeighbour = FVector::Distance(bossController->FireMinionList[i]->GetActorLocation(), minionActor->GetActorLocation());
-			if (distanceWithNeighbour < 120.0f)
+			if (distanceWithNeighbour < boidRadius)
 			{
 				FVector direction = minionActor->GetActorLocation() - bossController->FireMinionList[i]->GetActorLocation();
 				direction.GetSafeNormal(1.0f);
@@ -165,12 +165,12 @@ void AMinionAIController::CheckNeighbours()
 				if (!minionActor->inAtkRadius)
 				{
 					acceleration += (direction /
-						distanceWithNeighbour * boidRadius * (repelForce + 0.2f)) * currentVelocity.Size();
+						distanceWithNeighbour * boidRadius * repelForce * 0.2f) * currentVelocity.Size();
 				}
 				else
 				{
 					acceleration += ((direction - minionActor->GetActorForwardVector()) /
-						distanceWithNeighbour * boidRadius * (repelForce + 0.3f));
+						distanceWithNeighbour * boidRadius * (repelForce + 0.1f)* 0.2f);
 				}
 			}
 		}
@@ -186,17 +186,17 @@ void AMinionAIController::CheckNeighbours()
 		if (!minionActor->inAtkRadius)
 		{
 			acceleration += (direction /
-				distanceToBoss * boidRadius * repelForce) * currentVelocity.Size();
+				distanceToBoss * boidRadius * repelForce * 0.2f) * currentVelocity.Size();
 		}
 		else
 		{
 			acceleration += ((direction - minionActor->GetActorForwardVector()) /
-			distanceToBoss * boidRadius * (repelForce + 0.1f));
+			distanceToBoss * boidRadius * (repelForce + 0.1f) * 0.2f);
 		}
 	}
 
 	// Separtion between Player	
-	if (distanceToPlayer <= 120.0f)
+	if (distanceToPlayer < boidRadius)
 	{
 		FVector direction = minionActor->GetActorLocation() - playerCharacter->GetActorLocation();
 		direction.GetSafeNormal(1.0f);
@@ -205,12 +205,12 @@ void AMinionAIController::CheckNeighbours()
 		if (!minionActor->inAtkRadius)
 		{
 			acceleration += (direction /
-			distanceToPlayer * boidRadius * repelForce) * currentVelocity.Size();
+			distanceToPlayer * boidRadius * repelForce * 0.2f) * currentVelocity.Size();
 		}
 		else
 		{
 			acceleration += (direction  /
-			distanceToPlayer * boidRadius * (repelForce + 0.1f));
+			distanceToPlayer * boidRadius * (repelForce + 0.1f) * 0.2f);
 		}
 	}
 }
