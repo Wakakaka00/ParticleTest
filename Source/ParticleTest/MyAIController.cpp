@@ -346,6 +346,7 @@ void AMyAIController::SpitBlood()
 			bossActor->isSpitting = false;
 		}
 	}
+	//delete projectileActor;
 }
 
 void AMyAIController::CheckNearestEnemy()
