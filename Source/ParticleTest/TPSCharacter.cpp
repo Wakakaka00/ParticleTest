@@ -571,29 +571,34 @@ void ATPSCharacter::SwitchDone_Implementation()
 
 void ATPSCharacter::DoAttacks()
 {
-	switch (AttackTypeEnum)
+	switch (SwitchMode)
 	{
-		case EAttackModeEnum::EA_Light:
+		case ESwitchModeEnum::ES_Light:
 		{
 			if (AttackCounts == 0)
 			{
 
-				PlayAnimMontage(montages[0], 2.1f);
+				//PlayAnimMontage(montages[0], 2.1f);
 				AttackCounts = 1;
 			}
 			else if (AttackCounts == 1)
 			{
-				PlayAnimMontage(montages[1], 2.1f);
+				//PlayAnimMontage(montages[1], 2.1f);
 				AttackCounts = 2;
 			}
 			else if (AttackCounts == 2)
 			{
-				PlayAnimMontage(montages[2], 2.1f);
-				AttackCounts = 0;
+				//PlayAnimMontage(montages[2], 2.1f);
+				AttackCounts = 3;
+			}
+			else if (AttackCounts == 3)
+			{
+				//PlayAnimMontage(montages[2], 2.1f);
+				//AttackCounts = 0;
 			}
 			 break;
 		}
-		case EAttackModeEnum::EA_Heavy:
+		case ESwitchModeEnum::ES_Heavy:
 		{
 			if (AttackCounts == 0)
 			{

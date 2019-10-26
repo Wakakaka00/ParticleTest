@@ -18,11 +18,11 @@
 
 
 UENUM(BlueprintType)		//"BlueprintType" is essential to include
-enum class EAttackModeEnum : uint8
+enum class ESwitchModeEnum : uint8
 {
 	
-	EA_Heavy 	UMETA(DisplayName = "Heavy"),
-	EA_Light	UMETA(DisplayName = "Light")
+	ES_Heavy 	UMETA(DisplayName = "Heavy"),
+	ES_Light	UMETA(DisplayName = "Light")
 };
 
 UCLASS()
@@ -38,7 +38,7 @@ public:
 	ATPSCharacter();
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Enum)
-		EAttackModeEnum AttackTypeEnum= EAttackModeEnum::EA_Light;
+		ESwitchModeEnum SwitchMode= ESwitchModeEnum::ES_Light;
 	
 	
 	//UFUNCTION(BlueprintCallable, Category = "Something")
