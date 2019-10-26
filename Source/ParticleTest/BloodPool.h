@@ -25,4 +25,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Blood Pool Properties")
 		float destroySpeed = 1.0f;
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "Effects")
+		void SetOnFire();
 };
