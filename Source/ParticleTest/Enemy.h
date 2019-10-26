@@ -15,7 +15,8 @@ UCLASS()
 class PARTICLETEST_API AEnemy : public ACharacter
 {
 	GENERATED_BODY()
-	
+private:
+	bool isDamaged = false;
 
 public:
 	// Sets default values for this character's properties
@@ -54,6 +55,12 @@ public:
 		void Hi();
 	UFUNCTION(BlueprintCallable, Category = "Lock On Properties")
 		void SphereLookAt();
+
+	UFUNCTION(BlueprintCallable, Category = "Damage")
+		void SetIsDamaged(bool b);
+
+	UFUNCTION(BlueprintCallable, Category = "Damage")
+		bool GetIsDamaged();
 	
 	ACharacter* playerPawn;
 

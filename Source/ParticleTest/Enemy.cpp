@@ -49,3 +49,13 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
+void AEnemy::SetIsDamaged(bool b)
+{
+	isDamaged = b;
+}
+
+bool AEnemy::GetIsDamaged()
+{
+	return isDamaged;
+}
+
