@@ -73,3 +73,8 @@ void ABossCharacter::LookAtPlayer()
 	SetActorRotation(Rot);
 }
 
+void ABossCharacter::Attack()
+{
+
+}
+

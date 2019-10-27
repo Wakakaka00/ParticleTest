@@ -123,6 +123,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Boss Behavior")
 	void SetPushCollison(bool b);
 
+	void Attack();
+
 	FVector playerLastPos; // temp
 
 	FVector handSocketLocation;
