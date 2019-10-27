@@ -5,6 +5,7 @@
 #include "Engine/World.h"
 #include "MyAIController.h"
 #include "Runtime/Engine/Classes/Kismet/KismetMathLibrary.h"
+#include "BloodPool.h"
 #include "TimerManager.h"
 
 // Sets default values
@@ -98,8 +99,11 @@ void AYari::OnOverlapBegin(UPrimitiveComponent * OverlappedComp, AActor * OtherA
 				if (FVector::Distance(TriggerBox->GetComponentLocation(), bossActor->bloodPoolList[i]->GetActorLocation()) <= 700.0f)
 				{
 					auto Minion = GetWorld()->SpawnActor<AMinion>(bossActor->MinionBlueprint->GetOwnerClass(), bossActor->bloodPoolList[i]->GetActorLocation(), FRotator::ZeroRotator);
+					ABloodPool* bp = Cast<ABloodPool>(bossActor->bloodPoolList[i]);
+					bp->destroySpeed = 2.0f;
 					Minion->Initialize(isFire);
 					bossAI->AddFireMinion(Minion);
+					//delete bp;
 				}
 			}
 		}		
