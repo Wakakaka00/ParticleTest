@@ -24,6 +24,7 @@ void AMinion::BeginPlay()
 {
 	Super::BeginPlay();
 	minionAI = Cast<AMinionAIController>(GetController());
+	atkResetDuration = FMath::RandRange(3.0f, 5.0f);
 }
 
 // Called every frame
@@ -38,6 +39,17 @@ void AMinion::Tick(float DeltaTime)
 		{
 			minionAI->bossController->FireMinionList.Remove(this);
 			Destroy();
+		}
+	}
+
+	if (isAtk)
+	{
+		atkResetTimer += DeltaTime;
+		if (atkResetTimer >= atkResetDuration)
+		{
+			atkResetTimer = 0.0f;
+			atkResetDuration = FMath::RandRange(3.0f, 5.0f);
+			isAtk = false;
 		}
 	}
 }
@@ -74,6 +86,12 @@ void AMinion::Kill()
 	else minionAI->bossController->MinionList.Remove(this);
 
 	Destroy();
+}
+
+void AMinion::Attack()
+{
+	attackCollider->SetCollisionProfileName(TEXT("Trigger"));
+	isAtk = true;
 }
 
 
