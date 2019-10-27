@@ -135,18 +135,20 @@ public:
 		void DoAttacks();
 	UFUNCTION(BlueprintCallable, Category = "Melee Properties")
 		void PlayerAttackedLight();
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Melee Properties")
-		void ComboAttackSave();
 	UFUNCTION(BlueprintCallable, Category = "Melee Properties")
 		void Dash();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Melee Properties")
 		void ResetCombo();
+	UFUNCTION( BlueprintCallable, Category = "Melee Properties")
+		void SetCanContinueCombo(bool b);
 	UPROPERTY(BlueprintReadWrite, Category = "Melee Properties")
 		int AttackCounts;
 	UPROPERTY(BlueprintReadWrite, Category = "Melee Properties")
 		bool inAttackAnimation;
+	
+
 	UPROPERTY(BlueprintReadWrite, Category = "Melee Properties")
-		bool SaveAttack;
+		bool CanContinueCombo = false;
 	
 	UFUNCTION(BlueprintCallable, Category = "Boss Behavior")
 	void PushBack(float force, FVector pushLocation);

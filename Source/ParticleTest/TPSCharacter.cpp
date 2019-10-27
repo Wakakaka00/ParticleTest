@@ -622,20 +622,17 @@ void ATPSCharacter::DoAttacks()
 
 	}
 }
-void ATPSCharacter::ComboAttackSave_Implementation()
-{
-	if (SaveAttack)
-	{
-		SaveAttack = false;
-		DoAttacks();
-	}
-	
-}
+
 void ATPSCharacter::ResetCombo_Implementation()
 {
+	CanContinueCombo = false;
 	AttackCounts = 0;
-	SaveAttack = false;
 	inAttackAnimation = false;
+}
+
+void ATPSCharacter::SetCanContinueCombo(bool b)
+{
+	CanContinueCombo = b;
 }
 void ATPSCharacter::Dash()
 {
@@ -656,13 +653,15 @@ void ATPSCharacter::Dash()
 
 void ATPSCharacter::PlayerAttackedLight()
 {
-	if (inAttackAnimation)
+	
+	if (CanContinueCombo)
 	{
-		SaveAttack = true;
+		DoAttacks();
+		CanContinueCombo = false;
 	}
-	else
+	 else if(!inAttackAnimation && !CanContinueCombo)
 	{
-		inAttackAnimation = true;
+		inAttackAnimation = true;	
 		DoAttacks();
 	}
 	
