@@ -13,7 +13,7 @@ AMinion::AMinion()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	GetCharacterMovement()->RotationRate = FRotator(0.0f, 600.0f, 0.0f);
+	GetCharacterMovement()->RotationRate = FRotator(0.0f, 60.0f, 0.0f);
 
 	maxHealth = 100.0f;
 	currentHealth = maxHealth;
@@ -32,7 +32,7 @@ void AMinion::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);	
 	LookAtPlayer();
-	if (isFire)
+	/*if (isFire)
 	{
 		currentHealth -= DeltaTime * (maxHealth / 18.0f);
 		if (currentHealth <= 0.0f)
@@ -40,7 +40,7 @@ void AMinion::Tick(float DeltaTime)
 			minionAI->bossController->FireMinionList.Remove(this);
 			Destroy();
 		}
-	}
+	}*/
 
 	if (isAtk)
 	{
