@@ -16,8 +16,6 @@ class PARTICLETEST_API AMinionAIController : public AAIController
 	GENERATED_BODY()
 	
 private:
-	
-	FVector currentVelocity;
 	FVector acceleration;
 	
 	float distanceToPlayer;
@@ -35,7 +33,8 @@ private:
 	ACharacter* playerCharacter;
 	FVector directionToTarget;
 	FVector targetPos;
-	float decreaseFactor = 0.08f;
+	float decreaseFactor = 0.07f;
+	bool isAvoiding = false;
 
 public:
 	AMinionAIController();
@@ -54,6 +53,15 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	float repelForce = 0.1f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	FVector currentVelocity;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	float playerAvoidDistance;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	float bossAvoidDistance;
 
 	AMyAIController* bossController;
 };
