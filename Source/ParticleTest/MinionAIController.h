@@ -17,7 +17,8 @@ class PARTICLETEST_API AMinionAIController : public AAIController
 	
 private:
 	FVector acceleration;
-	
+	FVector direction;
+
 	float distanceToPlayer;
 	void MoveToPlayer();
 	void Roaming();
