@@ -63,5 +63,8 @@ public:
 
 	bool isBack = false;
 	bool isFire = true;
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Boss Behavior")
+	void DamagePlayer();
 	
 };

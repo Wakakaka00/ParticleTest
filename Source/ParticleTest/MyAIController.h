@@ -36,7 +36,7 @@ class PARTICLETEST_API AMyAIController : public AAIController
 		float drinkBloodTimer = 0.0f;
 		float spitTimer = 0.0f;
 		float yariThrowTimer = 0.0f;
-		float minionMaxDistance = 500.0f;
+		float minionMaxDistance = 800.0f;
 
 		bool isStart = true;
 

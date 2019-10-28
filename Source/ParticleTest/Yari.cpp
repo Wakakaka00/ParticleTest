@@ -111,7 +111,11 @@ void AYari::OnOverlapBegin(UPrimitiveComponent * OverlappedComp, AActor * OtherA
 		StopYari();
 		if (FVector::Distance(TriggerBox->GetComponentLocation(), playerCharacter->GetActorLocation()) <= 700.0f)
 		{
-			if(!playerActor->isPushingBack) playerActor->PushBack(bossActor->pushBackForce, TriggerBox->GetComponentLocation());
+			if (!playerActor->isPushingBack)
+			{
+				playerActor->PushBack(bossActor->pushBackForce, TriggerBox->GetComponentLocation());
+				DamagePlayer();
+			}
 		}	
 	}
 }
@@ -122,6 +126,7 @@ void AYari::OnOverlapPlayer(UPrimitiveComponent * OverlappedComp, AActor * Other
 	if (OtherComp->ComponentHasTag("Player"))
 	{
 		playerActor->PushBack(bossActor->pushBackForce, GetActorLocation());
+		DamagePlayer();
 	}
 }
 
