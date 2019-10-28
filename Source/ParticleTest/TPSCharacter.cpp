@@ -577,18 +577,16 @@ void ATPSCharacter::DoAttacks()
 		{
 			if (AttackCounts == 0)
 			{
-
-				//PlayAnimMontage(montages[0], 2.1f);
 				AttackCounts = 1;
 			}
 			else if (AttackCounts == 1)
 			{
-				//PlayAnimMontage(montages[1], 2.1f);
+				
 				AttackCounts = 2;
 			}
 			else if (AttackCounts == 2)
 			{
-				//PlayAnimMontage(montages[2], 2.1f);
+				
 				AttackCounts = 3;
 			}
 			else if (AttackCounts == 3)
@@ -628,6 +626,35 @@ void ATPSCharacter::ResetCombo_Implementation()
 	CanContinueCombo = false;
 	AttackCounts = 0;
 	inAttackAnimation = false;
+	PostCanContinueCombo = false;
+}
+
+void ATPSCharacter::ContinueCombo()
+{
+	
+	if (CanContinueCombo)
+	{
+		CanContinueCombo = false;
+		DoAttacks();
+	}
+	else
+	{
+		PostCanContinueCombo = true;
+	}
+
+	// NEXT
+
+
+
+	if (ReservedChargedAttack)
+	{
+		PlayerAttackedLight();
+		ReservedChargedAttack = false;
+		if (GEngine)
+					{
+						GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Black, TEXT("YESDTE"));
+					}
+	}
 }
 
 void ATPSCharacter::SetCanContinueCombo(bool b)
@@ -654,20 +681,34 @@ void ATPSCharacter::Dash()
 void ATPSCharacter::PlayerAttackedLight()
 {
 	
-	if (CanContinueCombo)
+	if (inAttackAnimation && !PostCanContinueCombo && !CanContinueCombo) // Second attack before postcancontinueattack
 	{
-		DoAttacks();
-		CanContinueCombo = false;
+		
+		CanContinueCombo = true;
+		
 	}
-	 else if(!inAttackAnimation && !CanContinueCombo)
+	 else if(!inAttackAnimation && !CanContinueCombo) // First attack
 	{
 		inAttackAnimation = true;	
+		DoAttacks();
+	}
+	 else if (inAttackAnimation && PostCanContinueCombo && !CanContinueCombo)//Last phase after can combo event for any last chance
+	{
+		PostCanContinueCombo = false;
 		DoAttacks();
 	}
 	
 
 }
 
+
+void ATPSCharacter::CancelAllCombats()
+{
+	CanContinueCombo = false;
+	AttackCounts = 0;
+	inAttackAnimation = false;
+	PostCanContinueCombo = false;
+}
 void ATPSCharacter::PushBack(float force, FVector pushLocation)
 {
 	isPushingBack = true;

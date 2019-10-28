@@ -139,6 +139,10 @@ public:
 		void Dash();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Melee Properties")
 		void ResetCombo();
+	UFUNCTION(BlueprintCallable, Category = "Melee Properties")
+		void ContinueCombo();
+	UFUNCTION(BlueprintCallable, Category = "Canceling Properties")
+		void CancelAllCombats();
 	UFUNCTION( BlueprintCallable, Category = "Melee Properties")
 		void SetCanContinueCombo(bool b);
 	UPROPERTY(BlueprintReadWrite, Category = "Melee Properties")
@@ -149,6 +153,10 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, Category = "Melee Properties")
 		bool CanContinueCombo = false;
+	UPROPERTY(BlueprintReadWrite, Category = "Melee Properties")
+		bool PostCanContinueCombo = false;
+	UPROPERTY(BlueprintReadWrite, Category = "Melee Properties")
+		bool ReservedChargedAttack = false;
 	
 	UFUNCTION(BlueprintCallable, Category = "Boss Behavior")
 	void PushBack(float force, FVector pushLocation);
