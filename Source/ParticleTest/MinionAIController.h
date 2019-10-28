@@ -20,6 +20,7 @@ private:
 	
 	float distanceToPlayer;
 	void MoveToPlayer();
+	void Roaming();
 
 	void CheckNeighbours();
 

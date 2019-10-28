@@ -54,6 +54,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Minion Behavior")
 	bool isMelee = false;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	bool isRoaming = false;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Minion Behavior")
 	bool isFire = false;
 	FVector directionToPlayer;

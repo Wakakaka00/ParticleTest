@@ -41,12 +41,36 @@ void AMinionAIController::Tick(float DeltaTime)
 		{
 			if (minionActor->inAtkRadius == true)  minionActor->inAtkRadius = false;
 		}
-		MoveToPlayer();
+		if (!minionActor->isRoaming)
+		{
+			MoveToPlayer();
+		}
+		else
+		{
+			Roaming();
+		}
+
+		currentVelocity += acceleration;
+		currentVelocity = currentVelocity * 0.99f;
+		if (currentVelocity.SizeSquared() > maxMagnitude * maxMagnitude)
+		{
+			FVector temp = currentVelocity;
+			temp.GetSafeNormal(1.0f);
+			temp.Normalize(1.0f);
+			currentVelocity = temp * maxMagnitude;
+		}
+
+		FHitResult HitResult;
+		minionActor->SetActorLocation(minionActor->GetActorLocation() + currentVelocity, false, &HitResult);
+
+		minionActor->LookAtPlayer();
 	}
 
 	if (minionActor->inAtkRadius && !minionActor->isAtk)
 	{
 		minionActor->Attack();
+		currentVelocity = FVector::ZeroVector;
+		acceleration = FVector::ZeroVector;
 	}
 }
 
@@ -120,21 +144,6 @@ void AMinionAIController::MoveToPlayer()
 	}
 
 	CheckNeighbours();
-
-	currentVelocity += acceleration;
-	currentVelocity = currentVelocity * 0.99f;
-	if (currentVelocity.SizeSquared() > maxMagnitude * maxMagnitude)
-	{
-		FVector temp = currentVelocity;
-		temp.GetSafeNormal(1.0f);
-		temp.Normalize(1.0f);
-		currentVelocity = temp * maxMagnitude;
-	}
-
-	FHitResult HitResult;
-	minionActor->SetActorLocation(minionActor->GetActorLocation() + currentVelocity, true, &HitResult);
-
-	minionActor->LookAtPlayer();
 }
 
 void AMinionAIController::CheckNeighbours()
@@ -203,7 +212,7 @@ void AMinionAIController::CheckNeighbours()
 		}
 		else
 		{
-			acceleration += ((direction - minionActor->GetActorForwardVector()) /
+			acceleration += (direction /
 			distanceToBoss * bossAvoidDistance * (repelForce - 0.1f) * decreaseFactor);
 		}
 	}
@@ -224,6 +233,47 @@ void AMinionAIController::CheckNeighbours()
 		{
 			acceleration += (direction  /
 			distanceToPlayer * playerAvoidDistance * repelForce * decreaseFactor);
+		}
+	}
+}
+
+void AMinionAIController::Roaming()
+{
+	if (minionActor->isMelee)
+	{
+		FVector direction = -(minionActor->GetActorForwardVector());
+		isAvoiding = true;
+		acceleration += direction * (accelerationForce * decreaseFactor);
+
+		// Separation between boss
+		float distanceToBoss = FVector::Distance(bossController->bossActor->GetActorLocation(), minionActor->GetActorLocation());
+		if (distanceToBoss <= bossAvoidDistance)
+		{
+			FVector direction = minionActor->GetActorLocation() - bossController->bossActor->GetActorLocation();
+			direction.GetSafeNormal(1.0f);
+			direction.Normalize(1.0f);
+
+			acceleration += (direction /
+				distanceToBoss * bossAvoidDistance * (repelForce - 0.1f) * decreaseFactor);
+		}
+
+		// Separtion between Player	
+		if (distanceToPlayer < playerAvoidDistance)
+		{
+			FVector direction = minionActor->GetActorLocation() - playerCharacter->GetActorLocation();
+			direction.GetSafeNormal(1.0f);
+			direction.Normalize(1.0f);
+			isAvoiding = true;
+			if (!minionActor->inAtkRadius)
+			{
+				acceleration += (direction /
+					distanceToPlayer * playerAvoidDistance * repelForce * decreaseFactor) * currentVelocity.Size();
+			}
+			else
+			{
+				acceleration += (direction /
+					distanceToPlayer * playerAvoidDistance * repelForce * decreaseFactor);
+			}
 		}
 	}
 }
