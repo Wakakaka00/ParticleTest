@@ -44,6 +44,8 @@ public:
 	void Initialize(bool f);
 
 	bool inAtkRadius = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attack")
 	bool isAtk = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attack")
@@ -62,5 +64,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Minion Behavior")
 	void Kill();
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "Minion Behavior")
 	void Attack();
+
+	UFUNCTION(BlueprintCallable, Category = "Minion Behavior")
+	void DoDamage();
 };

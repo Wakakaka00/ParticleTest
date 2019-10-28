@@ -88,10 +88,9 @@ void AMinion::Kill()
 	Destroy();
 }
 
-void AMinion::Attack()
+void AMinion::DoDamage()
 {
 	attackCollider->SetCollisionProfileName(TEXT("Trigger"));
-	isAtk = true;
 }
 
 
