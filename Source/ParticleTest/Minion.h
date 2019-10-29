@@ -7,6 +7,15 @@
 #include "Components/CapsuleComponent.h"
 #include "Minion.generated.h"
 
+UENUM(BlueprintType)		//"BlueprintType" is essential to include
+enum class EnemyType : uint8
+{
+	NoType 	UMETA(DisplayName = "Notype"),
+	Melee 	UMETA(DisplayName = "Melee"),
+	Range	UMETA(DisplayName = "Range"),
+	Fire	UMETA(DisplayName = "Fire")
+};
+
 UCLASS()
 class PARTICLETEST_API AMinion : public AEnemy
 {
@@ -26,10 +35,9 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
-
-	/** Destroy the actor */
 	
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Enum)
+	EnemyType enemyType;
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

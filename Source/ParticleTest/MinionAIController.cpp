@@ -79,19 +79,31 @@ void AMinionAIController::Tick(float DeltaTime)
 		minionActor->LookAtPlayer();
 	}
 
-	if (minionActor->inAtkRadius && !minionActor->isAtk)
+	if (minionActor->enemyType == EnemyType::Melee || minionActor->enemyType == EnemyType::Fire)
 	{
-		minionActor->Attack();
-		currentVelocity = FVector::ZeroVector;
-		acceleration = FVector::ZeroVector;
+		if (minionActor->inAtkRadius && !minionActor->isAtk)
+		{
+			minionActor->Attack();
+			currentVelocity = FVector::ZeroVector;
+			acceleration = FVector::ZeroVector;
+		}
+	}
+	else if(minionActor->enemyType == EnemyType::Range)
+	{
+		if (FVector::Distance(minionActor->GetActorLocation(), playerCharacter->GetActorLocation()) >= 1300.0f && !minionActor->isAtk)
+		{
+			minionActor->Attack();
+			currentVelocity = FVector::ZeroVector;
+			acceleration = FVector::ZeroVector;
+		}
 	}
 }
 
 void AMinionAIController::MoveToPlayer()
 {
-	if (!minionActor->isFire)
+	if (minionActor->enemyType != EnemyType::Fire)
 	{
-		if (bossController->nearestMinionList.Contains(minionActor))
+		if (minionActor->enemyType == EnemyType::Melee)
 		{
 			if (!minionActor->inAtkRadius)
 			{
@@ -111,14 +123,14 @@ void AMinionAIController::MoveToPlayer()
 				
 			}
 		}
-		else if (bossController->nearestMinionList.Num() < 3)
+		else if (minionActor->enemyType == EnemyType::NoType)
 		{
 			minionActor->directionToPlayer = UKismetMathLibrary::GetDirectionUnitVector(minionActor->GetActorLocation(), playerCharacter->GetActorLocation());
 			minionActor->directionToPlayer.Z = 0.0f;
 			acceleration = minionActor->directionToPlayer * accelerationForce;
 			acceleration.Z = 0.0f;
 		}
-		else if (minionActor->isMelee == false)
+		else if (minionActor->enemyType == EnemyType::Range)
 		{
 			if (FVector::Distance(minionActor->GetActorLocation(), playerCharacter->GetActorLocation()) >= 1300.0f)
 			{
@@ -142,7 +154,6 @@ void AMinionAIController::MoveToPlayer()
 		{
 			if (!minionActor->inAtkRadius)
 			{
-				//MoveToLocation(playerCharacter->GetActorLocation(), 100.0f, false);
 				minionActor->directionToPlayer = UKismetMathLibrary::GetDirectionUnitVector(minionActor->GetActorLocation(), playerCharacter->GetActorLocation());
 				minionActor->directionToPlayer.Z = 0.0f;
 				acceleration = minionActor->directionToPlayer * accelerationForce;
@@ -155,9 +166,8 @@ void AMinionAIController::MoveToPlayer()
 					currentVelocity = FVector::ZeroVector;
 					acceleration = FVector::ZeroVector;
 				}
-			}
-		}
-		
+			}		
+		}		
 	}
 
 	CheckNeighbours();
@@ -256,7 +266,7 @@ void AMinionAIController::CheckNeighbours()
 
 void AMinionAIController::Roaming()
 {
-	if (minionActor->isMelee || minionActor->isFire)
+	if (minionActor->enemyType == EnemyType::Melee || minionActor->enemyType == EnemyType::Fire)
 	{
 		direction = -(minionActor->GetActorForwardVector());
 		isAvoiding = true;
@@ -291,6 +301,10 @@ void AMinionAIController::Roaming()
 					distanceToPlayer * playerAvoidDistance * repelForce * decreaseFactor);
 			}
 		}
+	}
+	else
+	{
+
 	}
 }
 
