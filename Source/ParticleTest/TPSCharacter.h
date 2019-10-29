@@ -152,6 +152,9 @@ public:
 		int HeavyChargeAttackCounterOrder;
 	UPROPERTY(BlueprintReadWrite, Category = "Melee Properties")
 		bool inAttackAnimation;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Evade Properties")
+		bool CanEvade = true;
 	
 
 	UPROPERTY(BlueprintReadWrite, Category = "Melee Properties")
