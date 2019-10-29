@@ -643,6 +643,7 @@ void ATPSCharacter::ResetCombo_Implementation()
 	inAttackAnimation = false;
 	PostCanContinueCombo = false;
 	HeavyChargeAttackCounterOrder = 0;
+	CanAttack = true;
 }
 
 void ATPSCharacter::ContinueCombo()
