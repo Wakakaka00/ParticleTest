@@ -16,7 +16,6 @@ class PARTICLETEST_API AMinionAIController : public AAIController
 	GENERATED_BODY()
 	
 private:
-	FVector acceleration;
 	FVector direction;
 
 	float distanceToPlayer;
@@ -58,6 +57,8 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	FVector currentVelocity;
+
+	FVector acceleration;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	float playerAvoidDistance;

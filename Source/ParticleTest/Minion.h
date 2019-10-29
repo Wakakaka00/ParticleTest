@@ -25,6 +25,8 @@ private:
 	class AMinionAIController* minionAI;
 	float atkResetDuration;
 	float atkResetTimer = 0.0f;
+	float stunTimer = 0.0f;
+	float stunDuration = 0.5f;
 
 public:
 	// Sets default values for this character's properties
@@ -80,4 +82,10 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Minion Behavior")
 	void DoDamage();
+
+	UFUNCTION(BlueprintCallable, Category = "Minion Behavior")
+	void Stun();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Minion Behavior")
+	bool isStunned = false;
 };
