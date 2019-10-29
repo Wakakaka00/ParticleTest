@@ -569,32 +569,47 @@ void ATPSCharacter::SwitchDone_Implementation()
 
 //Melee Combat
 
-void ATPSCharacter::DoAttacks()
+void ATPSCharacter::DoAttacks(bool DoCharge)
 {
 	switch (SwitchMode)
 	{
 		case ESwitchModeEnum::ES_Light:
 		{
-			if (AttackCounts == 0)
+			if (!DoCharge)
 			{
-				AttackCounts = 1;
-			}
-			else if (AttackCounts == 1)
-			{
+				if (AttackCounts == 0)
+				{
+					AttackCounts = 1;
+				}
+				else if (AttackCounts == 1)
+				{
+
+					AttackCounts = 2;
+				}
+				else if (AttackCounts == 2)
+				{
+
+					AttackCounts = 3;
+				}
+				else if (AttackCounts == 3)
+				{
+					//PlayAnimMontage(montages[2], 2.1f);
+					//AttackCounts = 0;
+				}
+				else if (AttackCounts == 7)
+				{
+					//PlayAnimMontage(montages[2], 2.1f);
+					AttackCounts = 1;
+				}
 				
-				AttackCounts = 2;
-			}
-			else if (AttackCounts == 2)
-			{
+
 				
-				AttackCounts = 3;
 			}
-			else if (AttackCounts == 3)
+			if (DoCharge)
 			{
-				//PlayAnimMontage(montages[2], 2.1f);
-				//AttackCounts = 0;
+				AttackCounts = 6;
 			}
-			 break;
+			break;
 		}
 		case ESwitchModeEnum::ES_Heavy:
 		{
@@ -627,34 +642,53 @@ void ATPSCharacter::ResetCombo_Implementation()
 	AttackCounts = 0;
 	inAttackAnimation = false;
 	PostCanContinueCombo = false;
+	HeavyChargeAttackCounterOrder = 0;
 }
 
 void ATPSCharacter::ContinueCombo()
 {
 	
-	if (CanContinueCombo)
+	
+	if (CanContinueCombo &&!ReservedChargedAttack)//Player clicked before post attack and it continue combo
 	{
 		CanContinueCombo = false;
-		DoAttacks();
+		DoAttacks(false);
 	}
-	else
+	else if (!CanContinueCombo&&ReservedChargedAttack)// player hold before attack finish
+	{
+		if (HeavyChargeAttackCounterOrder == AttackCounts)
+		{
+			ReservedChargedAttack = false;
+			HeavyChargeAttackCounterOrder = 0;
+			DoAttacks(true);
+		}
+		
+	}
+	else if (CanContinueCombo&&ReservedChargedAttack)// player hold before attack finish
+	{
+		
+		if (HeavyChargeAttackCounterOrder == AttackCounts)
+		{
+			CanContinueCombo = false;
+			ReservedChargedAttack = false;
+			HeavyChargeAttackCounterOrder = 0;
+			DoAttacks(true);
+		}
+		else
+		{
+			CanContinueCombo = false;
+			DoAttacks(false);
+		}
+		
+	}
+	 else if(!CanContinueCombo &&!ReservedChargedAttack)// Player didnt hold neither click so it give another oppotunity
 	{
 		PostCanContinueCombo = true;
 	}
 
 	// NEXT
 
-
-
-	if (ReservedChargedAttack)
-	{
-		PlayerAttackedLight();
-		ReservedChargedAttack = false;
-		if (GEngine)
-					{
-						GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Black, TEXT("YESDTE"));
-					}
-	}
+	
 }
 
 void ATPSCharacter::SetCanContinueCombo(bool b)
@@ -690,13 +724,15 @@ void ATPSCharacter::PlayerAttackedLight()
 	 else if(!inAttackAnimation && !CanContinueCombo) // First attack
 	{
 		inAttackAnimation = true;	
-		DoAttacks();
+		DoAttacks(false);
 	}
 	 else if (inAttackAnimation && PostCanContinueCombo && !CanContinueCombo)//Last phase after can combo event for any last chance
 	{
 		PostCanContinueCombo = false;
-		DoAttacks();
+		DoAttacks(false);
+		
 	}
+	
 	
 
 }

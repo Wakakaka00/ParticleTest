@@ -132,7 +132,7 @@ public:
 		TArray<UAnimMontage*>montages;
 
 	UFUNCTION( BlueprintCallable, Category = "Melee Properties")
-		void DoAttacks();
+		void DoAttacks(bool DoCharge);
 	UFUNCTION(BlueprintCallable, Category = "Melee Properties")
 		void PlayerAttackedLight();
 	UFUNCTION(BlueprintCallable, Category = "Melee Properties")
@@ -147,6 +147,8 @@ public:
 		void SetCanContinueCombo(bool b);
 	UPROPERTY(BlueprintReadWrite, Category = "Melee Properties")
 		int AttackCounts;
+	UPROPERTY(BlueprintReadWrite, Category = "Melee Properties")
+		int HeavyChargeAttackCounterOrder;
 	UPROPERTY(BlueprintReadWrite, Category = "Melee Properties")
 		bool inAttackAnimation;
 	
