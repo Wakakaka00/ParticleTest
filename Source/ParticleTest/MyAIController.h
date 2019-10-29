@@ -36,7 +36,8 @@ class PARTICLETEST_API AMyAIController : public AAIController
 		float drinkBloodTimer = 0.0f;
 		float spitTimer = 0.0f;
 		float yariThrowTimer = 0.0f;
-		float minionMaxDistance = 800.0f;
+		float minionMaxDistance = 1000.0f;
+		int updateDelay = 0;
 
 		bool isStart = true;
 
@@ -81,8 +82,9 @@ class PARTICLETEST_API AMyAIController : public AAIController
 
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
 		TArray<AMinion*> MinionList;
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
 		TArray<AMinion*> FireMinionList;
-
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
 		TArray<AMinion*> nearestMinionList;
 
 		UFUNCTION(BlueprintCallable, Category = "Boss Behavior")

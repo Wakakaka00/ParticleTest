@@ -30,6 +30,11 @@ void AMinionAIController::Tick(float DeltaTime)
 		RandomizeAroundRadius();
 	}
 	
+	if (minionActor->isStunned)
+	{
+		return;
+	}
+
 	if (playerCharacter && minionActor)
 	{			
 		distanceToPlayer = FVector::Distance(minionActor->GetActorLocation(), playerCharacter->GetActorLocation());

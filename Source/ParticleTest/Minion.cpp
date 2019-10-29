@@ -64,6 +64,16 @@ void AMinion::Tick(float DeltaTime)
 			isRoaming = false;
 		}
 	}
+
+	if (isStunned)
+	{
+		stunTimer += DeltaTime;
+		if (stunTimer >= stunDuration)
+		{
+			stunTimer = 0.0f;
+			isStunned = false;
+		}
+	}
 }
 
 // Called to bind functionality to input
@@ -97,7 +107,7 @@ void AMinion::Kill()
 	if(enemyType == EnemyType::Fire) minionAI->bossController->FireMinionList.Remove(this);
 	else
 	{
-		if (enemyType == EnemyType::Melee)
+		if (minionAI->bossController->nearestMinionList.Contains(this))
 		{
 			minionAI->bossController->nearestMinionList.Remove(this);
 		}
@@ -105,6 +115,14 @@ void AMinion::Kill()
 	}
 
 	Destroy();
+}
+
+void AMinion::Stun()
+{
+	stunTimer = 0.0f;
+	if (!isStunned) isStunned = true;
+	minionAI->currentVelocity = FVector::ZeroVector;
+	minionAI->acceleration = FVector::ZeroVector;
 }
 
 void AMinion::DoDamage()
