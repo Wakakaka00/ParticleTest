@@ -23,6 +23,7 @@ void AMinion::BeginPlay()
 	Super::BeginPlay();
 	minionAI = Cast<AMinionAIController>(GetController());
 	atkResetDuration = FMath::RandRange(3.0f, 5.0f);
+	enemyType = EnemyType::NoType;
 }
 
 // Called every frame
@@ -30,6 +31,18 @@ void AMinion::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);	
 	LookAtPlayer();
+	if (enemyType != EnemyType::Fire && enemyType != EnemyType::Melee)
+	{
+		if (minionAI->bossController->nearestMinionList.Num() >= 3)
+		{
+			enemyType = EnemyType::Range;
+		}
+		else
+		{
+			enemyType = EnemyType::NoType;
+		}
+	}	
+
 	/*if (isFire)
 	{
 		currentHealth -= DeltaTime * (maxHealth / 18.0f);
@@ -62,11 +75,11 @@ void AMinion::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void AMinion::Initialize(bool f)
 {
-	isFire = f;
 	if (f)
 	{
 		minionAI->accelerationForce = 0.7f;
 		minionAI->maxMagnitude = FMath::RandRange(5.8f,7.0f);
+		enemyType = EnemyType::Fire;
 	}
 }
 
@@ -81,8 +94,15 @@ void AMinion::LookAtPlayer()
 
 void AMinion::Kill()
 {
-	if(isFire) minionAI->bossController->FireMinionList.Remove(this);
-	else minionAI->bossController->MinionList.Remove(this);
+	if(enemyType == EnemyType::Fire) minionAI->bossController->FireMinionList.Remove(this);
+	else
+	{
+		if (enemyType == EnemyType::Melee)
+		{
+			minionAI->bossController->nearestMinionList.Remove(this);
+		}
+		minionAI->bossController->MinionList.Remove(this);
+	}
 
 	Destroy();
 }

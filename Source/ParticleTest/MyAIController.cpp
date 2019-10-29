@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "Runtime/Engine/Classes/Kismet/KismetMathLibrary.h"
 #include "TimerManager.h"
+#include "Minion.h"
 #include "Runtime/Core/Public/Math/Vector.h"
 
 
@@ -359,7 +360,7 @@ void AMyAIController::CheckNearestEnemy()
 			if (distance <= minionMaxDistance)
 			{
 				nearestMinionList.Add(MinionList[i]);
-				MinionList[i]->isMelee = true;
+				MinionList[i]->enemyType = EnemyType::Melee;
 			}
 		}	
 	}
@@ -369,7 +370,7 @@ void AMyAIController::CheckNearestEnemy()
 		float distance = FVector::Distance(nearestMinionList[i]->GetActorLocation(), playerCharacter->GetActorLocation());
 		if (distance > minionMaxDistance)
 		{
-			nearestMinionList[i]->isMelee = false;
+			MinionList[i]->enemyType = EnemyType::Range;
 			nearestMinionList.RemoveAt(i);
 		}
 	}
