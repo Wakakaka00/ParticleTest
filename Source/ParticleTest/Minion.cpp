@@ -97,7 +97,7 @@ void AMinion::Kill()
 	if(enemyType == EnemyType::Fire) minionAI->bossController->FireMinionList.Remove(this);
 	else
 	{
-		if (enemyType == EnemyType::Melee)
+		if (minionAI->bossController->nearestMinionList.Contains(this))
 		{
 			minionAI->bossController->nearestMinionList.Remove(this);
 		}
