@@ -714,6 +714,7 @@ void ATPSCharacter::Dash()
 
 void ATPSCharacter::PlayerAttackedLight()
 {
+	if (CanAttack == false)return;
 	
 	if (inAttackAnimation && !PostCanContinueCombo && !CanContinueCombo) // Second attack before postcancontinueattack
 	{
@@ -744,6 +745,7 @@ void ATPSCharacter::CancelAllCombats()
 	AttackCounts = 0;
 	inAttackAnimation = false;
 	PostCanContinueCombo = false;
+	
 }
 void ATPSCharacter::PushBack(float force, FVector pushLocation)
 {
