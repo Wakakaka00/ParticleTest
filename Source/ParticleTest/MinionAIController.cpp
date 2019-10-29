@@ -52,13 +52,26 @@ void AMinionAIController::Tick(float DeltaTime)
 
 		currentVelocity += acceleration;
 		currentVelocity = currentVelocity * 0.99f;
-		if (currentVelocity.SizeSquared() > maxMagnitude * maxMagnitude)
+		if (minionActor->isRoaming)
 		{
-			FVector temp = currentVelocity;
-			temp.GetSafeNormal(1.0f);
-			temp.Normalize(1.0f);
-			currentVelocity = temp * maxMagnitude;
+			if (currentVelocity.SizeSquared() > 2.2f * 2.2f)
+			{
+				FVector temp = currentVelocity;
+				temp.GetSafeNormal(1.0f);
+				temp.Normalize(1.0f);
+				currentVelocity = temp * 2.2f;
+			}
 		}
+		else
+		{
+			if (currentVelocity.SizeSquared() > maxMagnitude * maxMagnitude)
+			{
+				FVector temp = currentVelocity;
+				temp.GetSafeNormal(1.0f);
+				temp.Normalize(1.0f);
+				currentVelocity = temp * maxMagnitude;
+			}
+		}	
 
 		FHitResult HitResult;
 		minionActor->SetActorLocation(minionActor->GetActorLocation() + currentVelocity, true, &HitResult);
