@@ -686,7 +686,7 @@ void ATPSCharacter::ContinueCombo()
 	}
 	else if (!CanContinueCombo && !ReservedChargedAttack)// Player didnt hold neither click so it give another oppotunity
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Post time"));
+		
 		PostCanContinueCombo = true;
 		CanContinueCombo = false;
 		
