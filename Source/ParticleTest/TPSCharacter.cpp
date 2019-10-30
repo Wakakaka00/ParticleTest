@@ -571,6 +571,8 @@ void ATPSCharacter::SwitchDone_Implementation()
 
 void ATPSCharacter::DoAttacks(bool DoCharge)
 {
+	
+
 	switch (SwitchMode)
 	{
 		case ESwitchModeEnum::ES_Light:
@@ -579,35 +581,29 @@ void ATPSCharacter::DoAttacks(bool DoCharge)
 			{
 				if (AttackCounts == 0)
 				{
+					PlayAnimMontage(montages[0], 2.0f);
 					AttackCounts = 1;
 				}
 				else if (AttackCounts == 1)
 				{
-
+					PlayAnimMontage(montages[1], 2.0f);
 					AttackCounts = 2;
 				}
 				else if (AttackCounts == 2)
 				{
-
-					AttackCounts = 3;
+					PlayAnimMontage(montages[2], 2.0f);
+					AttackCounts = 0;
 				}
-				else if (AttackCounts == 3)
-				{
-					//PlayAnimMontage(montages[2], 2.1f);
-					//AttackCounts = 0;
-				}
-				else if (AttackCounts == 7)
-				{
-					//PlayAnimMontage(montages[2], 2.1f);
-					AttackCounts = 1;
-				}
+				
+				
 				
 
 				
 			}
 			if (DoCharge)
 			{
-				AttackCounts = 6;
+				PlayAnimMontage(montages[3], 0.3f);
+				
 			}
 			break;
 		}
@@ -654,7 +650,10 @@ void ATPSCharacter::ContinueCombo()
 	{
 		CanContinueCombo = false;
 		DoAttacks(false);
+		
+		
 	}
+	
 	else if (!CanContinueCombo&&ReservedChargedAttack)// player hold before attack finish
 	{
 		if (HeavyChargeAttackCounterOrder == AttackCounts)
@@ -662,6 +661,7 @@ void ATPSCharacter::ContinueCombo()
 			ReservedChargedAttack = false;
 			HeavyChargeAttackCounterOrder = 0;
 			DoAttacks(true);
+			;
 		}
 		
 	}
@@ -674,18 +674,24 @@ void ATPSCharacter::ContinueCombo()
 			ReservedChargedAttack = false;
 			HeavyChargeAttackCounterOrder = 0;
 			DoAttacks(true);
+			
 		}
 		else
 		{
 			CanContinueCombo = false;
 			DoAttacks(false);
+			
 		}
 		
 	}
-	 else if(!CanContinueCombo &&!ReservedChargedAttack)// Player didnt hold neither click so it give another oppotunity
+	else if (!CanContinueCombo && !ReservedChargedAttack)// Player didnt hold neither click so it give another oppotunity
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Post time"));
 		PostCanContinueCombo = true;
+		CanContinueCombo = false;
+		
 	}
+	
 
 	// NEXT
 
@@ -722,16 +728,20 @@ void ATPSCharacter::PlayerAttackedLight()
 		
 		CanContinueCombo = true;
 		
+		
 	}
 	 else if(!inAttackAnimation && !CanContinueCombo) // First attack
 	{
 		inAttackAnimation = true;	
 		DoAttacks(false);
+		
 	}
 	 else if (inAttackAnimation && PostCanContinueCombo && !CanContinueCombo)//Last phase after can combo event for any last chance
 	{
-		PostCanContinueCombo = false;
+	
 		DoAttacks(false);
+		PostCanContinueCombo = false;
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Press attack in Post"));
 		
 	}
 	
@@ -740,14 +750,7 @@ void ATPSCharacter::PlayerAttackedLight()
 }
 
 
-void ATPSCharacter::CancelAllCombats()
-{
-	CanContinueCombo = false;
-	AttackCounts = 0;
-	inAttackAnimation = false;
-	PostCanContinueCombo = false;
-	
-}
+
 void ATPSCharacter::PushBack(float force, FVector pushLocation)
 {
 	isPushingBack = true;

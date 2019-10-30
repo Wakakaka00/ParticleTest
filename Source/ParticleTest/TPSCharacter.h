@@ -141,8 +141,7 @@ public:
 		void ResetCombo();
 	UFUNCTION(BlueprintCallable, Category = "Melee Properties")
 		void ContinueCombo();
-	UFUNCTION(BlueprintCallable, Category = "Canceling Properties")
-		void CancelAllCombats();
+	
 
 	UFUNCTION( BlueprintCallable, Category = "Melee Properties")
 		void SetCanContinueCombo(bool b);
