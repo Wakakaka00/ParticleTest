@@ -8,7 +8,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "GameFramework/Controller.h"
 #include "Engine.h"
-#include "Actor.h"
+#include "GameFramework/Actor.h"
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h" 
 #include "Kismet/GameplayStatics.h"
