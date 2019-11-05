@@ -7,6 +7,7 @@
 #include "BossCharacter.h"
 #include "Components/StaticMeshComponent.h"
 #include "Yari.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "MyAIController.generated.h"
 
 UCLASS()
@@ -21,7 +22,6 @@ class PARTICLETEST_API AMyAIController : public AAIController
 		float bossLastDistance;
 		FVector backJumpLocation;
 		FVector playerForcePushLocation;
-		
 
 		void JumpSlamDashLerp(float DeltaSeconds);
 		void BackJump(float DeltaSeconds);
@@ -39,7 +39,17 @@ class PARTICLETEST_API AMyAIController : public AAIController
 		float minionMaxDistance = 1000.0f;
 		int updateDelay = 0;
 
+		float findPlayerTimer = 0.0f;
+		float findPlayerDuration = 0.5f;
+
+		FVector directionMoving;
+		FVector acceleration;
+		FVector currentVelocity;
+
 		void CheckNearestEnemy();
+		void DashToPortalOrPlayer(float DeltaSeconds);
+		void LookAtPortal();
+		void LookAtVelocity();
 
 	public:
 		AMyAIController();
@@ -97,4 +107,19 @@ class PARTICLETEST_API AMyAIController : public AAIController
 
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
 		bool isStart = true; //move back to Private after test
+
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Portal")
+			float accelerationForce;
+
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Portal")
+			float maxMagnitude;
+
+		UFUNCTION(BlueprintCallable, Category = "Boss Behavior")
+			void ResetVelocity();
+
+		UFUNCTION(BlueprintCallable, Category = "Portal")
+		void FindPortalDirection();
+
+		UFUNCTION(BlueprintCallable, Category = "Portal")
+		void FindPlayerDirection();
 };

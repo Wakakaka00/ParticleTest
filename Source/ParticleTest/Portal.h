@@ -14,6 +14,8 @@ class PARTICLETEST_API APortal : public AActor
 public:	
 	// Sets default values for this actor's properties
 	APortal();
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Placement")
+	bool isLeft = false;
 
 protected:
 	// Called when the game starts or when spawned
