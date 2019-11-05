@@ -78,3 +78,79 @@ void ABossCharacter::Attack()
 
 }
 
+void ABossCharacter::FindNearestPortal()
+{	
+	if (dashCount == 0)
+	{
+		targetPortal = portalList[0];
+	}
+	else
+	{
+		for (int i = 0; i < portalList.Num(); i++)
+		{
+			if (isLeft)
+			{
+				if (!portalList[i]->isLeft)
+				{
+					targetPortal = portalList[i];
+					break;
+				}
+			}
+			else
+			{
+				if (portalList[i]->isLeft)
+				{
+					targetPortal = portalList[i];
+					break;
+				}
+			}
+		}
+	}
+	for (int i = 0; i < portalList.Num(); i++)
+	{
+		if (portalList[i] != targetPortal)
+		{
+			if (dashCount == 0)
+			{
+				float shortestDistance = FVector::Distance(targetPortal->GetActorLocation(), hitList[0].ImpactPoint);
+				float distance = FVector::Distance(portalList[i]->GetActorLocation(), hitList[0].ImpactPoint);
+				if (distance < shortestDistance)
+				{
+					targetPortal = portalList[i];
+				}
+			}
+			else
+			{
+				if (isLeft)
+				{
+					if (!portalList[i]->isLeft)
+					{
+						float shortestDistance = FVector::Distance(targetPortal->GetActorLocation(), hitList[1].ImpactPoint);
+						float distance = FVector::Distance(portalList[i]->GetActorLocation(), hitList[1].ImpactPoint);
+						if (distance < shortestDistance)
+						{
+							targetPortal = portalList[i];
+						}
+					}
+				}
+				else
+				{
+					if (portalList[i]->isLeft)
+					{
+						float shortestDistance = FVector::Distance(targetPortal->GetActorLocation(), hitList[1].ImpactPoint);
+						float distance = FVector::Distance(portalList[i]->GetActorLocation(), hitList[1].ImpactPoint);
+						if (distance < shortestDistance)
+						{
+							targetPortal = portalList[i];
+						}
+					}
+				}
+			}
+		}
+	}
+
+	isLeft = targetPortal->isLeft;
+}
+
+
+

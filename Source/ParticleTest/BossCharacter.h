@@ -9,6 +9,7 @@
 #include "Minion.h"
 #include "Enemy.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "Portal.h"
 #include "BossCharacter.generated.h"
 
 UCLASS()
@@ -17,7 +18,7 @@ class PARTICLETEST_API ABossCharacter : public AEnemy
 	GENERATED_BODY()
 
 private:
-	
+	bool isLeft = false; // portal
 
 protected:
 	// Called when the game starts or when spawned
@@ -33,6 +34,11 @@ public:
 
 	UProjectileMovementComponent* ProjectileMovement;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Portal")
+	TArray <APortal*> portalList;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Portal")
+	APortal* targetPortal;
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -51,6 +57,9 @@ public:
 		void JumpDash(float DeltaSeconds);
 	UFUNCTION(BlueprintImplementableEvent, Category = "Boss Behavior")
 		void CallBackYari();
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable,Category = "Portal")
+		void PortalDash();
+
 	UFUNCTION(BlueprintImplementableEvent,BlueprintCallable, Category = "Boss Behavior")
 		void JumpBackThrone();
 
@@ -68,6 +77,15 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Damage")
 	int damageTaken = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Portal")
+	int dashCount = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Portal")
+	bool isPortalDash = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Portal")
+	TArray<FHitResult> hitList;
 
 	UPROPERTY(EditAnywhere, Category = "Boss Behavior")
 	TSubclassOf<ABloodProjectile> BloodProjectileBlueprint;
@@ -123,9 +141,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Boss Behavior")
 	void SetPushCollison(bool b);
 
+	UFUNCTION(BlueprintCallable, Category = "Boss Behavior")
+	void FindNearestPortal();
+
 	void Attack();
 
-	FVector playerLastPos; // temp
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Location")
+	FVector playerLastPos;
 
 	FVector handSocketLocation;
 
