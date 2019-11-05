@@ -84,6 +84,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Portal")
 	bool isPortalDash = false;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Portal")
+	TArray<FHitResult> hitList;
+
 	UPROPERTY(EditAnywhere, Category = "Boss Behavior")
 	TSubclassOf<ABloodProjectile> BloodProjectileBlueprint;
 
@@ -143,8 +146,8 @@ public:
 
 	void Attack();
 
-	
-	FVector playerLastPos; // temp
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Location")
+	FVector playerLastPos;
 
 	FVector handSocketLocation;
 

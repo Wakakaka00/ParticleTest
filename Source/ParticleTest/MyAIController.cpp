@@ -145,7 +145,7 @@ void AMyAIController::Tick(float DeltaSeconds)
 		// Portal Dash
 		if (bossActor->isPortalDash)
 		{
-
+			DashToPortalOrPlayer(DeltaSeconds);
 		}
 	}
 	else // isStart
@@ -387,8 +387,97 @@ void AMyAIController::CheckNearestEnemy()
 	}
 }
 
-void AMyAIController::DashToPortal()
+void AMyAIController::DashToPortalOrPlayer(float DeltaSeconds)
 {
-	
+	if (bossActor->dashCount < 4)
+	{
+		acceleration = directionMoving * accelerationForce;
+		acceleration.Z = 0.0f;
+
+		currentVelocity += acceleration;
+		currentVelocity = currentVelocity * 0.99f;
+
+		if (currentVelocity.SizeSquared() > maxMagnitude * maxMagnitude)
+		{
+			FVector temp = currentVelocity;
+			temp.GetSafeNormal(1.0f);
+			temp.Normalize(1.0f);
+			currentVelocity = temp * maxMagnitude;
+		}
+
+		FHitResult HitResult;
+		bossActor->SetActorLocation(bossActor->GetActorLocation() + currentVelocity, false, &HitResult);
+
+		LookAtPortal();
+	}
+	else
+	{
+		findPlayerTimer += DeltaSeconds;
+		if (findPlayerTimer >= findPlayerDuration)
+		{
+			directionMoving = UKismetMathLibrary::GetDirectionUnitVector(bossActor->GetActorLocation(), playerCharacter->GetActorLocation());
+			directionMoving.Z = 0.0f;
+			findPlayerTimer = 0.0f;
+			playerLastPos = playerCharacter->GetActorLocation();
+			acceleration = FVector::ZeroVector;
+			currentVelocity = currentVelocity / 3.0f;
+		}
+		acceleration = directionMoving * accelerationForce;
+		acceleration.Z = 0.0f;
+
+		currentVelocity += acceleration;
+		currentVelocity = currentVelocity * 0.99f;
+
+		if (currentVelocity.SizeSquared() > maxMagnitude * maxMagnitude)
+		{
+			FVector temp = currentVelocity;
+			temp.GetSafeNormal(1.0f);
+			temp.Normalize(1.0f);
+			currentVelocity = temp * maxMagnitude;
+		}
+
+		FHitResult HitResult;
+		bossActor->SetActorLocation(bossActor->GetActorLocation() + currentVelocity, false, &HitResult);
+		//bossActor->LookAtPlayer();
+		LookAtVelocity();
+		if (FVector::Distance(bossActor->GetActorLocation(), playerLastPos) <= 400.0f)
+		{
+			bossActor->isPortalDash = false;
+			bossActor->isAtk = false;
+			bossActor->dashCount = 0;
+			ResetVelocity();
+		}
+	}
+}
+
+void AMyAIController::FindPortalDirection()
+{
+	directionMoving = UKismetMathLibrary::GetDirectionUnitVector(bossActor->GetActorLocation(), bossActor->targetPortal->GetActorLocation());
+	directionMoving.Z = 0.0f;
+}
+
+void AMyAIController::FindPlayerDirection()
+{
+	directionMoving = UKismetMathLibrary::GetDirectionUnitVector(bossActor->GetActorLocation(), playerCharacter->GetActorLocation());
+	directionMoving.Z = 0.0f;
+	playerLastPos = playerCharacter->GetActorLocation();
+}
+
+void AMyAIController::LookAtVelocity()
+{
+	FRotator Rot = FRotationMatrix::MakeFromX(currentVelocity).Rotator();
+	bossActor->SetActorRotation(Rot);
+}
+
+void AMyAIController::LookAtPortal()
+{
+	FRotator Rot = FRotationMatrix::MakeFromX(directionMoving).Rotator();
+	bossActor->SetActorRotation(Rot);
+}
+
+void AMyAIController::ResetVelocity()
+{
+	currentVelocity = FVector::ZeroVector;
+	acceleration = FVector::ZeroVector;
 }
 

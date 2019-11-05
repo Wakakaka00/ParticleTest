@@ -112,8 +112,8 @@ void ABossCharacter::FindNearestPortal()
 		{
 			if (dashCount == 0)
 			{
-				float shortestDistance = FVector::Distance(targetPortal->GetActorLocation(), playerPawn->GetActorLocation());
-				float distance = FVector::Distance(portalList[i]->GetActorLocation(), playerPawn->GetActorLocation());
+				float shortestDistance = FVector::Distance(targetPortal->GetActorLocation(), hitList[0].ImpactPoint);
+				float distance = FVector::Distance(portalList[i]->GetActorLocation(), hitList[0].ImpactPoint);
 				if (distance < shortestDistance)
 				{
 					targetPortal = portalList[i];
@@ -125,8 +125,8 @@ void ABossCharacter::FindNearestPortal()
 				{
 					if (!portalList[i]->isLeft)
 					{
-						float shortestDistance = FVector::Distance(targetPortal->GetActorLocation(), playerPawn->GetActorLocation());
-						float distance = FVector::Distance(portalList[i]->GetActorLocation(), playerPawn->GetActorLocation());
+						float shortestDistance = FVector::Distance(targetPortal->GetActorLocation(), hitList[1].ImpactPoint);
+						float distance = FVector::Distance(portalList[i]->GetActorLocation(), hitList[1].ImpactPoint);
 						if (distance < shortestDistance)
 						{
 							targetPortal = portalList[i];
@@ -137,8 +137,8 @@ void ABossCharacter::FindNearestPortal()
 				{
 					if (portalList[i]->isLeft)
 					{
-						float shortestDistance = FVector::Distance(targetPortal->GetActorLocation(), playerPawn->GetActorLocation());
-						float distance = FVector::Distance(portalList[i]->GetActorLocation(), playerPawn->GetActorLocation());
+						float shortestDistance = FVector::Distance(targetPortal->GetActorLocation(), hitList[1].ImpactPoint);
+						float distance = FVector::Distance(portalList[i]->GetActorLocation(), hitList[1].ImpactPoint);
 						if (distance < shortestDistance)
 						{
 							targetPortal = portalList[i];
@@ -146,9 +146,11 @@ void ABossCharacter::FindNearestPortal()
 					}
 				}
 			}
-		}		
+		}
 	}
 
 	isLeft = targetPortal->isLeft;
 }
+
+
 

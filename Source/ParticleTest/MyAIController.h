@@ -39,7 +39,17 @@ class PARTICLETEST_API AMyAIController : public AAIController
 		float minionMaxDistance = 1000.0f;
 		int updateDelay = 0;
 
+		float findPlayerTimer = 0.0f;
+		float findPlayerDuration = 0.5f;
+
+		FVector directionMoving;
+		FVector acceleration;
+		FVector currentVelocity;
+
 		void CheckNearestEnemy();
+		void DashToPortalOrPlayer(float DeltaSeconds);
+		void LookAtPortal();
+		void LookAtVelocity();
 
 	public:
 		AMyAIController();
@@ -78,9 +88,6 @@ class PARTICLETEST_API AMyAIController : public AAIController
 		UFUNCTION(BlueprintCallable, Category = "Boss Behavior")
 		void CallBackYari();
 
-		UFUNCTION(BlueprintCallable, Category = "Boss Behavior")
-		void DashToPortal();
-
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
 		TArray<AMinion*> MinionList;
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
@@ -91,7 +98,6 @@ class PARTICLETEST_API AMyAIController : public AAIController
 		UFUNCTION(BlueprintCallable, Category = "Boss Behavior")
 		void AddMinion(AMinion * minion);
 
-
 		void AddFireMinion(AMinion * minion);
 
 		FTimerHandle SpitTimer;
@@ -101,4 +107,19 @@ class PARTICLETEST_API AMyAIController : public AAIController
 
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
 		bool isStart = true; //move back to Private after test
+
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Portal")
+			float accelerationForce;
+
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Portal")
+			float maxMagnitude;
+
+		UFUNCTION(BlueprintCallable, Category = "Boss Behavior")
+			void ResetVelocity();
+
+		UFUNCTION(BlueprintCallable, Category = "Portal")
+		void FindPortalDirection();
+
+		UFUNCTION(BlueprintCallable, Category = "Portal")
+		void FindPlayerDirection();
 };
