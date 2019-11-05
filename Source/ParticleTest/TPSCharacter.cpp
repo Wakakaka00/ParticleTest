@@ -505,8 +505,7 @@ void ATPSCharacter::SwitchRight_Implementation()
 					if(!MaybeSwitchDown)MaybeSwitchDown = UKismetMathLibrary::InRange_FloatFloat(selectFloat3, 145.0f ,180.0f);
 					if (!MaybeSwitchUp)MaybeSwitchUp = UKismetMathLibrary::InRange_FloatFloat(selectFloat3, 0.0f, 30.0f);
 					FString TheFloatStr = FString::SanitizeFloat(selectFloat3);
-					if (GEngine)
-						GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TheFloatStr);			
+								
 
 					/*if (GEngine)
 					{
@@ -582,6 +581,7 @@ void ATPSCharacter::DoAttacks(bool DoCharge)
 				if (AttackCounts == 0)
 				{
 					PlayAnimMontage(montages[0], 2.0f);
+					
 					AttackCounts = 1;
 				}
 				else if (AttackCounts == 1)
@@ -600,7 +600,7 @@ void ATPSCharacter::DoAttacks(bool DoCharge)
 
 				
 			}
-			if (DoCharge)
+			else if (DoCharge)
 			{
 				PlayAnimMontage(montages[3], 0.3f);
 				
@@ -723,7 +723,7 @@ void ATPSCharacter::PlayerAttackedLight()
 {
 	if (CanAttack == false)return;
 	
-	if (inAttackAnimation && !PostCanContinueCombo && !CanContinueCombo) // Second attack before postcancontinueattack
+	else if (inAttackAnimation && !PostCanContinueCombo && !CanContinueCombo) // Second attack before postcancontinueattack
 	{
 		
 		CanContinueCombo = true;
