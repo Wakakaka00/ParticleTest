@@ -7,6 +7,7 @@
 #include "BossCharacter.h"
 #include "Components/StaticMeshComponent.h"
 #include "Yari.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "MyAIController.generated.h"
 
 UCLASS()
@@ -21,7 +22,6 @@ class PARTICLETEST_API AMyAIController : public AAIController
 		float bossLastDistance;
 		FVector backJumpLocation;
 		FVector playerForcePushLocation;
-		
 
 		void JumpSlamDashLerp(float DeltaSeconds);
 		void BackJump(float DeltaSeconds);
@@ -78,6 +78,9 @@ class PARTICLETEST_API AMyAIController : public AAIController
 		UFUNCTION(BlueprintCallable, Category = "Boss Behavior")
 		void CallBackYari();
 
+		UFUNCTION(BlueprintCallable, Category = "Boss Behavior")
+		void DashToPortal();
+
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
 		TArray<AMinion*> MinionList;
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
@@ -87,6 +90,7 @@ class PARTICLETEST_API AMyAIController : public AAIController
 
 		UFUNCTION(BlueprintCallable, Category = "Boss Behavior")
 		void AddMinion(AMinion * minion);
+
 
 		void AddFireMinion(AMinion * minion);
 

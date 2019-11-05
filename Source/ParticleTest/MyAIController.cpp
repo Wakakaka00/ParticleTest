@@ -141,6 +141,12 @@ void AMyAIController::Tick(float DeltaSeconds)
 			bossActor->JumpDash(DeltaSeconds);
 			bossActor->isOnThrone = false; // Move it not tick
 		}
+
+		// Portal Dash
+		if (bossActor->isPortalDash)
+		{
+
+		}
 	}
 	else // isStart
 	{
@@ -379,6 +385,10 @@ void AMyAIController::CheckNearestEnemy()
 		}
 		updateDelay = 0;
 	}
+}
+
+void AMyAIController::DashToPortal()
+{
 	
 }
 
