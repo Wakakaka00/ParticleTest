@@ -39,8 +39,6 @@ class PARTICLETEST_API AMyAIController : public AAIController
 		float minionMaxDistance = 1000.0f;
 		int updateDelay = 0;
 
-		bool isStart = true;
-
 		void CheckNearestEnemy();
 
 	public:
@@ -96,4 +94,7 @@ class PARTICLETEST_API AMyAIController : public AAIController
 
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
 		FVector bossLastPos; //move back to Private after test
+
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
+		bool isStart = true; //move back to Private after test
 };

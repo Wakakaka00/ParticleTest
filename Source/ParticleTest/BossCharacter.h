@@ -33,6 +33,8 @@ public:
 
 	UProjectileMovementComponent* ProjectileMovement;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
+	TArray <class APortal*> portalList;
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -51,6 +53,9 @@ public:
 		void JumpDash(float DeltaSeconds);
 	UFUNCTION(BlueprintImplementableEvent, Category = "Boss Behavior")
 		void CallBackYari();
+	UFUNCTION(BlueprintImplementableEvent, Category = "Boss Behavior")
+		void PortalDash();
+
 	UFUNCTION(BlueprintImplementableEvent,BlueprintCallable, Category = "Boss Behavior")
 		void JumpBackThrone();
 
