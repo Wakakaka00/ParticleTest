@@ -370,21 +370,22 @@ void AMyAIController::CheckNearestEnemy()
 			}
 		}	
 	}
-	updateDelay += 1;
 
-	if (updateDelay >= 5)
-	{
+	//updateDelay += 1;
+
+	//if (updateDelay >= 3)
+	//{
 		for (int i = 0; i < nearestMinionList.Num(); i++)
 		{
 			float distance = FVector::Distance(nearestMinionList[i]->GetActorLocation(), playerCharacter->GetActorLocation());
 			if (distance > minionMaxDistance)
 			{
-				MinionList[i]->enemyType = EnemyType::Range;
+				nearestMinionList[i]->enemyType = EnemyType::Range;
 				nearestMinionList.RemoveAt(i);
 			}
 		}
-		updateDelay = 0;
-	}
+	//	updateDelay = 0;
+	//}
 }
 
 void AMyAIController::DashToPortalOrPlayer(float DeltaSeconds)

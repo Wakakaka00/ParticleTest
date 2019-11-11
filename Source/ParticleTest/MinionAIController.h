@@ -36,6 +36,9 @@ private:
 	FVector targetPos;
 	float decreaseFactor = 0.07f;
 	bool isAvoiding = false;
+	float angle = 0.0f;
+	bool roamLeft = false;
+	int findLineDelay = 0;
 
 public:
 	AMinionAIController();

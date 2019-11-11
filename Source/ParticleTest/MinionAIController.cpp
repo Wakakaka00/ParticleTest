@@ -46,11 +46,12 @@ void AMinionAIController::Tick(float DeltaTime)
 		{
 			if (minionActor->inAtkRadius == true)  minionActor->inAtkRadius = false;
 		}
-		if (!minionActor->isRoaming)
+		if (!minionActor->isRoaming && !minionActor->isAtk)
 		{
 			MoveToPlayer();
+			angle = 0.0f;
 		}
-		else
+		else if(minionActor->isRoaming)
 		{
 			Roaming();
 		}
@@ -78,10 +79,13 @@ void AMinionAIController::Tick(float DeltaTime)
 			}
 		}	
 
-		FHitResult HitResult;
-		minionActor->SetActorLocation(minionActor->GetActorLocation() + currentVelocity, true, &HitResult);
 
-		minionActor->LookAtPlayer();
+			FHitResult HitResult;
+			minionActor->SetActorLocation(minionActor->GetActorLocation() + currentVelocity, true, &HitResult);
+
+			minionActor->LookAtPlayer();
+
+	
 	}
 
 	if (minionActor->enemyType == EnemyType::Melee || minionActor->enemyType == EnemyType::Fire)
@@ -97,12 +101,23 @@ void AMinionAIController::Tick(float DeltaTime)
 	{
 		if (FVector::Distance(minionActor->GetActorLocation(), playerCharacter->GetActorLocation()) >= 1300.0f && !minionActor->isAtk)
 		{	
-			if (minionActor->FindLineOfSight())
+			findLineDelay += 1;
+			if (findLineDelay >= 5)
 			{
-				minionActor->Attack();
-			}		
-			currentVelocity = FVector::ZeroVector;
-			acceleration = FVector::ZeroVector;
+				findLineDelay = 0;
+				if (minionActor->FindLineOfSight())
+				{
+					currentVelocity = FVector::ZeroVector;
+					acceleration = FVector::ZeroVector;
+					minionActor->isRoaming = false;
+					minionActor->Attack();
+					roamLeft = FMath::RandRange(0, 2);
+				}
+				else
+				{
+					if (!minionActor->isRoaming) minionActor->isRoaming = true;
+				}
+			}			
 		}
 	}
 }
@@ -127,8 +142,7 @@ void AMinionAIController::MoveToPlayer()
 				{
 					currentVelocity = FVector::ZeroVector;
 					acceleration = FVector::ZeroVector;
-				}
-				
+				}	
 			}
 		}
 		else if (minionActor->enemyType == EnemyType::NoType)
@@ -140,7 +154,8 @@ void AMinionAIController::MoveToPlayer()
 		}
 		else if (minionActor->enemyType == EnemyType::Range)
 		{
-			if (FVector::Distance(minionActor->GetActorLocation(), playerCharacter->GetActorLocation()) >= 1300.0f)
+			float distance = FVector::Distance(minionActor->GetActorLocation(), playerCharacter->GetActorLocation());
+			if (distance >= 1300.0f && distance <= 1600.0f)
 			{
 				if (currentVelocity != FVector::ZeroVector)
 				{	
@@ -311,8 +326,29 @@ void AMinionAIController::Roaming()
 		}
 	}
 	else if(minionActor->enemyType == EnemyType::Range)
-	{
+	{	
+		if (angle == 0.0f)
+		{
+			acceleration = FVector::ZeroVector;
+			currentVelocity = FVector::ZeroVector;
+		}
+		
+		if (angle >= 360.0f || angle <= -360.0f)
+		{
+			angle = 0.001f;
+		}
 
+		if(!roamLeft) angle += 0.001f;
+		else angle -= 0.001f;
+		float x = distanceToPlayer * sin(angle);
+		float y = distanceToPlayer * cos(angle);
+
+		FVector nextPos = FVector(x + playerCharacter->GetActorLocation().X, y + playerCharacter->GetActorLocation().Y, minionActor->GetActorLocation().Z);
+		direction = UKismetMathLibrary::GetDirectionUnitVector(minionActor->GetActorLocation(), nextPos);
+
+		acceleration += direction * accelerationForce;
+
+		CheckNeighbours();
 	}
 }
 
