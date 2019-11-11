@@ -96,8 +96,11 @@ void AMinionAIController::Tick(float DeltaTime)
 	else if(minionActor->enemyType == EnemyType::Range)
 	{
 		if (FVector::Distance(minionActor->GetActorLocation(), playerCharacter->GetActorLocation()) >= 1300.0f && !minionActor->isAtk)
-		{
-			minionActor->Attack();
+		{	
+			if (minionActor->FindLineOfSight())
+			{
+				minionActor->Attack();
+			}		
 			currentVelocity = FVector::ZeroVector;
 			acceleration = FVector::ZeroVector;
 		}
@@ -307,7 +310,7 @@ void AMinionAIController::Roaming()
 			}
 		}
 	}
-	else
+	else if(minionActor->enemyType == EnemyType::Range)
 	{
 
 	}

@@ -88,4 +88,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Minion Behavior")
 	bool isStunned = false;
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Minion Behavior")
+	bool FindLineOfSight();
 };
