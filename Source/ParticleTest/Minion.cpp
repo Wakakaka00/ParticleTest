@@ -117,6 +117,7 @@ void AMinion::Kill()
 		minionAI->bossController->MinionList.Remove(this);
 	}
 
+	DestroyShootingLine();
 	Destroy();
 }
 
@@ -168,6 +169,19 @@ void AMinion::RepositionShootingPoint()
 		location = GetActorLocation() + location * (distanceBetweenPoint * (i +1));
 		shootingLine[i]->SetActorLocation(location);
 	}
+}
+
+void AMinion::DestroyShootingLine()
+{
+	if (shootingLine.Num() > 0)
+	{
+		for (int i = 0; i < shootingLine.Num(); i++)
+		{
+			shootingLine[i]->Destroy();
+		}
+
+		shootingLine.Empty();
+	}	
 }
 
 

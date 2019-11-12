@@ -26,6 +26,7 @@ private:
 	ACharacter* playerCharacter;
 	ATPSCharacter* playerActor;
 	class AMyAIController* bossAI;
+	bool isDamaged = false;
 
 protected:
 	// Called when the game starts or when spawned
