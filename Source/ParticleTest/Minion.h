@@ -98,6 +98,11 @@ public:
 
 	TArray<AActor*> shootingLine;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Minion Behavior")
+	bool isShooting = false;
+
 	void SpawnShootingPoint();
 	void RepositionShootingPoint();
+	UFUNCTION(BlueprintCallable, Category = "Minion Behavior")
+	void DestroyShootingLine();
 };

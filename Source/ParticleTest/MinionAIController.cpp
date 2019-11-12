@@ -117,12 +117,20 @@ void AMinionAIController::Tick(float DeltaTime)
 				}
 			}			
 		}
+		//else if (FVector::Distance(minionActor->GetActorLocation(), playerCharacter->GetActorLocation()) >= 1300.0f && minionActor->isAtk)
+		//{
+		//	if (!minionActor->isRoaming) minionActor->isRoaming = true;
+		//}
 	}
 
 	// Range attack line of sight points
-	if (minionActor->enemyType == EnemyType::Range && minionActor->isAtk)
+	if (minionActor->enemyType == EnemyType::Range)
 	{
-		//minionActor->SpawnShootingPoint();
+		if (minionActor->isShooting)
+		{
+			minionActor->SpawnShootingPoint();
+			minionActor->RepositionShootingPoint();
+		}
 	}
 }
 
@@ -295,24 +303,27 @@ void AMinionAIController::Avoidance()
 	{
 		for (int j = 0; j < bossController->MinionList[i]->shootingLine.Num(); j++)
 		{	
-			FVector point = bossController->MinionList[i]->shootingLine[j]->GetActorLocation();
-			float distanceWithLine = FVector::Distance(point, minionActor->GetActorLocation());
-			if (distanceWithLine < boidRadius)
+			if (bossController->MinionList[i]->shootingLine[j])
 			{
-				direction = minionActor->GetActorLocation() - point;
-				direction.GetSafeNormal(1.0f);
-				direction.Normalize(1.0f);
-				if (!minionActor->inAtkRadius)
+				FVector point = bossController->MinionList[i]->shootingLine[j]->GetActorLocation();
+				float distanceWithLine = FVector::Distance(point, minionActor->GetActorLocation());
+				if (distanceWithLine < boidRadius)
 				{
-					acceleration += (direction /
-						distanceWithLine * boidRadius * repelForce * decreaseFactor) * currentVelocity.Size();
+					direction = minionActor->GetActorLocation() - point;
+					direction.GetSafeNormal(1.0f);
+					direction.Normalize(1.0f);
+					if (!minionActor->inAtkRadius)
+					{
+						acceleration += (direction /
+							distanceWithLine * boidRadius * repelForce * decreaseFactor) * currentVelocity.Size();
+					}
+					else
+					{
+						acceleration += (direction /
+							distanceWithLine * boidRadius *(repelForce - 0.1f)* decreaseFactor);
+					}
 				}
-				else
-				{
-					acceleration += (direction /
-						distanceWithLine * boidRadius *(repelForce - 0.1f)* decreaseFactor);
-				}
-			}
+			}			
 		}		
 	}
 }
