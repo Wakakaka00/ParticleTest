@@ -38,12 +38,7 @@ void ATPSCharacter::BeginPlay()
 // Called every frame
 void ATPSCharacter::Tick(float DeltaTime)
 {
-	Super::Tick(DeltaTime);
-	if (TargetLocked)
-	{
-		
-	}
-	
+	Super::Tick(DeltaTime);	
 	if (isPushingBack)
 	{
 		pushBackTimer += DeltaTime;
@@ -76,42 +71,13 @@ void ATPSCharacter::SwitchToBoss_Implementation()
 		NearestTarget->CallFunctionByNameWithArguments(TEXT("LockOnFlip"), ar, NULL, true);
 		UKismetSystemLibrary::K2_PauseTimer(this, TEXT("ToggleLockOn"));
 		NearestTarget = NULL;
-
-
-
 	}
 	else
 	{
 		EnemyElement = bossActor;
 		LockOnDone();
 		SetLockOnToTarget();
-		/*
-
-		ClosestTargetDistance = MaximumDistance;
-		TArray<AActor*> FoundActors;
-
-		if (OnlyBoss)UGameplayStatics::GetAllActorsWithTag(GetWorld(), TEXT("Boss"), FoundActors);
-		else if (!OnlyBoss)UGameplayStatics::GetAllActorsWithTag(GetWorld(), enemyTag, FoundActors);
-
-		for (int i = 0; i < FoundActors.Num(); i++)
-		{
-			if (FoundActors[i]->IsA(AEnemy::StaticClass()))
-			{
-				AEnemy* enemy = Cast<AEnemy>(FoundActors[i]);
-				if (enemy->CanBeTargeted )
-				{
-					EnemyElement = enemy;
-					float distanceToPlayer = EnemyElement->PlayerToEnemyDistance;
-					if (distanceToPlayer < ClosestTargetDistance)
-					{
-						LockOnDone();
-					}
-
-				}
-			}
-		}
-		SetLockOnToTarget();
-		*/
+		
 	}
 }
 
@@ -133,33 +99,7 @@ void ATPSCharacter::LockOnFunction_Implementation(bool OnlyBoss)
 		EnemyElement = bossActor;
 		LockOnDone();
 		SetLockOnToTarget();
-		/*
-	
-		ClosestTargetDistance = MaximumDistance;
-		TArray<AActor*> FoundActors;
 		
-		if (OnlyBoss)UGameplayStatics::GetAllActorsWithTag(GetWorld(), TEXT("Boss"), FoundActors);
-		else if (!OnlyBoss)UGameplayStatics::GetAllActorsWithTag(GetWorld(), enemyTag, FoundActors);
-	
-		for (int i = 0; i < FoundActors.Num(); i++)
-		{
-			if (FoundActors[i]->IsA(AEnemy::StaticClass()))
-			{
-				AEnemy* enemy = Cast<AEnemy>(FoundActors[i]);
-				if (enemy->CanBeTargeted )
-				{
-					EnemyElement = enemy;
-					float distanceToPlayer = EnemyElement->PlayerToEnemyDistance;
-					if (distanceToPlayer < ClosestTargetDistance)
-					{
-						LockOnDone();
-					}
-					
-				}
-			}
-		}
-		SetLockOnToTarget();
-		*/
 	}
 
 }
