@@ -135,8 +135,10 @@ void ATPSCharacter::LockOnFunction_Implementation(bool OnlyBoss)
 	}
 	else
 	{
-		
-		
+		EnemyElement = bossActor;
+		LockOnDone();
+		SetLockOnToTarget();
+		/*
 	
 		ClosestTargetDistance = MaximumDistance;
 		TArray<AActor*> FoundActors;
@@ -162,6 +164,7 @@ void ATPSCharacter::LockOnFunction_Implementation(bool OnlyBoss)
 			}
 		}
 		SetLockOnToTarget();
+		*/
 	}
 
 }
