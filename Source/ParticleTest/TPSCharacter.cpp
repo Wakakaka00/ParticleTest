@@ -71,52 +71,47 @@ void ATPSCharacter::SwitchToBoss_Implementation()
 {
 	if (TargetLocked)
 	{
-		FoundNewTarget = false;	
+		TargetLocked = false;
+		FOutputDeviceNull ar;
+		NearestTarget->CallFunctionByNameWithArguments(TEXT("LockOnFlip"), ar, NULL, true);
+		UKismetSystemLibrary::K2_PauseTimer(this, TEXT("ToggleLockOn"));
+		NearestTarget = NULL;
+
+
+
+	}
+	else
+	{
+		EnemyElement = bossActor;
+		LockOnDone();
+		SetLockOnToTarget();
+		/*
+
 		ClosestTargetDistance = MaximumDistance;
-		
-		//Get all enemies in the scene
 		TArray<AActor*> FoundActors;
 
-		UGameplayStatics::GetAllActorsWithTag(GetWorld(), TEXT("Boss"), FoundActors);
+		if (OnlyBoss)UGameplayStatics::GetAllActorsWithTag(GetWorld(), TEXT("Boss"), FoundActors);
+		else if (!OnlyBoss)UGameplayStatics::GetAllActorsWithTag(GetWorld(), enemyTag, FoundActors);
+
 		for (int i = 0; i < FoundActors.Num(); i++)
 		{
-			if (FoundActors[i] != NearestTarget)
+			if (FoundActors[i]->IsA(AEnemy::StaticClass()))
 			{
 				AEnemy* enemy = Cast<AEnemy>(FoundActors[i]);
-				if (enemy->CanBeTargeted)
+				if (enemy->CanBeTargeted )
 				{
 					EnemyElement = enemy;
-
-						float distanceToPlayer= EnemyElement->PlayerToEnemyDistance;
-						if (distanceToPlayer < ClosestTargetDistance)
-						{			
-								FoundNewTarget = true;
-								ClosestTargetDistance = EnemyElement->PlayerToEnemyDistance;
-								NewTarget = EnemyElement;
-						}
-						
-						
+					float distanceToPlayer = EnemyElement->PlayerToEnemyDistance;
+					if (distanceToPlayer < ClosestTargetDistance)
+					{
+						LockOnDone();
+					}
 
 				}
 			}
-
 		}
-		if (FoundNewTarget)
-		{
-
-			FOutputDeviceNull ar;
-			NearestTarget->CallFunctionByNameWithArguments(TEXT("LockOnFlip"), ar, NULL, true);
-			SwitchDone();
-			SetLockOnToTarget();
-			
-		}
-		else
-		{
-			
-		}
-
-
-
+		SetLockOnToTarget();
+		*/
 	}
 }
 
