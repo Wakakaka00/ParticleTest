@@ -74,6 +74,9 @@ void AMinion::Tick(float DeltaTime)
 			isStunned = false;
 		}
 	}
+
+	//FVector d = UKismetMathLibrary::GetDirectionUnitVector(GetActorLocation(), playerPawn ->GetActorLocation());
+	//DrawDebugLine(GetWorld(), GetActorLocation(), GetActorLocation() + d * 400.0f, FColor::Green, false, 1, 0, 2);
 }
 
 // Called to bind functionality to input
@@ -128,6 +131,43 @@ void AMinion::Stun()
 void AMinion::DoDamage()
 {
 	attackCollider->SetCollisionProfileName(TEXT("Trigger"));
+}
+
+void AMinion::SpawnShootingPoint()
+{
+	if (shootingLine.Num() == 0)
+	{
+		if (FVector::Distance(GetActorLocation(), playerPawn->GetActorLocation()) > distanceBetweenPoint)
+		{
+			auto point = GetWorld()->SpawnActor<AActor>(ShootingPointBP->GetOwnerClass(), GetActorLocation(), FRotator::ZeroRotator);
+			shootingLine.Add(point);
+		}
+	}
+	else if (FVector::Distance(shootingLine.Last()->GetActorLocation(), playerPawn->GetActorLocation()) > distanceBetweenPoint)
+	{
+		auto point = GetWorld()->SpawnActor<AActor>(ShootingPointBP->GetOwnerClass(), GetActorLocation(), FRotator::ZeroRotator);
+		shootingLine.Add(point);
+	}
+
+	if (shootingLine.Num() >= 2)
+	{
+		if (FVector::Distance(shootingLine[shootingLine.Num() - 2]->GetActorLocation(), playerPawn->GetActorLocation()) < distanceBetweenPoint)
+		{
+			auto point = shootingLine[shootingLine.Num() - 1];
+			shootingLine.RemoveAt(shootingLine.Num() - 1);
+			point->Destroy();
+		}
+	}	
+}
+
+void AMinion::RepositionShootingPoint()
+{
+	for (int i = 0; i < shootingLine.Num(); i++)
+	{
+		FVector location = UKismetMathLibrary::GetDirectionUnitVector(GetActorLocation(), playerPawn->GetActorLocation());
+		location = GetActorLocation() + location * (distanceBetweenPoint * (i +1));
+		shootingLine[i]->SetActorLocation(location);
+	}
 }
 
 

@@ -27,6 +27,7 @@ private:
 	float atkResetTimer = 0.0f;
 	float stunTimer = 0.0f;
 	float stunDuration = 0.5f;
+	float distanceBetweenPoint = 200.0f;
 
 public:
 	// Sets default values for this character's properties
@@ -91,4 +92,12 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Minion Behavior")
 	bool FindLineOfSight();
+
+	UPROPERTY(EditAnywhere, Category = "Minion Behavior")
+	TSubclassOf<AActor> ShootingPointBP;
+
+	TArray<AActor*> shootingLine;
+
+	void SpawnShootingPoint();
+	void RepositionShootingPoint();
 };
