@@ -101,6 +101,8 @@ public:
 		AEnemy* EnemyElement;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lock On Properties")
 		AEnemy* NewTarget;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Lock On Properties")
+		bool CanLockOnBoss = true;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss")
 		ABossCharacter* bossActor;
 	

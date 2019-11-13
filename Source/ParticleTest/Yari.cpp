@@ -109,14 +109,18 @@ void AYari::OnOverlapBegin(UPrimitiveComponent * OverlappedComp, AActor * OtherA
 		}		
 		//GetWorld()->GetTimerManager().SetTimer(StopTimer, this, &AYari::StopYari, 0.03f);
 		StopYari();
-		if (FVector::Distance(TriggerBox->GetComponentLocation(), playerCharacter->GetActorLocation()) <= 600.0f)
+		// AOE when hit ground
+		if (!isDamaged)
 		{
-			if (!playerActor->isPushingBack)
+			if (FVector::Distance(TriggerBox->GetComponentLocation(), playerCharacter->GetActorLocation()) <= 600.0f)
 			{
-				playerActor->PushBack(bossActor->pushBackForce, TriggerBox->GetComponentLocation());
-				DamagePlayer();
+				if (!playerActor->isPushingBack)
+				{
+					playerActor->PushBack(bossActor->pushBackForce, TriggerBox->GetComponentLocation());
+					DamagePlayer();
+				}
 			}
-		}	
+		}		
 	}
 }
 
@@ -125,6 +129,7 @@ void AYari::OnOverlapPlayer(UPrimitiveComponent * OverlappedComp, AActor * Other
 	// Capsule collider
 	if (OtherComp->ComponentHasTag("Player"))
 	{
+		isDamaged = true;
 		playerActor->PushBack(bossActor->pushBackForce, GetActorLocation());
 		DamagePlayer();
 	}
@@ -137,6 +142,7 @@ void AYari::BackToHandSocket(float DeltaSeconds)
 	float distance = FVector::Distance(GetActorLocation(), bossActor->handSocketLocation);
 	if (distance <= 30.0f)
 	{
+		isDamaged = false;
 		TriggerCapsule->SetCollisionProfileName("NoCollision");
 		FName handSocketName = TEXT("hand_r");
 		K2_AttachRootComponentTo(bossActor->skeletalMesh, handSocketName, EAttachLocation::SnapToTarget,true);

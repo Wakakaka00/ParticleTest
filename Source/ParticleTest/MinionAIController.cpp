@@ -80,12 +80,10 @@ void AMinionAIController::Tick(float DeltaTime)
 		}	
 
 
-			FHitResult HitResult;
-			minionActor->SetActorLocation(minionActor->GetActorLocation() + currentVelocity, true, &HitResult);
+		FHitResult HitResult;
+		minionActor->SetActorLocation(minionActor->GetActorLocation() + currentVelocity, true, &HitResult);
 
-			minionActor->LookAtPlayer();
-
-	
+		minionActor->LookAtPlayer();
 	}
 
 	if (minionActor->enemyType == EnemyType::Melee || minionActor->enemyType == EnemyType::Fire)
@@ -118,6 +116,20 @@ void AMinionAIController::Tick(float DeltaTime)
 					if (!minionActor->isRoaming) minionActor->isRoaming = true;
 				}
 			}			
+		}
+		//else if (FVector::Distance(minionActor->GetActorLocation(), playerCharacter->GetActorLocation()) >= 1300.0f && minionActor->isAtk)
+		//{
+		//	if (!minionActor->isRoaming) minionActor->isRoaming = true;
+		//}
+	}
+
+	// Range attack line of sight points
+	if (minionActor->enemyType == EnemyType::Range)
+	{
+		if (minionActor->isShooting)
+		{
+			minionActor->SpawnShootingPoint();
+			minionActor->RepositionShootingPoint();
 		}
 	}
 }
@@ -193,10 +205,10 @@ void AMinionAIController::MoveToPlayer()
 		}		
 	}
 
-	CheckNeighbours();
+	Avoidance();
 }
 
-void AMinionAIController::CheckNeighbours()
+void AMinionAIController::Avoidance()
 {
 	isAvoiding = false;
 	// Separation between minions
@@ -217,7 +229,7 @@ void AMinionAIController::CheckNeighbours()
 				}
 				else
 				{
-					acceleration += ((direction - minionActor->GetActorForwardVector()) /
+					acceleration += (direction /
 						distanceWithNeighbour * boidRadius *(repelForce - 0.1f)* decreaseFactor);
 				}
 			}
@@ -241,7 +253,7 @@ void AMinionAIController::CheckNeighbours()
 				}
 				else
 				{
-					acceleration += ((direction - minionActor->GetActorForwardVector()) /
+					acceleration += (direction /
 						distanceWithNeighbour * boidRadius * (repelForce - 0.1f)* decreaseFactor);
 				}
 			}
@@ -267,7 +279,7 @@ void AMinionAIController::CheckNeighbours()
 		}
 	}
 
-	// Separtion between Player	
+	// Separation between Player	
 	if (distanceToPlayer < playerAvoidDistance)
 	{
 		direction = minionActor->GetActorLocation() - playerCharacter->GetActorLocation();
@@ -284,6 +296,35 @@ void AMinionAIController::CheckNeighbours()
 			acceleration += (direction  /
 			distanceToPlayer * playerAvoidDistance * repelForce * decreaseFactor);
 		}
+	}
+
+	// Separation between shootingLine
+	for (int i = 0; i < bossController->MinionList.Num(); i++)
+	{
+		for (int j = 0; j < bossController->MinionList[i]->shootingLine.Num(); j++)
+		{	
+			if (bossController->MinionList[i]->shootingLine[j])
+			{
+				FVector point = bossController->MinionList[i]->shootingLine[j]->GetActorLocation();
+				float distanceWithLine = FVector::Distance(point, minionActor->GetActorLocation());
+				if (distanceWithLine < boidRadius)
+				{
+					direction = minionActor->GetActorLocation() - point;
+					direction.GetSafeNormal(1.0f);
+					direction.Normalize(1.0f);
+					if (!minionActor->inAtkRadius)
+					{
+						acceleration += (direction /
+							distanceWithLine * boidRadius * repelForce * decreaseFactor) * currentVelocity.Size();
+					}
+					else
+					{
+						acceleration += (direction /
+							distanceWithLine * boidRadius *(repelForce - 0.1f)* decreaseFactor);
+					}
+				}
+			}			
+		}		
 	}
 }
 
@@ -348,7 +389,7 @@ void AMinionAIController::Roaming()
 
 		acceleration += direction * accelerationForce;
 
-		CheckNeighbours();
+		Avoidance();
 	}
 }
 

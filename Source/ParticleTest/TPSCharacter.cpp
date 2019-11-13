@@ -14,7 +14,7 @@ ATPSCharacter::ATPSCharacter()
 	//Default Number Set Ups
 	
 	///Maximum Distance Which Player Can Target Lock On Enemies
-	MaximumDistance = 2500.0f;
+	MaximumDistance = 13008.3603516f;
 
 	//Maximum Health
 	MaximumHealth = 100.0f;
@@ -38,12 +38,7 @@ void ATPSCharacter::BeginPlay()
 // Called every frame
 void ATPSCharacter::Tick(float DeltaTime)
 {
-	Super::Tick(DeltaTime);
-	if (TargetLocked)
-	{
-		
-	}
-	
+	Super::Tick(DeltaTime);	
 	if (isPushingBack)
 	{
 		pushBackTimer += DeltaTime;
@@ -71,52 +66,18 @@ void ATPSCharacter::SwitchToBoss_Implementation()
 {
 	if (TargetLocked)
 	{
-		FoundNewTarget = false;	
-		ClosestTargetDistance = MaximumDistance;
+		TargetLocked = false;
+		FOutputDeviceNull ar;
+		NearestTarget->CallFunctionByNameWithArguments(TEXT("LockOnFlip"), ar, NULL, true);
+		UKismetSystemLibrary::K2_PauseTimer(this, TEXT("ToggleLockOn"));
+		NearestTarget = NULL;
+	}
+	else
+	{
+		EnemyElement = bossActor;
+		LockOnDone();
+		SetLockOnToTarget();
 		
-		//Get all enemies in the scene
-		TArray<AActor*> FoundActors;
-
-		UGameplayStatics::GetAllActorsWithTag(GetWorld(), TEXT("Boss"), FoundActors);
-		for (int i = 0; i < FoundActors.Num(); i++)
-		{
-			if (FoundActors[i] != NearestTarget)
-			{
-				AEnemy* enemy = Cast<AEnemy>(FoundActors[i]);
-				if (enemy->CanBeTargeted)
-				{
-					EnemyElement = enemy;
-
-						float distanceToPlayer= EnemyElement->PlayerToEnemyDistance;
-						if (distanceToPlayer < ClosestTargetDistance)
-						{			
-								FoundNewTarget = true;
-								ClosestTargetDistance = EnemyElement->PlayerToEnemyDistance;
-								NewTarget = EnemyElement;
-						}
-						
-						
-
-				}
-			}
-
-		}
-		if (FoundNewTarget)
-		{
-
-			FOutputDeviceNull ar;
-			NearestTarget->CallFunctionByNameWithArguments(TEXT("LockOnFlip"), ar, NULL, true);
-			SwitchDone();
-			SetLockOnToTarget();
-			
-		}
-		else
-		{
-			
-		}
-
-
-
 	}
 }
 
@@ -135,33 +96,10 @@ void ATPSCharacter::LockOnFunction_Implementation(bool OnlyBoss)
 	}
 	else
 	{
-		
-		
-	
-		ClosestTargetDistance = MaximumDistance;
-		TArray<AActor*> FoundActors;
-		
-		if (OnlyBoss)UGameplayStatics::GetAllActorsWithTag(GetWorld(), TEXT("Boss"), FoundActors);
-		else if (!OnlyBoss)UGameplayStatics::GetAllActorsWithTag(GetWorld(), enemyTag, FoundActors);
-	
-		for (int i = 0; i < FoundActors.Num(); i++)
-		{
-			if (FoundActors[i]->IsA(AEnemy::StaticClass()))
-			{
-				AEnemy* enemy = Cast<AEnemy>(FoundActors[i]);
-				if (enemy->CanBeTargeted )
-				{
-					EnemyElement = enemy;
-					float distanceToPlayer = EnemyElement->PlayerToEnemyDistance;
-					if (distanceToPlayer < ClosestTargetDistance)
-					{
-						LockOnDone();
-					}
-					
-				}
-			}
-		}
+		EnemyElement = bossActor;
+		LockOnDone();
 		SetLockOnToTarget();
+		
 	}
 
 }

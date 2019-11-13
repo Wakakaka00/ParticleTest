@@ -22,7 +22,7 @@ private:
 	void MoveToPlayer();
 	void Roaming();
 
-	void CheckNeighbours();
+	void Avoidance();
 
 	TArray<ABossCharacter*> bossCharacterList;
 
