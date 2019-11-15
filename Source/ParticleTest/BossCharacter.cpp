@@ -26,7 +26,7 @@ ABossCharacter::ABossCharacter()
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile"));
 	ProjectileMovement->bAutoActivate = false;
 
-	maxHealth = 100.0f;
+	maxHealth = 1000.0f;
 	currentHealth = maxHealth;
 }
 
