@@ -81,7 +81,7 @@ void AMinionAIController::Tick(float DeltaTime)
 
 
 		FHitResult HitResult;
-		minionActor->SetActorLocation(minionActor->GetActorLocation() + currentVelocity, true, &HitResult);
+		minionActor->SetActorLocation(minionActor->GetActorLocation() + currentVelocity, false, &HitResult);
 
 		minionActor->LookAtPlayer();
 	}
@@ -388,9 +388,8 @@ void AMinionAIController::Roaming()
 		direction = UKismetMathLibrary::GetDirectionUnitVector(minionActor->GetActorLocation(), nextPos);
 
 		acceleration += direction * accelerationForce;
-
-		Avoidance();
 	}
+	Avoidance();
 }
 
 void AMinionAIController::RandomizeAroundRadius()
