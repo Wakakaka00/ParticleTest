@@ -12,6 +12,15 @@
 #include "Portal.h"
 #include "BossCharacter.generated.h"
 
+UENUM(BlueprintType)		//"BlueprintType" is essential to include
+enum class BossPositionState : uint8
+{
+	OnThrone 	UMETA(DisplayName = "OnThrone"),
+	ThroneDash 	UMETA(DisplayName = "ThroneDash"),
+	JumpToThrone	UMETA(DisplayName = "JumpToThrone"),
+	OnGround	UMETA(DisplayName = "OnGround")
+};
+
 UCLASS()
 class PARTICLETEST_API ABossCharacter : public AEnemy
 {
@@ -31,6 +40,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
 	AActor* throne;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Enum)
+		BossPositionState bossPositionState;
 
 	UProjectileMovementComponent* ProjectileMovement;
 
