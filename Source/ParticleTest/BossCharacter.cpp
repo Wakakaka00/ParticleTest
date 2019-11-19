@@ -183,7 +183,7 @@ void ABossCharacter::FindNearestPortal()
 
 void ABossCharacter::Break()
 {
-	isBreak = true;
+	if(!isBreak) isBreak = true;
 }
 
 
