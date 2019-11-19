@@ -132,6 +132,8 @@ public:
 	bool isDash = false;
 	bool isBackJump = false;
 	bool isNormalPush = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
 	bool isHealing = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
