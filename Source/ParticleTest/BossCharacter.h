@@ -21,6 +21,14 @@ enum class BossPositionState : uint8
 	OnGround	UMETA(DisplayName = "OnGround")
 };
 
+UENUM(BlueprintType)		//"BlueprintType" is essential to include
+enum class BossPhase : uint8
+{
+	Phase1 	UMETA(DisplayName = "Phase1"),
+	Phase2 	UMETA(DisplayName = "Phase2"),
+	Phase3	UMETA(DisplayName = "Phase3")
+};
+
 UCLASS()
 class PARTICLETEST_API ABossCharacter : public AEnemy
 {
@@ -28,6 +36,7 @@ class PARTICLETEST_API ABossCharacter : public AEnemy
 
 private:
 	bool isLeft = false; // portal
+	float breakTimer = 0.0f;
 
 protected:
 	// Called when the game starts or when spawned
@@ -43,6 +52,8 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Enum)
 		BossPositionState bossPositionState;
+
+	BossPhase bossPhase;
 
 	UProjectileMovementComponent* ProjectileMovement;
 
@@ -157,6 +168,11 @@ public:
 	void FindNearestPortal();
 
 	void Attack();
+
+	bool isBreak = false;
+
+	UFUNCTION(BlueprintCallable, Category = "Boss Behavior")
+	void Break();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Location")
 	FVector playerLastPos;

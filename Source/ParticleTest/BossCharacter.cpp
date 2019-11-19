@@ -28,6 +28,7 @@ ABossCharacter::ABossCharacter()
 
 	maxHealth = 1000.0f;
 	currentHealth = maxHealth;
+	bossPhase = BossPhase::Phase1;
 }
 
 // Called when the game starts or when spawned
@@ -42,6 +43,34 @@ void ABossCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	handSocketLocation = GetMesh()->GetSocketLocation("hand_r");
+	if(isBreak)
+	{
+		breakTimer += DeltaTime;
+		if (bossPhase == BossPhase::Phase1)
+		{
+			if (breakTimer >= 4.0f)
+			{
+				breakTimer = 0.0f;
+				isBreak = false;
+			}
+		}
+		else if (bossPhase == BossPhase::Phase2)
+		{
+			if (breakTimer >= 3.0f)
+			{
+				breakTimer = 0.0f;
+				isBreak = false;
+			}
+		}
+		else if (bossPhase == BossPhase::Phase3)
+		{
+			if (breakTimer >= 2.0f)
+			{
+				breakTimer = 0.0f;
+				isBreak = false;
+			}
+		}
+	}
 }
 
 // Called to bind functionality to input
@@ -150,6 +179,11 @@ void ABossCharacter::FindNearestPortal()
 	}
 
 	isLeft = targetPortal->isLeft;
+}
+
+void ABossCharacter::Break()
+{
+	if(!isBreak) isBreak = true;
 }
 
 
