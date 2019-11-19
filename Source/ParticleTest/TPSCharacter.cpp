@@ -529,7 +529,7 @@ void ATPSCharacter::DoAttacks(bool DoCharge)
 				}
 				else if (AttackCounts == 2)
 				{
-					PlayAnimMontage(montages[2], 0.8f);
+					PlayAnimMontage(montages[2], 0.6f);
 					AttackCounts = 0;
 				}
 				
