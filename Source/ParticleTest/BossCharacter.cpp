@@ -29,6 +29,7 @@ ABossCharacter::ABossCharacter()
 	maxHealth = 1000.0f;
 	currentHealth = maxHealth;
 	bossPhase = BossPhase::Phase1;
+	bossState = BossState::Normal;
 }
 
 // Called when the game starts or when spawned
@@ -43,7 +44,7 @@ void ABossCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	handSocketLocation = GetMesh()->GetSocketLocation("hand_r");
-	if(isBreak)
+	if(bossState == BossState::Break)
 	{
 		breakTimer += DeltaTime;
 		if (bossPhase == BossPhase::Phase1)
@@ -51,7 +52,7 @@ void ABossCharacter::Tick(float DeltaTime)
 			if (breakTimer >= 4.0f)
 			{
 				breakTimer = 0.0f;
-				isBreak = false;
+				bossState = BossState::Normal;
 			}
 		}
 		else if (bossPhase == BossPhase::Phase2)
@@ -59,7 +60,7 @@ void ABossCharacter::Tick(float DeltaTime)
 			if (breakTimer >= 3.0f)
 			{
 				breakTimer = 0.0f;
-				isBreak = false;
+				bossState = BossState::Normal;
 			}
 		}
 		else if (bossPhase == BossPhase::Phase3)
@@ -67,8 +68,17 @@ void ABossCharacter::Tick(float DeltaTime)
 			if (breakTimer >= 2.0f)
 			{
 				breakTimer = 0.0f;
-				isBreak = false;
+				bossState = BossState::Normal;
 			}
+		}
+	}
+	else if (bossState == BossState::Vulnerable)
+	{
+		vulnerableTimer += DeltaTime;
+		if (vulnerableTimer >= vulnerableDuration)
+		{
+			vulnerableTimer = 0.0f;
+			bossState = BossState::Normal;
 		}
 	}
 }
@@ -183,7 +193,28 @@ void ABossCharacter::FindNearestPortal()
 
 void ABossCharacter::Break()
 {
-	if(!isBreak) isBreak = true;
+	bossState = BossState::Break;
+}
+
+void ABossCharacter::SetVulnerable()
+{
+	bossState = BossState::Vulnerable;
+}
+
+bool ABossCharacter::isAttackingVital()
+{
+	FVector currentPos = GetActorLocation();
+	currentPos.Z = 0.0f;
+	FVector playerPos = playerPawn->GetActorLocation();
+	playerPos.Z = 0.0f;
+	FVector direction = UKismetMathLibrary::GetDirectionUnitVector(currentPos, playerPos);
+	float dot = FVector::DotProduct(direction, GetActorForwardVector());
+	float angle = FMath::RadiansToDegrees(FMath::Acos(dot));
+	if (angle >= 150.0f)
+	{
+		return true;
+	}
+	return false;
 }
 
 
