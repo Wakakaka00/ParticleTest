@@ -518,18 +518,18 @@ void ATPSCharacter::DoAttacks(bool DoCharge)
 			{
 				if (AttackCounts == 0)
 				{
-					PlayAnimMontage(montages[0], 2.0f);
+					PlayAnimMontage(montages[0], 0.5f);
 					
 					AttackCounts = 1;
 				}
 				else if (AttackCounts == 1)
 				{
-					PlayAnimMontage(montages[1], 2.0f);
+					PlayAnimMontage(montages[1], 0.8f);
 					AttackCounts = 2;
 				}
 				else if (AttackCounts == 2)
 				{
-					PlayAnimMontage(montages[2], 2.0f);
+					PlayAnimMontage(montages[2], 0.8f);
 					AttackCounts = 0;
 				}
 				
