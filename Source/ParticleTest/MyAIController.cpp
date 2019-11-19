@@ -31,7 +31,7 @@ void AMyAIController::Tick(float DeltaSeconds)
 	CheckNearestEnemy();
 	if (!isStart)
 	{
-		if (!bossActor->isBreak)
+		if (bossActor->bossState != BossState::Break && bossActor->bossState != BossState::Vulnerable)
 		{
 			if (!bossActor->isAtk)
 			{
