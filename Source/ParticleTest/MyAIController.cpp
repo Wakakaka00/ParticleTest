@@ -31,7 +31,7 @@ void AMyAIController::Tick(float DeltaSeconds)
 	CheckNearestEnemy();
 	if (!isStart)
 	{
-		if (!bossActor->isBreak)
+		if (bossActor->bossState != BossState::Break && bossActor->bossState != BossState::Vulnerable)
 		{
 			if (!bossActor->isAtk)
 			{
@@ -150,24 +150,24 @@ void AMyAIController::Tick(float DeltaSeconds)
 				DashToPortalOrPlayer(DeltaSeconds);
 			}
 		}
-		else // isStart
+	}
+	else // isStart
+	{
+		yariThrowTimer += DeltaSeconds;
+		if (yariThrowTimer >= startYariThrowDuration)
 		{
-			yariThrowTimer += DeltaSeconds;
-			if (yariThrowTimer >= startYariThrowDuration)
+			if (!bossActor->isYariThrow)
 			{
-				if (!bossActor->isYariThrow)
-				{
-					yariThrowTimer = 0.0f;
-					isStart = false;
-					bossActor->GetCharacterMovement()->GravityScale = 0.0f;
-					StopMovement();
-					bossActor->isAtk = true;
-					bossLastPos = bossActor->GetActorLocation();
-					bossActor->isJumpDash = true;
-				}
+				yariThrowTimer = 0.0f;
+				isStart = false;
+				bossActor->GetCharacterMovement()->GravityScale = 0.0f;
+				StopMovement();
+				bossActor->isAtk = true;
+				bossLastPos = bossActor->GetActorLocation();
+				bossActor->isJumpDash = true;
 			}
 		}
-		}
+	}
 }
 
 void AMyAIController::OnTooFar()

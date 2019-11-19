@@ -29,6 +29,14 @@ enum class BossPhase : uint8
 	Phase3	UMETA(DisplayName = "Phase3")
 };
 
+UENUM(BlueprintType)		//"BlueprintType" is essential to include
+enum class BossState : uint8
+{
+	Normal 	UMETA(DisplayName = "Normal"),
+	Break 	UMETA(DisplayName = "Break"),
+	Vulnerable	UMETA(DisplayName = "Vulnerable")
+};
+
 UCLASS()
 class PARTICLETEST_API ABossCharacter : public AEnemy
 {
@@ -37,6 +45,8 @@ class PARTICLETEST_API ABossCharacter : public AEnemy
 private:
 	bool isLeft = false; // portal
 	float breakTimer = 0.0f;
+	float vulnerableTimer = 0.0f;
+	float vulnerableDuration = 4.0f;
 
 protected:
 	// Called when the game starts or when spawned
@@ -54,6 +64,9 @@ public:
 		BossPositionState bossPositionState;
 
 	BossPhase bossPhase;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss State")
+	BossState bossState;
 
 	UProjectileMovementComponent* ProjectileMovement;
 
@@ -132,6 +145,8 @@ public:
 	bool isDash = false;
 	bool isBackJump = false;
 	bool isNormalPush = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
 	bool isHealing = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
@@ -169,10 +184,11 @@ public:
 
 	void Attack();
 
-	bool isBreak = false;
-
 	UFUNCTION(BlueprintCallable, Category = "Boss Behavior")
 	void Break();
+
+	UFUNCTION(BlueprintCallable, Category = "Boss Behavior")
+	void SetVulnerable();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Location")
 	FVector playerLastPos;
@@ -181,4 +197,7 @@ public:
 
 	int healCount = 0;
 	int maxHealCount = 2;
+
+	UFUNCTION(BlueprintCallable, Category = "Boss Behavior")
+	bool isAttackingVital();
 };
