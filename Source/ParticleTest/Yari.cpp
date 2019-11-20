@@ -21,7 +21,7 @@ AYari::AYari()
 
 	TriggerBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Trigger Box"));
 	TriggerBox->InitBoxExtent(FVector(15.0f, 15.0f, 15.0f));
-	TriggerBox->SetCollisionProfileName(TEXT("Trigger"));
+	TriggerBox->SetCollisionProfileName(TEXT("NoCollision"));
 	TriggerBox->AttachTo(RootComponent);
 	TriggerBox->SetRelativeLocation(FVector(0.0f, 0.0f, 10.0f));
 	TriggerBox->OnComponentBeginOverlap.AddDynamic(this, &AYari::OnOverlapBegin);
@@ -143,6 +143,7 @@ void AYari::BackToHandSocket(float DeltaSeconds)
 	if (distance <= 30.0f)
 	{
 		isDamaged = false;
+		TriggerBox->SetCollisionProfileName(TEXT("NoCollision"));
 		TriggerCapsule->SetCollisionProfileName("NoCollision");
 		FName handSocketName = TEXT("hand_r");
 		K2_AttachRootComponentTo(bossActor->skeletalMesh, handSocketName, EAttachLocation::SnapToTarget,true);
