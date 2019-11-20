@@ -38,7 +38,7 @@ public:
 	USceneComponent* SceneRoot = nullptr;
 	ABossCharacter* bossActor;
 
-	UPROPERTY(VisibleAnywhere, Category = "Trigger Box")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trigger Box")
 		class UBoxComponent* TriggerBox;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trigger Capsule")
