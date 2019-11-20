@@ -150,6 +150,10 @@ void AMyAIController::Tick(float DeltaSeconds)
 				DashToPortalOrPlayer(DeltaSeconds);
 			}
 		}
+		else
+		{
+			StopMovement();
+		}
 	}
 	else // isStart
 	{
