@@ -44,8 +44,8 @@ void AYari::BeginPlay()
 	playerCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 	playerActor = Cast<ATPSCharacter>(playerCharacter);
 	gravityScale = 1.5f;
-	initLocation = FVector(-3.89f, -10.28f, 24.6f);
-	initRotation = FRotator(49.0f, -74.7f, -168.3f);
+	initLocation = FVector(23.264721f, -22.549095f, 251.771866f);
+	initRotation = FRotator(0.000020f, -60.000221f, 0.000028f);
 }
 
 // Called every frame
@@ -92,6 +92,7 @@ void AYari::OnOverlapBegin(UPrimitiveComponent * OverlappedComp, AActor * OtherA
 	// Box Collider
 	if (OtherActor->ActorHasTag("Floor"))
 	{	
+		UE_LOG(LogTemp, Warning, TEXT("Floor"));
 		if (isFire)
 		{
 			for (int i = 0; i < bossActor->bloodPoolList.Num(); i++)
@@ -145,7 +146,7 @@ void AYari::BackToHandSocket(float DeltaSeconds)
 		isDamaged = false;
 		TriggerBox->SetCollisionProfileName(TEXT("NoCollision"));
 		TriggerCapsule->SetCollisionProfileName("NoCollision");
-		FName handSocketName = TEXT("hand_r");
+		FName handSocketName = TEXT("Bip001-R-Hand");
 		K2_AttachRootComponentTo(bossActor->skeletalMesh, handSocketName, EAttachLocation::SnapToTarget,true);
 		isBack = false;
 		SetActorRelativeLocation(initLocation, false, nullptr, ETeleportType::None);

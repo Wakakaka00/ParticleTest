@@ -43,7 +43,7 @@ void ABossCharacter::BeginPlay()
 void ABossCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	handSocketLocation = GetMesh()->GetSocketLocation("hand_r");
+	if(handSocketLocation == FVector::ZeroVector) handSocketLocation = GetMesh()->GetSocketLocation("Bip001-R-Hand");
 	if(bossState == BossState::Break)
 	{
 		breakTimer += DeltaTime;

@@ -193,7 +193,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Location")
 	FVector playerLastPos;
 
-	FVector handSocketLocation;
+	FVector handSocketLocation = FVector::ZeroVector;
 
 	int healCount = 0;
 	int maxHealCount = 2;
