@@ -92,6 +92,7 @@ void AYari::OnOverlapBegin(UPrimitiveComponent * OverlappedComp, AActor * OtherA
 	// Box Collider
 	if (OtherActor->ActorHasTag("Floor"))
 	{	
+		UE_LOG(LogTemp, Warning, TEXT("Floor"));
 		if (isFire)
 		{
 			for (int i = 0; i < bossActor->bloodPoolList.Num(); i++)
