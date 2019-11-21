@@ -694,7 +694,6 @@ void ATPSCharacter::PushBack(float force, FVector pushLocation)
 	isPushingBack = true;
 	FVector direction = UKismetMathLibrary::GetDirectionUnitVector(GetActorLocation(), pushLocation);
 	direction.Z = 0.0f;
-	//FVector playerForcePushLocation = lastPos + (-direction * pushBackDistance);
 	LaunchCharacter(-direction * force, true, true);
 }
 
