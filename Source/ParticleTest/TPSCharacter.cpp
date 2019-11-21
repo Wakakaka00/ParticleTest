@@ -751,6 +751,7 @@ void ATPSCharacter::MoveRight(float value)
 	{
 		if (!ShouldRotateLockOn)
 		{
+			
 			FRotator playerRotation = GetGlobalPlayer()->GetControlRotation();
 			FRotator desiredRotation = FRotator(0.0f, playerRotation.Yaw, 0.0f);
 			FVector desiredDir = FRotationMatrix(desiredRotation).GetScaledAxis(EAxis::Y);
