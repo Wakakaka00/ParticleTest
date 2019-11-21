@@ -134,7 +134,7 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Boss Behavior")
 	float bloodLaunchSpeed = 2000;
 
-	UPROPERTY(EditAnywhere, Category = "Boss Behavior")
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "Boss Behavior")
 	float yariLaunchSpeed = 2000;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")

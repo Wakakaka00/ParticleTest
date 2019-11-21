@@ -36,6 +36,8 @@ public:
 	AYari();
 	UProjectileMovementComponent* ProjectileMovement;
 	USceneComponent* SceneRoot = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss")
 	ABossCharacter* bossActor;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trigger Box")
@@ -67,5 +69,7 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Boss Behavior")
 	void DamagePlayer();
-	
+
+	UFUNCTION(BlueprintCallable, Category = "Pos")
+	void SetInitPos(FVector location, FRotator rot);
 };
