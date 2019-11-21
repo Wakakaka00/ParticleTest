@@ -44,8 +44,8 @@ void AYari::BeginPlay()
 	playerCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 	playerActor = Cast<ATPSCharacter>(playerCharacter);
 	gravityScale = 1.5f;
-	initLocation = FVector(23.264721f, -22.549095f, 251.771866f);
-	initRotation = FRotator(0.000020f, -60.000221f, 0.000028f);
+	//initLocation = FVector(28.676769f, -12.031745f, 200.363602f);
+	//initRotation = FRotator(0.000006f, -10.000103f, 0.000082f);
 }
 
 // Called every frame
@@ -134,6 +134,12 @@ void AYari::OnOverlapPlayer(UPrimitiveComponent * OverlappedComp, AActor * Other
 		playerActor->PushBack(bossActor->pushBackForce, GetActorLocation());
 		DamagePlayer();
 	}
+}
+
+void AYari::SetInitPos(FVector location, FRotator rot)
+{
+	initLocation = location;
+	initRotation = rot;
 }
 
 void AYari::BackToHandSocket(float DeltaSeconds)
