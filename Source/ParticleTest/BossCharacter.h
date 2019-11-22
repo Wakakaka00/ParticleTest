@@ -81,6 +81,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UFUNCTION(BlueprintCallable, Category = "Look At Player")
 	void LookAtPlayer();
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Boss Behavior")
