@@ -201,4 +201,12 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Boss Behavior")
 	bool isAttackingVital();
+
+
+	// Animations
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Animations")
+		void PlayDrinking();
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Animations")
+		void PlayVulnerable();
 };
