@@ -108,7 +108,11 @@ void ABossCharacter::SetPushCollison(bool b)
 
 void ABossCharacter::LookAtPlayer()
 {
-	FRotator Rot = FRotationMatrix::MakeFromX(playerPawn->GetActorLocation() - GetActorLocation()).Rotator();
+	FVector playerPos = playerPawn->GetActorLocation();
+	FVector bossPos = GetActorLocation();
+	playerPos.Z = 0.0f;
+	bossPos.Z = 0.0f;
+	FRotator Rot = FRotationMatrix::MakeFromX(playerPos - bossPos).Rotator();
 	SetActorRotation(Rot);
 }
 
