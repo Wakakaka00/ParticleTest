@@ -55,10 +55,10 @@ void AMyAIController::Tick(float DeltaSeconds)
 
 				if (bossActor->currentHealth < bossActor->maxHealth * 0.3f && bossActor->healCount < bossActor->maxHealCount)
 				{
+					bossActor->PlayDrinking();
 					bossActor->isAtk = true;
 					bossActor->isHealing = true;
 					bossActor->healCount += 1;
-					UE_LOG(LogTemp, Warning, TEXT("Heal"));
 				}
 
 				/*if (bossActor->bloodPoolList.Num() < 3)
@@ -103,6 +103,7 @@ void AMyAIController::Tick(float DeltaSeconds)
 			if (bossActor->isHealing)
 			{
 				StopMovement();
+				bossActor->LookAtPlayer();
 				//currentHealAmount += 3.0f * DeltaSeconds;
 				//bossActor->currentHealth += 3.0f * DeltaSeconds;
 				healTimer += DeltaSeconds;
