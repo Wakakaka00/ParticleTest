@@ -122,4 +122,8 @@ class PARTICLETEST_API AMyAIController : public AAIController
 
 		UFUNCTION(BlueprintCallable, Category = "Portal")
 		void FindPlayerDirection();
+
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Start")
+			bool isEnterArena = false;
+
 };

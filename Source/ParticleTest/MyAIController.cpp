@@ -27,8 +27,15 @@ void AMyAIController::BeginPlay()
 void AMyAIController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
+
+	if (!isEnterArena)
+	{
+		return;
+	}
+
 	bossActor->distance = FVector::Distance(bossPawn->GetActorLocation(), playerLocation);
 	CheckNearestEnemy();
+
 	if (!isStart)
 	{
 		if (bossActor->bossState != BossState::Break && bossActor->bossState != BossState::Vulnerable)

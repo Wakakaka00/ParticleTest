@@ -90,7 +90,7 @@ void AYari::StopYari()
 void AYari::OnOverlapBegin(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
 	// Box Collider
-	if (OtherActor->ActorHasTag("Floor"))
+	if (OtherComp->ComponentHasTag("Floor"))
 	{	
 		UE_LOG(LogTemp, Warning, TEXT("Floor"));
 		if (isFire)
