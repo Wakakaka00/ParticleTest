@@ -51,6 +51,10 @@ class PARTICLETEST_API AMyAIController : public AAIController
 		void LookAtPortal();
 		void LookAtVelocity();
 
+		float recoveryTimer = 0.0f;
+		float recoveryDuration = 0.0f;
+		void RandomizeRecovery();
+
 	public:
 		AMyAIController();
 		

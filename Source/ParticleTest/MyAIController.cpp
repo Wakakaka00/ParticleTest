@@ -38,7 +38,7 @@ void AMyAIController::Tick(float DeltaSeconds)
 
 	if (!isStart)
 	{
-		if (bossActor->bossState != BossState::Break && bossActor->bossState != BossState::Vulnerable)
+		if (bossActor->bossState == BossState::Recovery)
 		{
 			if (!bossActor->isAtk)
 			{
@@ -495,5 +495,10 @@ void AMyAIController::ResetVelocity()
 {
 	currentVelocity = FVector::ZeroVector;
 	acceleration = FVector::ZeroVector;
+}
+
+void AMyAIController::RandomizeRecovery()
+{
+	recoveryDuration = FMath::RandRange(3.0f, 5.0f);
 }
 
