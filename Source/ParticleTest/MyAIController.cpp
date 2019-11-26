@@ -36,7 +36,7 @@ void AMyAIController::Tick(float DeltaSeconds)
 	bossActor->distance = FVector::Distance(bossPawn->GetActorLocation(), playerLocation);
 	CheckNearestEnemy();
 
-	if (!isStart)
+	if (!bossActor->isStart)
 	{
 		if (bossActor->bossState == BossState::Recovery)
 		{
@@ -165,13 +165,14 @@ void AMyAIController::Tick(float DeltaSeconds)
 	}
 	else // isStart
 	{
+		bossActor->LookAtPlayer();
 		yariThrowTimer += DeltaSeconds;
 		if (yariThrowTimer >= startYariThrowDuration)
 		{
 			if (!bossActor->isYariThrow)
 			{
 				yariThrowTimer = 0.0f;
-				isStart = false;
+				bossActor->isStart = false;
 				bossActor->GetCharacterMovement()->GravityScale = 0.0f;
 				StopMovement();
 				bossActor->isAtk = true;
