@@ -97,7 +97,7 @@ void AYari::OnOverlapBegin(UPrimitiveComponent * OverlappedComp, AActor * OtherA
 		{
 			for (int i = 0; i < bossActor->bloodPoolList.Num(); i++)
 			{
-				if (FVector::Distance(TriggerBox->GetComponentLocation(), bossActor->bloodPoolList[i]->GetActorLocation()) <= 700.0f)
+				if (FVector::Distance(TriggerBox->GetComponentLocation(), bossActor->bloodPoolList[i]->GetActorLocation()) <= pushBackRadius)
 				{
 					auto Minion = GetWorld()->SpawnActor<AMinion>(bossActor->MinionBlueprint->GetOwnerClass(), bossActor->bloodPoolList[i]->GetActorLocation(), FRotator::ZeroRotator);
 					ABloodPool* bp = Cast<ABloodPool>(bossActor->bloodPoolList[i]);
@@ -113,7 +113,7 @@ void AYari::OnOverlapBegin(UPrimitiveComponent * OverlappedComp, AActor * OtherA
 		// AOE when hit ground
 		if (!isDamaged)
 		{
-			if (FVector::Distance(TriggerBox->GetComponentLocation(), playerCharacter->GetActorLocation()) <= 600.0f)
+			if (FVector::Distance(TriggerBox->GetComponentLocation(), playerCharacter->GetActorLocation()) <= pushBackRadius)
 			{
 				if (!playerActor->isPushingBack)
 				{
@@ -130,8 +130,12 @@ void AYari::OnOverlapPlayer(UPrimitiveComponent * OverlappedComp, AActor * Other
 	// Capsule collider
 	if (OtherComp->ComponentHasTag("Player"))
 	{
-		isDamaged = true;
-		playerActor->PushBack(bossActor->pushBackForce, GetActorLocation());
+		if (bossActor->isYariThrow)
+		{
+			isDamaged = true;
+			playerActor->PushBack(bossActor->pushBackForce, GetActorLocation());
+		}
+		
 		DamagePlayer();
 	}
 }
@@ -161,3 +165,8 @@ void AYari::BackToHandSocket(float DeltaSeconds)
 	}
 }
 
+void AYari::SetYariCollision(bool b)
+{
+	if(b) TriggerCapsule->SetCollisionProfileName("Trigger");
+	else TriggerCapsule->SetCollisionProfileName("NoCollision");
+}
