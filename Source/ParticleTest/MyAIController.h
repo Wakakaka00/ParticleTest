@@ -51,6 +51,12 @@ class PARTICLETEST_API AMyAIController : public AAIController
 		void LookAtPortal();
 		void LookAtVelocity();
 
+		float recoveryTimer = 0.0f;
+		float recoveryDuration = 0.0f;
+		void RandomizeRecovery();
+
+		TArray<AttackType> AttackList;
+
 	public:
 		AMyAIController();
 		
@@ -105,9 +111,6 @@ class PARTICLETEST_API AMyAIController : public AAIController
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
 		FVector bossLastPos; //move back to Private after test
 
-		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
-		bool isStart = true; //move back to Private after test
-
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Portal")
 			float accelerationForce;
 
@@ -125,5 +128,4 @@ class PARTICLETEST_API AMyAIController : public AAIController
 
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Start")
 			bool isEnterArena = false;
-
 };

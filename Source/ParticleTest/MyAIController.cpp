@@ -22,6 +22,7 @@ void AMyAIController::BeginPlay()
 	playerCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 	bossPawn = GetPawn();
 	bossActor = Cast<ABossCharacter>(bossPawn);
+	RandomizeRecovery();
 }
 
 void AMyAIController::Tick(float DeltaSeconds)
@@ -36,14 +37,29 @@ void AMyAIController::Tick(float DeltaSeconds)
 	bossActor->distance = FVector::Distance(bossPawn->GetActorLocation(), playerLocation);
 	CheckNearestEnemy();
 
-	if (!isStart)
+	if (!bossActor->isStart)
 	{
-		if (bossActor->bossState != BossState::Break && bossActor->bossState != BossState::Vulnerable)
+		if (bossActor->bossState == BossState::Recovery)
 		{
 			if (!bossActor->isAtk)
-			{
+			{	
 				playerLocation = playerCharacter->GetActorLocation();
 				MoveToLocation(playerLocation, 200.0f, false);
+
+				recoveryTimer += DeltaSeconds;
+				if (recoveryTimer >= recoveryDuration)
+				{
+					if (bossActor->distance <= bossActor->atkDistance)
+					{
+						bossActor->PlayArc3Hit();
+						recoveryTimer = 0.0f;
+						RandomizeRecovery();
+						bossActor->bossState = BossState::Attack;
+						bossActor->isAtk = true;
+						StopMovement();
+					}
+				}
+	
 				// Too Far 
 				/*if (bossActor->distance >= bossActor->farDistance)
 				{
@@ -51,7 +67,7 @@ void AMyAIController::Tick(float DeltaSeconds)
 					bossActor->isAtk = true;
 					OnTooFar();
 				}
-		*/
+				*/
 				if (bossActor->damageTaken >= 4)
 				{
 					bossActor->isAtk = true;
@@ -158,6 +174,14 @@ void AMyAIController::Tick(float DeltaSeconds)
 				DashToPortalOrPlayer(DeltaSeconds);
 			}
 		}
+		else if (bossActor->bossState == BossState::Attack)
+		{
+			if (bossActor->GetIsTracking())
+			{
+				playerLocation = playerCharacter->GetActorLocation();
+				MoveToLocation(playerLocation, 200.0f, false);
+			}
+		}
 		else
 		{
 			StopMovement();
@@ -165,13 +189,14 @@ void AMyAIController::Tick(float DeltaSeconds)
 	}
 	else // isStart
 	{
+		bossActor->LookAtPlayer();
 		yariThrowTimer += DeltaSeconds;
 		if (yariThrowTimer >= startYariThrowDuration)
 		{
 			if (!bossActor->isYariThrow)
 			{
 				yariThrowTimer = 0.0f;
-				isStart = false;
+				bossActor->isStart = false;
 				bossActor->GetCharacterMovement()->GravityScale = 0.0f;
 				StopMovement();
 				bossActor->isAtk = true;
@@ -495,5 +520,10 @@ void AMyAIController::ResetVelocity()
 {
 	currentVelocity = FVector::ZeroVector;
 	acceleration = FVector::ZeroVector;
+}
+
+void AMyAIController::RandomizeRecovery()
+{
+	recoveryDuration = FMath::RandRange(3.0f, 5.0f);
 }
 

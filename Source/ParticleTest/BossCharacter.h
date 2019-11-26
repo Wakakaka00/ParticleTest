@@ -32,9 +32,19 @@ enum class BossPhase : uint8
 UENUM(BlueprintType)		//"BlueprintType" is essential to include
 enum class BossState : uint8
 {
-	Normal 	UMETA(DisplayName = "Normal"),
+	Recovery 	UMETA(DisplayName = "Recovery"),
 	Break 	UMETA(DisplayName = "Break"),
-	Vulnerable	UMETA(DisplayName = "Vulnerable")
+	Vulnerable	UMETA(DisplayName = "Vulnerable"),
+	Attack UMETA(DisplayName = "Attack")
+};
+
+UENUM(BlueprintType)		//"BlueprintType" is essential to include
+enum class AttackType : uint8
+{
+	Lunge 	UMETA(DisplayName = "Lunge"),
+	Arc5 	UMETA(DisplayName = "Arc5"),
+	Arc3	UMETA(DisplayName = "Arc3"),
+	AOE UMETA(DisplayName = "AOE")
 };
 
 UCLASS()
@@ -47,6 +57,8 @@ private:
 	float breakTimer = 0.0f;
 	float vulnerableTimer = 0.0f;
 	float vulnerableDuration = 4.0f;
+	bool isTracking = false;
+	class AMyAIController* aiController;
 
 protected:
 	// Called when the game starts or when spawned
@@ -148,6 +160,9 @@ public:
 	bool isNormalPush = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
+	bool isStart = true;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
 	bool isHealing = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
@@ -173,6 +188,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
 	bool isYariThrow = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attack")
+		float atkDistance;
 
 	UFUNCTION()
 	void OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
@@ -209,4 +227,18 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Animations")
 		void PlayVulnerable();
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Animations")
+		void PlayArc3Hit();
+
+	UFUNCTION(BlueprintCallable, Category = "Animations")
+		void ResetAttack();
+
+	UFUNCTION(BlueprintCallable, Category = "Animations")
+		void TrackingPlayer();
+
+	UFUNCTION(BlueprintCallable, Category = "Animations")
+		void StopTrackingPlayer();
+
+	bool GetIsTracking();
 };

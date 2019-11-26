@@ -7,6 +7,8 @@
 #include "Runtime/Engine/Classes/Kismet/KismetMathLibrary.h"
 #include "Components/SceneComponent.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "TPSCharacter.h"
+#include "MyAIController.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
@@ -29,7 +31,7 @@ ABossCharacter::ABossCharacter()
 	maxHealth = 1000.0f;
 	currentHealth = maxHealth;
 	bossPhase = BossPhase::Phase1;
-	bossState = BossState::Normal;
+	bossState = BossState::Recovery;
 }
 
 // Called when the game starts or when spawned
@@ -37,6 +39,7 @@ void ABossCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	skeletalMesh = GetMesh();
+	aiController = Cast<AMyAIController>(GetController());
 }
 
 // Called every frame
@@ -52,7 +55,7 @@ void ABossCharacter::Tick(float DeltaTime)
 			if (breakTimer >= 4.0f)
 			{
 				breakTimer = 0.0f;
-				bossState = BossState::Normal;
+				bossState = BossState::Recovery;
 			}
 		}
 		else if (bossPhase == BossPhase::Phase2)
@@ -60,7 +63,7 @@ void ABossCharacter::Tick(float DeltaTime)
 			if (breakTimer >= 3.0f)
 			{
 				breakTimer = 0.0f;
-				bossState = BossState::Normal;
+				bossState = BossState::Recovery;
 			}
 		}
 		else if (bossPhase == BossPhase::Phase3)
@@ -68,7 +71,7 @@ void ABossCharacter::Tick(float DeltaTime)
 			if (breakTimer >= 2.0f)
 			{
 				breakTimer = 0.0f;
-				bossState = BossState::Normal;
+				bossState = BossState::Recovery;
 			}
 		}
 	}
@@ -77,8 +80,13 @@ void ABossCharacter::Tick(float DeltaTime)
 		vulnerableTimer += DeltaTime;
 		if (vulnerableTimer >= vulnerableDuration)
 		{
+			LookAtPlayer();
 			vulnerableTimer = 0.0f;
-			bossState = BossState::Normal;
+			float distance = FVector::Distance(GetActorLocation(), playerActor->GetActorLocation());
+			if(distance <= 700.0f) playerActor->PushBack(pushBackForce, GetActorLocation());		
+			bossState = BossState::Recovery;
+			isAtk = true;
+			JumpBackThrone();
 		}
 	}
 }
@@ -203,6 +211,7 @@ void ABossCharacter::Break()
 void ABossCharacter::SetVulnerable()
 {
 	bossState = BossState::Vulnerable;
+	PlayVulnerable();
 }
 
 bool ABossCharacter::isAttackingVital()
@@ -219,6 +228,28 @@ bool ABossCharacter::isAttackingVital()
 		return true;
 	}
 	return false;
+}
+
+void ABossCharacter::ResetAttack()
+{
+	bossState = BossState::Recovery;
+	isAtk = false;
+}
+
+void ABossCharacter::TrackingPlayer()
+{
+	isTracking = true;
+}
+
+void ABossCharacter::StopTrackingPlayer()
+{
+	isTracking = false;
+	aiController->StopMovement();
+}
+
+bool ABossCharacter::GetIsTracking()
+{
+	return isTracking;
 }
 
 
