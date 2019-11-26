@@ -126,7 +126,12 @@ void ABossCharacter::LookAtPlayer()
 
 void ABossCharacter::Attack()
 {
+	aiController->yari->SetYariCollision(true);
+}
 
+void ABossCharacter::StopAttack()
+{
+	aiController->yari->SetYariCollision(false);
 }
 
 void ABossCharacter::FindNearestPortal()
