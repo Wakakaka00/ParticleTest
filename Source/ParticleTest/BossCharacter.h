@@ -38,6 +38,15 @@ enum class BossState : uint8
 	Attack UMETA(DisplayName = "Attack")
 };
 
+UENUM(BlueprintType)		//"BlueprintType" is essential to include
+enum class AttackType : uint8
+{
+	Lunge 	UMETA(DisplayName = "Lunge"),
+	Arc5 	UMETA(DisplayName = "Arc5"),
+	Arc3	UMETA(DisplayName = "Arc3"),
+	AOE UMETA(DisplayName = "AOE")
+};
+
 UCLASS()
 class PARTICLETEST_API ABossCharacter : public AEnemy
 {
@@ -147,6 +156,9 @@ public:
 	bool isDash = false;
 	bool isBackJump = false;
 	bool isNormalPush = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
+	bool isStart = true;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
 	bool isHealing = false;

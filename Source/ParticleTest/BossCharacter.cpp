@@ -78,10 +78,13 @@ void ABossCharacter::Tick(float DeltaTime)
 		vulnerableTimer += DeltaTime;
 		if (vulnerableTimer >= vulnerableDuration)
 		{
+			LookAtPlayer();
 			vulnerableTimer = 0.0f;
 			float distance = FVector::Distance(GetActorLocation(), playerActor->GetActorLocation());
 			if(distance <= 700.0f) playerActor->PushBack(pushBackForce, GetActorLocation());		
 			bossState = BossState::Recovery;
+			isAtk = true;
+			JumpBackThrone();
 		}
 	}
 }
