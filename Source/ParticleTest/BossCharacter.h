@@ -201,7 +201,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Boss Behavior")
 	void FindNearestPortal();
 
+	UFUNCTION(BlueprintCallable, Category = "Attack")
 	void Attack();
+
+	UFUNCTION(BlueprintCallable, Category = "Attack")
+	void StopAttack();
 
 	UFUNCTION(BlueprintCallable, Category = "Boss Behavior")
 	void Break();

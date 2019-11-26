@@ -72,4 +72,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Pos")
 	void SetInitPos(FVector location, FRotator rot);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Radius")
+		float pushBackRadius;
+
+	void SetYariCollision(bool b);
 };
