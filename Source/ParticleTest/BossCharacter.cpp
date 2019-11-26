@@ -7,6 +7,7 @@
 #include "Runtime/Engine/Classes/Kismet/KismetMathLibrary.h"
 #include "Components/SceneComponent.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "TPSCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
@@ -78,6 +79,7 @@ void ABossCharacter::Tick(float DeltaTime)
 		if (vulnerableTimer >= vulnerableDuration)
 		{
 			vulnerableTimer = 0.0f;
+			playerActor->PushBack(pushBackForce, GetActorLocation());
 			bossState = BossState::Normal;
 		}
 	}
@@ -203,6 +205,7 @@ void ABossCharacter::Break()
 void ABossCharacter::SetVulnerable()
 {
 	bossState = BossState::Vulnerable;
+	PlayVulnerable();
 }
 
 bool ABossCharacter::isAttackingVital()

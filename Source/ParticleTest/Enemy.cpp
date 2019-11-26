@@ -2,6 +2,7 @@
 
 
 #include "Enemy.h"
+#include "TPSCharacter.h"
 
 // Sets default values
 AEnemy::AEnemy()
@@ -16,6 +17,7 @@ void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 	playerPawn = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+	playerActor = Cast<ATPSCharacter>(playerPawn);
 }
 
 // Called every frame
