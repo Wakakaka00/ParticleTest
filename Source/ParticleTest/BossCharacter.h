@@ -32,9 +32,10 @@ enum class BossPhase : uint8
 UENUM(BlueprintType)		//"BlueprintType" is essential to include
 enum class BossState : uint8
 {
-	Normal 	UMETA(DisplayName = "Normal"),
+	Recovery 	UMETA(DisplayName = "Recovery"),
 	Break 	UMETA(DisplayName = "Break"),
-	Vulnerable	UMETA(DisplayName = "Vulnerable")
+	Vulnerable	UMETA(DisplayName = "Vulnerable"),
+	Attack UMETA(DisplayName = "Attack")
 };
 
 UCLASS()
