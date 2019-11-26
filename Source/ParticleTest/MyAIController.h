@@ -128,5 +128,4 @@ class PARTICLETEST_API AMyAIController : public AAIController
 
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Start")
 			bool isEnterArena = false;
-
 };

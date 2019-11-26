@@ -8,6 +8,7 @@
 #include "Components/SceneComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "TPSCharacter.h"
+#include "MyAIController.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
@@ -38,6 +39,7 @@ void ABossCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	skeletalMesh = GetMesh();
+	aiController = Cast<AMyAIController>(GetController());
 }
 
 // Called every frame
@@ -226,6 +228,28 @@ bool ABossCharacter::isAttackingVital()
 		return true;
 	}
 	return false;
+}
+
+void ABossCharacter::ResetAttack()
+{
+	bossState = BossState::Recovery;
+	isAtk = false;
+}
+
+void ABossCharacter::TrackingPlayer()
+{
+	isTracking = true;
+}
+
+void ABossCharacter::StopTrackingPlayer()
+{
+	isTracking = false;
+	aiController->StopMovement();
+}
+
+bool ABossCharacter::GetIsTracking()
+{
+	return isTracking;
 }
 
 

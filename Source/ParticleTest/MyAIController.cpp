@@ -22,6 +22,7 @@ void AMyAIController::BeginPlay()
 	playerCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 	bossPawn = GetPawn();
 	bossActor = Cast<ABossCharacter>(bossPawn);
+	RandomizeRecovery();
 }
 
 void AMyAIController::Tick(float DeltaSeconds)
@@ -41,9 +42,24 @@ void AMyAIController::Tick(float DeltaSeconds)
 		if (bossActor->bossState == BossState::Recovery)
 		{
 			if (!bossActor->isAtk)
-			{
+			{	
 				playerLocation = playerCharacter->GetActorLocation();
 				MoveToLocation(playerLocation, 200.0f, false);
+
+				recoveryTimer += DeltaSeconds;
+				if (recoveryTimer >= recoveryDuration)
+				{
+					if (bossActor->distance <= bossActor->atkDistance)
+					{
+						bossActor->PlayArc3Hit();
+						recoveryTimer = 0.0f;
+						RandomizeRecovery();
+						bossActor->bossState = BossState::Attack;
+						bossActor->isAtk = true;
+						StopMovement();
+					}
+				}
+	
 				// Too Far 
 				/*if (bossActor->distance >= bossActor->farDistance)
 				{
@@ -51,7 +67,7 @@ void AMyAIController::Tick(float DeltaSeconds)
 					bossActor->isAtk = true;
 					OnTooFar();
 				}
-		*/
+				*/
 				if (bossActor->damageTaken >= 4)
 				{
 					bossActor->isAtk = true;
@@ -156,6 +172,14 @@ void AMyAIController::Tick(float DeltaSeconds)
 			if (bossActor->isPortalDash)
 			{
 				DashToPortalOrPlayer(DeltaSeconds);
+			}
+		}
+		else if (bossActor->bossState == BossState::Attack)
+		{
+			if (bossActor->GetIsTracking())
+			{
+				playerLocation = playerCharacter->GetActorLocation();
+				MoveToLocation(playerLocation, 200.0f, false);
 			}
 		}
 		else

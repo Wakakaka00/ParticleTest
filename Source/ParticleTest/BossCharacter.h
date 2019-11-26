@@ -57,6 +57,8 @@ private:
 	float breakTimer = 0.0f;
 	float vulnerableTimer = 0.0f;
 	float vulnerableDuration = 4.0f;
+	bool isTracking = false;
+	class AMyAIController* aiController;
 
 protected:
 	// Called when the game starts or when spawned
@@ -187,6 +189,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Boss Behavior")
 	bool isYariThrow = false;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attack")
+		float atkDistance;
+
 	UFUNCTION()
 	void OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
@@ -222,4 +227,18 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Animations")
 		void PlayVulnerable();
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Animations")
+		void PlayArc3Hit();
+
+	UFUNCTION(BlueprintCallable, Category = "Animations")
+		void ResetAttack();
+
+	UFUNCTION(BlueprintCallable, Category = "Animations")
+		void TrackingPlayer();
+
+	UFUNCTION(BlueprintCallable, Category = "Animations")
+		void StopTrackingPlayer();
+
+	bool GetIsTracking();
 };
