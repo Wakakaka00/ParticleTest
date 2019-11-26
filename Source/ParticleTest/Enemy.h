@@ -71,4 +71,5 @@ public:
 		bool GetIsDamaged();
 	
 	ACharacter* playerPawn;
+	class ATPSCharacter* playerActor;
 };
