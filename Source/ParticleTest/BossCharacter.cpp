@@ -211,6 +211,7 @@ void ABossCharacter::FindNearestPortal()
 void ABossCharacter::Break()
 {
 	bossState = BossState::Break;
+	PlayDefenseBreak();
 }
 
 void ABossCharacter::SetVulnerable()

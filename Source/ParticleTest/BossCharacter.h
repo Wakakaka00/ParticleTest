@@ -235,6 +235,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Animations")
 		void PlayArc3Hit();
 
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Animations")
+		void PlayDefenseBreak();
+
 	UFUNCTION(BlueprintCallable, Category = "Animations")
 		void ResetAttack();
 
