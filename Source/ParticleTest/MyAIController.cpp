@@ -190,12 +190,14 @@ void AMyAIController::Tick(float DeltaSeconds)
 	else // isStart
 	{
 		bossActor->LookAtPlayer();
-		yariThrowTimer += DeltaSeconds;
-		if (yariThrowTimer >= startYariThrowDuration)
+		//yariThrowTimer += DeltaSeconds;
+		if(!bossActor->isYariThrow) CheckYariThrowDuration(DeltaSeconds);	
+		if (yariThrowCount >= 3)
 		{
 			if (!bossActor->isYariThrow)
 			{
 				yariThrowTimer = 0.0f;
+				yariThrowCount = 0;
 				bossActor->isStart = false;
 				bossActor->GetCharacterMovement()->GravityScale = 0.0f;
 				StopMovement();
@@ -350,12 +352,14 @@ void AMyAIController::ThrowYari()
 		//yari->ThrowOnThrone();
 		yari->DetachFromBoss();
 		yari->isThrowing = true;	
+		
 	}
 	else
 	{
 		yari->ThrowOnGround(bossActor->yariLaunchSpeed, AimAsRotator);
 	}
 	
+	yariThrowCount += 1;
 	bossActor->isYariThrow = true;
 }
 
@@ -510,6 +514,16 @@ void AMyAIController::LookAtVelocity()
 {
 	FRotator Rot = FRotationMatrix::MakeFromX(currentVelocity).Rotator();
 	bossActor->SetActorRotation(Rot);
+}
+
+void AMyAIController::CheckYariThrowDuration(float DeltaSeconds)
+{
+	yariThrowTimer += DeltaSeconds;
+	if (yariThrowTimer >= yariThrowDuration)
+	{
+		ThrowYari();
+		yariThrowTimer = 0.0f;
+	}
 }
 
 void AMyAIController::LookAtPortal()

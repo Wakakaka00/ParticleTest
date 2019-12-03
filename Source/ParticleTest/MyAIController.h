@@ -36,6 +36,8 @@ class PARTICLETEST_API AMyAIController : public AAIController
 		float drinkBloodTimer = 0.0f;
 		float spitTimer = 0.0f;
 		float yariThrowTimer = 0.0f;
+		float yariThrowDuration = 2.5f;
+		int yariThrowCount = 0;
 		float minionMaxDistance = 1000.0f;
 		int updateDelay = 0;
 
@@ -50,6 +52,7 @@ class PARTICLETEST_API AMyAIController : public AAIController
 		void DashToPortalOrPlayer(float DeltaSeconds);
 		void LookAtPortal();
 		void LookAtVelocity();
+		void CheckYariThrowDuration(float DeltaSeconds);
 
 		float recoveryTimer = 0.0f;
 		float recoveryDuration = 0.0f;
