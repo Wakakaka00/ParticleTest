@@ -27,6 +27,10 @@ private:
 	ATPSCharacter* playerActor;
 	class AMyAIController* bossAI;
 	bool isDamaged = false;
+	void ThrowOnThrone();
+	FVector acceleration;
+	FVector currentVelocity;
+	FVector playerLocation;
 
 protected:
 	// Called when the game starts or when spawned
@@ -50,8 +54,6 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	void ThrowOnGround(float speed, FRotator angle);
-	UFUNCTION(BlueprintImplementableEvent, Category = "Boss Behavior")
-	void ThrowOnThrone();
 
 	void BackToHandSocket(float DeltaSeconds);
 
@@ -77,4 +79,12 @@ public:
 		float pushBackRadius;
 
 	void SetYariCollision(bool b);
+
+	void DetachFromBoss();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Acceleration")
+		float maxMagnitude = 3.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Acceleration")
+	float accelerationForce = 0.2f;
 };

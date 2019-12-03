@@ -58,6 +58,11 @@ void AYari::Tick(float DeltaTime)
 		SetActorRotation(rot);
 	}
 
+	if (isThrowing)
+	{
+		ThrowOnThrone();
+	}
+
 	if(isBack)
 	{
 		BackToHandSocket(DeltaTime);
@@ -73,6 +78,34 @@ void AYari::ThrowOnGround(float speed,FRotator angle)
 	ProjectileMovement->ProjectileGravityScale = gravityScale;
 	ProjectileMovement->SetVelocityInLocalSpace(FVector::ForwardVector * speed); 
 	ProjectileMovement->Activate();
+}
+
+void AYari::ThrowOnThrone()
+{
+	FVector direction = UKismetMathLibrary::GetDirectionUnitVector(GetActorLocation(), playerLocation);
+	acceleration += direction * accelerationForce;
+	currentVelocity += acceleration;
+	if (currentVelocity.SizeSquared() > maxMagnitude * maxMagnitude)
+	{
+		FVector temp = currentVelocity;
+		temp.GetSafeNormal(1.0f);
+		temp.Normalize(1.0f);
+		currentVelocity = temp * maxMagnitude;
+	}
+
+	FHitResult HitResult;
+	SetActorLocation(GetActorLocation() + currentVelocity, true, &HitResult);
+}
+
+void AYari::DetachFromBoss()
+{
+	DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+	TriggerBox->SetCollisionProfileName(TEXT("Trigger"));
+	TriggerCapsule->SetCollisionProfileName(TEXT("Trigger"));
+	playerLocation = playerCharacter->GetActorLocation();
+	FRotator rot = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), playerLocation);
+	rot.Pitch = rot.Pitch - 90.0f;
+	SetActorRotation(rot);
 }
 
 void AYari::StopYari()
@@ -153,6 +186,8 @@ void AYari::BackToHandSocket(float DeltaSeconds)
 	float distance = FVector::Distance(GetActorLocation(), bossActor->handSocketLocation);
 	if (distance <= 30.0f)
 	{
+		acceleration = FVector::ZeroVector;
+		currentVelocity = FVector::ZeroVector;
 		isDamaged = false;
 		TriggerBox->SetCollisionProfileName(TEXT("NoCollision"));
 		TriggerCapsule->SetCollisionProfileName("NoCollision");

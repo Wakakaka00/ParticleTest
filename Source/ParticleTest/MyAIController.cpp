@@ -347,7 +347,9 @@ void AMyAIController::ThrowYari()
 	
 	if (bossActor->isOnThrone)
 	{
-		yari->ThrowOnThrone();
+		//yari->ThrowOnThrone();
+		yari->DetachFromBoss();
+		yari->isThrowing = true;	
 	}
 	else
 	{
